@@ -21,10 +21,12 @@ export default class CreateCar extends Component {
         super(props)
         this.state = {
             vin: '5XXGM4A70FG352220',
+            // vin: '1M1AW07Y1GM051234',
             checkingVIN: false,
             validVin: false,
             disableCheckButton: false,
             captionCheckButton: 'Check VIN ',
+            msgResponse: '',
             vinInfo: {},
         }
 
@@ -49,6 +51,7 @@ export default class CreateCar extends Component {
          checkingVIN:true,
          validVin:false,
          captionCheckButton: 'Checking VIN ',
+         msgResponse: ''
       })
 
       const res = api.checkVIN(this.state.vin)
@@ -57,16 +60,17 @@ export default class CreateCar extends Component {
             disableCheckButton:false,
             checkingVIN:false,
             vinInfo:data,
-            validVin: true,
+            validVin: (data.valid_vin) ? true : false,
             captionCheckButton: 'Check VIN ',
+            msgResponse: data.msg,
          })
       } )
    }
 
     render() {
         return(
-
-            <Container style={{marginTop:60, flex:1, justifyContent:'center', alignItems:'center' }}>
+         //   , flex:1, alignItems:'center', justifyContent:'center'
+            <Container style={{marginTop:60 }}>
 
                 {/* <Header>
                     <Left>
@@ -84,8 +88,8 @@ export default class CreateCar extends Component {
                     </Right>
                 </Header> */}
 
-                <Content style={{width:350 }}>
-                    {/* <Text>Car Info</Text> */}
+                {/* style={{width:350 }} */}
+                <Content>
                     <Form >
 
                         <Item >
@@ -112,7 +116,6 @@ export default class CreateCar extends Component {
 
                     </Form>
                     <Button
-                       //   iconRight block
                        disabled={this.state.disableCheckButton}
                        //   style={{width:250}}
                        onPress={() => this.checkVINCode()}
@@ -122,11 +125,14 @@ export default class CreateCar extends Component {
 
                     {this.state.checkingVIN ? <Spinner /> : null }
                     {this.state.validVin ? <VinDetail det={this.state.vinInfo}  /> : null }
-                    {/* <Container>
-
-                    </Container> */}
 
                 </Content>
+
+                {this.state.msgResponse === '' ? null :
+                <Footer>
+                  <Text style={styles.loginMsg}>{this.state.msgResponse}</Text>
+               </Footer> }
+
             </Container>
 
         )

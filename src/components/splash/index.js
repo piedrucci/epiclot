@@ -11,16 +11,14 @@ class Splash extends Component {
       if (this.props.visible) {
          return (
             <View>
-               <Text>loading profile...</Text>
+               <Text style={{textAlign:'center'}}>loading profile...</Text>
                <Spinner />
             </View>
          );
       }else {
          return (<View><Text></Text></View>)
       }
-
    }
-
 }
 
 export default Splash

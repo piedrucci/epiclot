@@ -66,8 +66,12 @@ const App = () => {
                     <Scene key='home' component={Dashboard} hideNavBar={false} title='Home'
                         type={ActionConst.RESET} renderRightButton ={buttonCreateCar} renderLeftButton ={buttonLogOut}  />
 
+                     {/* MOSTRAR DETALLES DEL CARRO */}
                     <Scene key='carDetail' component={CarDetail} hideNavBar={false} title='Car Detail' />
+
+                    {/* CREAR CARRO */}
                     <Scene key='createCar' component={CreateCar} hideNavBar={false} title='Create'  />
+                    <Scene key='createCar2' component={CreateCar} hideNavBar={false} title='Create2'  />
 
                 </Router>
 

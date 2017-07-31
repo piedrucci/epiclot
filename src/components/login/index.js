@@ -62,6 +62,7 @@ class Login extends Component {
 
    }
 
+// LOGUEA AL USUARIO (ASYNC)
     async loginUser() {
         try{
             // this.props.createCar({id:1, name:'kia picanto'});

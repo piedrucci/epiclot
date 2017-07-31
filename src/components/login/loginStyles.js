@@ -25,6 +25,7 @@ export default StyleSheet.flatten({
 
     container: {
         flex: 1,
+        flexDirection:'row',
         justifyContent: 'center',
         alignItems: 'center',
         // backgroundColor:'#efefef',
