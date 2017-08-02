@@ -17,10 +17,11 @@ import Splash from '../splash';
 
 import api from '../../utilities/api';
 
+
 import { connect } from 'react-redux';
-import * as carActions from '../../actions/carActions';
 import * as sessionActions from '../../actions/sessionActions';
-// import store from '../../store';
+
+
 // Keep a reference to ensure there is only one event listener
 // subscribed with BackAndroid
 let listener = null
@@ -103,11 +104,12 @@ class Login extends Component {
                // alert('session guardada');
 
                if ( !this.state.invalidUser ) {
-                  AsyncStorage.setItem( api.getSessionName(), JSON.stringify(info) ).then( () => {
-                     this.props.setSession(info);
-                     Actions.home()
-                     console.log(this.props);
-                  } )
+                  // AsyncStorage.setItem( api.getSessionName(), JSON.stringify(info) ).then( () => {
+                  //    this.props.setSession(info);
+                  //    Actions.home()
+                  //    console.log(this.props);
+                  // } )
+                  api.saveSession(info)
                }
 
             }else {

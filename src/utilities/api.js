@@ -35,9 +35,10 @@ var api = {
 
    },
 
-   async checkVIN(vin) {
+   async checkVIN(vin, dealership_id) {
       // esto retorna un Promise.... usar  promesa.then()
-      const response = await fetch( apiEndPoint + 'vin/' + vin ).then( (res) => res.json() );
+      // alert( apiEndPoint + 'vin/' + vin + '/' + dealership_id )
+      const response = await fetch( apiEndPoint + 'vin/' + vin + '/' + dealership_id + '/' ).then( (res) => res.json() );
       return response;
 
    },
@@ -58,23 +59,29 @@ var api = {
    },
 
 
-   async storeToken(loginInfo) {
+   async saveSession(loginInfo) {
       try{
-         await AsyncStorage.setItem(SESSION_NAME, JSON.stringify(loginInfo) );
+         const response = await AsyncStorage.setItem(SESSION_NAME, JSON.stringify(loginInfo) )
+         // const json = await response.json()
+         console.log(response)
          // alert(JSON.stringify(loginInfo));
       }catch(err){
          alert(err)
-         console.log('STORE something went wrong: ' + err)
+         console.log('(saveSession) something went wrong: ' + err)
       }
+      // AsyncStorage.setItem( api.getSessionName(), JSON.stringify(info) ).then( () => {
+      //    this.props.setSession(info);
+      //    Actions.home()
+      //    console.log(this.props);
+      // } )
    },
 
 
-   async getToken() {
+   getSession() {
       try{
-         let session = await AsyncStorage.getItem(SESSION_NAME);
-         // alert(JSON.parse(session));
-         // alert(session);
-         return JSON.stringify(session);
+         let session = AsyncStorage.getItem(SESSION_NAME)
+         // console.log(JSON.parse(session))
+         return session;
       }catch(err){
          alert(err)
          console.log('GET TOKEN something went wrong: ' + err)

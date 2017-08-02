@@ -14,26 +14,38 @@ import api from '../../utilities/api';
 
 import VinDetail from './vinDetails';
 
+// ===========================================
+import { connect } from 'react-redux';
+import * as sessionActions from '../../actions/sessionActions';
+// ================================================
 
-export default class CreateCar extends Component {
+class CreateCar extends Component {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            vin: '5XXGM4A70FG352220',
-            // vin: '1M1AW07Y1GM051234',
-            checkingVIN: false,
-            validVin: false,
-            disableCheckButton: false,
-            captionCheckButton: 'Check VIN ',
-            msgResponse: '',
-            vinInfo: {},
-        }
+   constructor(props) {
+      super(props)
+      this.state = {
+         session: {},
+         vin: '5XXGM4A70FG352220',
+         // vin: '1M1AW07Y1GM051234',
+         checkingVIN: false,
+         validVin: false,
+         disableCheckButton: false,
+         captionCheckButton: 'Check VIN ',
+         msgResponse: '',
+         vinInfo: {},
+      }
 
-        this.checkVINCode = this.checkVINCode.bind(this)
-        this.switchButtonStatus = this.switchButtonStatus.bind(this)
-    }
+      this.checkVINCode = this.checkVINCode.bind(this)
+      this.switchButtonStatus = this.switchButtonStatus.bind(this)
+   }
 
+// OBTENER LOS DATOS DE LA SESSION ACTUAL
+    componentDidMount() {
+      const response = api.getSession()
+      response.then( (data) => {
+         this.setState({session: JSON.parse(data)})
+      } )
+   }
 
 // ACTIVA - DESACTIVA EL BOTON DE CHECK VIN
     switchButtonStatus(text) {
@@ -54,7 +66,7 @@ export default class CreateCar extends Component {
          msgResponse: ''
       })
 
-      const res = api.checkVIN(this.state.vin)
+      const res = api.checkVIN(this.state.vin, this.state.session.dealership_id)
       res.then( (data) => {
          this.setState({
             disableCheckButton:false,
@@ -151,3 +163,16 @@ export default class CreateCar extends Component {
     }
 
 }
+
+const mapStateToProps = (state) => {
+    return {
+      //   cars: state.cars,
+        session: state.session,
+    }
+}
+
+// const mapDispatchToProps = (dispatch) => {
+//   return { carActions, sessionActions }
+// }
+
+export default connect(mapStateToProps, sessionActions)(CreateCar)
