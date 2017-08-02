@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { StyleSheet, Text, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-native';
 
-import { Header, Item, Icon, Input, Button, Container, Content, Spinner, List, ListItem, Thumbnail, Body } from 'native-base';
+import { Header, Item, Icon, Input, Button, Container, Content, Spinner,
+   List, ListItem, Thumbnail, Body } from 'native-base';
 
 import FitImage from 'react-native-fit-image';
 
@@ -20,6 +21,8 @@ import UserInfo from '../user/info';
 // import CarDetail from '../car/detail';
 // import CreateCar from '../car/create';
 
+import Elements from './listCars'
+
 import { FormattedNumber, FormattedCurrency } from 'react-native-globalize';
 
 const listOfCars = []
@@ -35,7 +38,8 @@ export default class Dashboard extends Component {
             search: '',
             cars: [],
             loading: true,
-            searchWord: ''
+            searchWord: '',
+            refreshing: false,
         }
     }
 
@@ -55,7 +59,13 @@ export default class Dashboard extends Component {
         } )
     }
 
-// GET REQUEST PARA OBTENER LA LISTA COMPLETA DE CARROS DEL DEALER
+   //  _onRefresh() {
+   //    this.setState({refreshing: true});
+   //    fetchData().then(() => { this.setState({refreshing: false}); });
+   //    alert('aaaaa');
+   // }
+
+// GET REQUEST PARA OBTENER LA LISTA COMPLETA DE CARROS DEL DEALER ACTUAL
     async fetchData(dealership_id) {
         try{
             // const response = await fetch(URL+dealership_id)
@@ -117,9 +127,12 @@ export default class Dashboard extends Component {
 
                 <Content>
 
-                    {this.state.loading? <Spinner /> : <List dataArray={this.state.cars} renderRow={(item) =>
+                   {/* <Thumbnail square size={80} source={{uri: 'http://epiclot.com/dealer/accounts/'+item.subdomain+'/photos/'+item.photo}} /> */}
+                    {/* {this.state.loading? <Spinner /> :
+                       <List
+                          refreshControl={ <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} /> }
+                        dataArray={this.state.cars} renderRow={(item) =>
                         <ListItem button onPress={()=>Actions.carDetail({car:item})} >
-                            {/* <Thumbnail square size={80} source={{uri: 'http://epiclot.com/dealer/accounts/'+item.subdomain+'/photos/'+item.photo}} /> */}
                             <FitImage style={{borderRadius:10, width:90, height: 60}} source={{uri: 'http://epiclot.com/dealer/accounts/'+item.subdomain+'/photos/'+item.photo}} />
                             <Body>
                                 <Text style={{fontWeight: 'bold', marginLeft: 10}}>{item.make} {item.model}</Text>
@@ -132,10 +145,30 @@ export default class Dashboard extends Component {
 
                             </Body>
                         </ListItem>
-                    } />}
+                    } />} */}
+
+                  {this.state.loading ? <Spinner /> :
+                   <FlatList
+                     data={this.state.cars}
+                     renderItem={({item}) =>
+                     <ListItem button onPress={()=>Actions.carDetail({car:item})} >
+                         <FitImage style={{borderRadius:10, width:90, height: 60}} source={{uri: 'http://epiclot.com/dealer/accounts/'+item.subdomain+'/photos/'+item.photo}} />
+                         <Body>
+                             <Text style={{fontWeight: 'bold', marginLeft: 10}}>{item.make} {item.model}</Text>
+
+                             <Text note style={{marginLeft: 10, }}>{item.year}</Text>
+                             <Text note style={{marginLeft: 10, }}>{item.condition}</Text>
+                             <Text note style={{marginLeft: 10, }}>
+                                 <FormattedCurrency value={parseFloat(item.webprice)} />
+                             </Text>
+
+                         </Body>
+                     </ListItem>}
+                     keyExtractor={item => item.vin}
+                  />
+                 }
 
                 </Content>
-
 
                 {/* <DashboardFooter /> */}
 

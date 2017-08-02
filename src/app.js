@@ -17,6 +17,7 @@ import Login from './components/login/index';
 import Dashboard from './components/dashboard/index';
 import CarDetail from './components/car/detail';
 import CreateCar from './components/car/create';
+import CreateCar2 from './components/car/create2';
 // import DashboardBody from './components/dashboard/body';
 // import UserInfo from './components/user/info';
 
@@ -70,8 +71,8 @@ const App = () => {
                     <Scene key='carDetail' component={CarDetail} hideNavBar={false} title='Car Detail' />
 
                     {/* CREAR CARRO */}
-                    <Scene key='createCar' component={CreateCar} hideNavBar={false} title='Create'  />
-                    <Scene key='createCar2' component={CreateCar} hideNavBar={false} title='Create2'  />
+                    <Scene key='createCar'  component={CreateCar} hideNavBar={false} title='Create'  />
+                    <Scene key='createCar2' component={CreateCar2} hideNavBar={false} title='Car Form'  />
 
                 </Router>
 

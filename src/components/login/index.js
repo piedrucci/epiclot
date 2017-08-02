@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image, AsyncStorage, BackHandler, BackAndroid, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { Text } from 'react-native';
+import { Text, Switch } from 'react-native';
 
 import { Container, Content, Form, Item, Input, Label,
    Icon, Button, Footer, Spinner } from 'native-base';
@@ -10,7 +10,7 @@ import { Container, Content, Form, Item, Input, Label,
 import { Actions } from 'react-native-router-flux';
 
 // S T Y L E S
-   import styles from './loginStyles';
+import styles from './loginStyles';
 
 // COMPONENTES
 import Splash from '../splash';
@@ -19,7 +19,8 @@ import api from '../../utilities/api';
 
 import { connect } from 'react-redux';
 import * as carActions from '../../actions/carActions';
-import store from '../../store';
+import * as sessionActions from '../../actions/sessionActions';
+// import store from '../../store';
 // Keep a reference to ensure there is only one event listener
 // subscribed with BackAndroid
 let listener = null
@@ -39,7 +40,8 @@ class Login extends Component {
             showSplash: true,
 
             invalidUser: false,
-            loginMsg: ''
+            loginMsg: '',
+            rememberMe: false,
         }
     }
 
@@ -63,11 +65,13 @@ class Login extends Component {
    }
 
 // LOGUEA AL USUARIO (ASYNC)
-    async loginUser() {
+   async loginUser() {
         try{
             // this.props.createCar({id:1, name:'kia picanto'});
-            this.setState({loading:true});
-            this.setState({invalidUser:false});
+
+            // this.props.setSession({dealership_id:11});
+
+            this.setState({loading:true, invalidUser:false});
             const response = await fetch(api.getApi_Url()+'auth/sign_in', {
                 method: 'POST',
                 headers: {
@@ -82,29 +86,35 @@ class Login extends Component {
             });
 
             const json = await response.json()
+
             this.setState({loading:false})
             this.setState({invalidUser: (json.api_key===null) ? true : false });
             this.setState({loginMsg: ( this.state.invalidUser ) ? 'Incorrect credentials' : 'Bienvenido!'});
 
             if ( response.status >= 200 && response.status < 300 ) {
-                const info = {
-                    "api_key": json.api_key,
-                    "user_id": json.user_id,
-                    "dealership_id": json.dealership_id,
-                    "user": json.user,
-                    "user_domain": json.user_domain,
-                    "name": json.name
-                };
+               const info = {
+                  "api_key": json.api_key,
+                  "user_id": json.user_id,
+                  "dealership_id": json.dealership_id,
+                  "user": json.user,
+                  "user_domain": json.user_domain,
+                  "name": json.name
+               };
+               // alert('session guardada');
 
-                if ( !this.state.invalidUser ) {
-                    AsyncStorage.setItem( api.getSessionName(), JSON.stringify(info) ).then( () => {
-                        Actions.home()
-                    } )
-                }
+               if ( !this.state.invalidUser ) {
+                  AsyncStorage.setItem( api.getSessionName(), JSON.stringify(info) ).then( () => {
+                     this.props.setSession(info);
+                     Actions.home()
+                     console.log(this.props);
+                  } )
+               }
 
             }else {
-                api.removeToken();
+               alert('no entro');
+               api.removeToken();
             }
+
         }catch(err){
             api.removeToken();
             this.setState({
@@ -123,6 +133,7 @@ class Login extends Component {
     // }
 
     render() {
+      // console.log(this.props);
         return (
 
           <Container style={styles.container}>
@@ -178,7 +189,10 @@ class Login extends Component {
                   </Item>
 
                   {/* <Item>
-                      <CheckBox title='Remember me' />
+                      <Switch
+                        onValueChange={(value) => this.setState({rememberMe: value})}
+                        style={{marginBottom: 10}}
+                        value={this.state.rememberMe} />
                   </Item> */}
 
                   {/* <Item rounded> */}
@@ -226,8 +240,13 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        cars: state.cars
+        cars: state.cars,
+        session: state.session,
     }
 }
 
-export default connect(mapStateToProps, carActions)(Login)
+// const mapDispatchToProps = (dispatch) => {
+//   return { carActions, sessionActions }
+// }
+
+export default connect(mapStateToProps, sessionActions)(Login)

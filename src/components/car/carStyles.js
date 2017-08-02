@@ -51,12 +51,18 @@ export default StyleSheet.flatten({
     input_default: {
         // backgroundColor:'white',
         color: '#393939',
+        width: 250,
         // backgroundColor:'rgba(66,66,66,0.9)',
     },
 
     input_container: {
         marginTop: 10
     },
+
+    buttonDefaut: {
+      color: 'white',
+      fontWeight: 'bold',
+   },
 
     buttonPrincipal: {
         width:200,

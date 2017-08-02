@@ -5,7 +5,7 @@ import { StyleSheet, Text } from 'react-native';
 
 import { Container, Header, Content, Icon, Left, Right, Button,
     Body, Title, Footer, FooterTab, List, ListItem, Thumbnail,
-    Item, Input, Form, Label, Spinner, InputGroup } from 'native-base';
+    Item, Input, Form, Label, Spinner, InputGroup, Picker } from 'native-base';
 
 import { Actions } from 'react-native-router-flux';
 
@@ -112,6 +112,18 @@ export default class CreateCar extends Component {
                             </Button>
 
                         </Item>
+                        <Picker
+            //   iosHeader="Select one"
+              mode="dropdown"
+            //   selectedValue={this.state.selected1}
+            //   onValueChange={this.onValueChange.bind(this)}
+            >
+              <Item label="Wallet" value="key0" />
+              <Item label="ATM Card" value="key1" />
+              <Item label="Debit Card" value="key2" />
+              <Item label="Credit Card" value="key3" />
+              <Item label="Net Banking" value="key4" />
+            </Picker>
 
 
                     </Form>
