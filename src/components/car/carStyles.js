@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 const window = Dimensions.get('window');
 
@@ -75,5 +75,16 @@ export default StyleSheet.flatten({
         // flex:1,
         // alignItems:'center'
     },
+
+    buttonNext: {
+      width: window.width,
+      alignItems:'center',
+      justifyContent:'center',
+   },
+
+    titleButtonNext: {
+      color: (Platform.OS == "android") ? 'white' : 'black',
+      fontWeight: 'bold',
+   },
 
 });
