@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 
-import { Text, Picker, PickerIOS } from 'react-native'
+import { Text } from 'react-native'
 
-import { Container, Form, Label, Button, Item, Input, Icon } from 'native-base'
+import { Container, Form, Label, Button, Item, Input, Icon, Picker } from 'native-base'
 import DatePicker from 'react-native-datepicker'
+import ModalPicker from 'react-native-modal-picker'
 
 import styles from './carStyles'
 
 // ELEMENTOS PARA LLENAR LOS PICKERS
 import { mileageType, color, transmission, status } from './pickerOptions'
+
+const PickerItem = Picker.Item;
 
 // =============================================================================
 
@@ -31,7 +34,15 @@ class CarForm extends Component {
       }
    }
 
+   onValueChange(value: string) {
+    this.setState({
+      mileageType: value
+    });
+  }
+
    render() {
+
+
       return (
          // <Container style={styles.container}>
          <Container style={{flex:1, marginTop:54}}>
@@ -75,19 +86,35 @@ class CarForm extends Component {
                   }}
                   onDateChange={(date) => {this.setState({date: date})}}
                />
+               <Picker
+                    iosHeader="Select one"
+                    mode="dropdown"
+                    selectedValue={this.state.mileageType}
+                    onValueChange={this.onValueChange.bind(this)}
+                  >
+                     <PickerItem label="Wallet" value="key0" />
+                    <PickerItem label="ATM Card" value="key1" />
+                    <PickerItem label="Debit Card" value="key2" />
+                    <PickerItem label="Credit Card" value="key3" />
+                    <PickerItem label="Net Banking" value="key4" />
+            </Picker>
 
-               <Item>
+               {/* <Item>
                   <Text>Mileage Type</Text>
-                  {/* <PickerIOS > */}
                   <Picker
                      mode= 'dropdown'
                      style={{width:150}}
                      selectedValue={this.state.mileage_type}
-                     onValueChange={(itemValue, itemIndex) => this.setState({mileage_type: itemValue})}>
+                     onValueChange={(itemValue, itemIndex) => this.setState({mileage_type: itemValue})}
+                  >
                      {mileageType.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
                   </Picker>
-                  {/* </PickerIOS> */}
-               </Item>
+               </Item> */}
+
+               {/* <ModalPicker
+                    data={mileageType}
+                    initValue="NO_ACTUAL!"
+                    onChange={(option)=>{ alert(`${option.label} (${option.key}) nom nom nom`) }} /> */}
 
                {/* <Item>
                   <Text>Color</Text> */}
