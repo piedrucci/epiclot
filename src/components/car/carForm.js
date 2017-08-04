@@ -50,12 +50,15 @@ class CarForm extends Component {
                        value={this.state.mileage}
                    />
                </Item>
-
-               <Picker
-                  selectedValue={this.state.mileage_type}
-                  onValueChange={(itemValue, itemIndex) => this.setState({mileage_type: itemValue})}>
-                  {mileageType.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
-               </Picker>
+               <Item>
+                  <Text>Mileage Type</Text>
+                  <Picker
+                     style={{width:150}}
+                     selectedValue={this.state.mileage_type}
+                     onValueChange={(itemValue, itemIndex) => this.setState({mileage_type: itemValue})}>
+                     {mileageType.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
+                  </Picker>
+               </Item>
 
                <Picker
                   selectedValue={this.state.color}

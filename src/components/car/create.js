@@ -150,7 +150,7 @@ class CreateCar extends Component {
 
                 {!this.state.validVin ? null :
                 <Footer>
-                   <Button transparent
+                   <Button primary
                       style={styles.buttonNext}
                      onPress = { () => Actions.createCar2() }
                      >

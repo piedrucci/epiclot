@@ -80,6 +80,7 @@ export default StyleSheet.flatten({
       width: window.width,
       alignItems:'center',
       justifyContent:'center',
+      marginTop:5,
    },
 
     titleButtonNext: {
