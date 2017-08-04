@@ -84,7 +84,7 @@ export default StyleSheet.flatten({
    },
 
     titleButtonNext: {
-      color: (Platform.OS == "android") ? 'white' : 'black',
+      color: (Platform.OS == "android") ? 'white' : 'white',
       fontWeight: 'bold',
    },
 

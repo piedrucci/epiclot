@@ -50,6 +50,32 @@ class CarForm extends Component {
                        value={this.state.mileage}
                    />
                </Item>
+
+               <DatePicker
+                  style={{width: 200}}
+                  date={this.state.date}
+                  mode="date"
+                  placeholder="select date"
+                  format="YYYY-MM-DD"
+                  minDate="2016-05-01"
+                  maxDate="2016-06-01"
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  customStyles={{
+                     dateIcon: {
+                        position: 'absolute',
+                        left: 0,
+                        top: 4,
+                        marginLeft: 0
+                     },
+                     dateInput: {
+                        marginLeft: 36
+                     }
+                     // ... You can check the source to find the other keys.
+                  }}
+                  onDateChange={(date) => {this.setState({date: date})}}
+               />
+
                <Item>
                   <Text>Mileage Type</Text>
                   <Picker
@@ -60,23 +86,32 @@ class CarForm extends Component {
                   </Picker>
                </Item>
 
-               <Picker
-                  selectedValue={this.state.color}
-                  onValueChange={(itemValue, itemIndex) => this.setState({color: itemValue})}>
-                  {color.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
-               </Picker>
+               {/* <Item>
+                  <Text>Color</Text> */}
+                  <Picker
+                     selectedValue={this.state.color}
+                     onValueChange={(itemValue, itemIndex) => this.setState({color: itemValue})}>
+                     {color.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
+                  </Picker>
+               {/* </Item> */}
 
-               <Picker
-                  selectedValue={this.state.transmission}
-                  onValueChange={(itemValue, itemIndex) => this.setState({transmission: itemValue})}>
-                  {transmission.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
-               </Picker>
+{/* <Item>
+   <Text>Transmission</Text>
+   <Picker
+      selectedValue={this.state.transmission}
+      onValueChange={(itemValue, itemIndex) => this.setState({transmission: itemValue})}>
+      {transmission.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
+   </Picker>
+</Item>
 
-               <Picker
-                  selectedValue={this.state.status}
-                  onValueChange={(itemValue, itemIndex) => this.setState({status: itemValue})}>
-                  {status.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
-               </Picker>
+<Item>
+   <Text>Status</Text>
+   <Picker
+      selectedValue={this.state.status}
+      onValueChange={(itemValue, itemIndex) => this.setState({status: itemValue})}>
+      {status.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
+   </Picker>
+</Item> */}
 
                <Item >
                    <Icon name='ios-cash-outline' />
@@ -134,30 +169,10 @@ class CarForm extends Component {
                    />
                </Item>
 
-               <DatePicker
-                  style={{width: 200}}
-                  date={this.state.date}
-                  mode="date"
-                  placeholder="select date"
-                  format="YYYY-MM-DD"
-                  minDate="2016-05-01"
-                  maxDate="2016-06-01"
-                  confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
-                  customStyles={{
-                     dateIcon: {
-                        position: 'absolute',
-                        left: 0,
-                        top: 4,
-                        marginLeft: 0
-                     },
-                     dateInput: {
-                        marginLeft: 36
-                     }
-                     // ... You can check the source to find the other keys.
-                  }}
-                  onDateChange={(date) => {this.setState({date: date})}}
-               />
+
+
+
+
 
                <Button style={{alignSelf: 'center', width:250,justifyContent: 'center',
                alignItems: 'center', margin:10}}>
