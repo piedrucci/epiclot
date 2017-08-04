@@ -37,7 +37,7 @@ class VinDetail extends Component {
       return (
 
          <Container>
-            <List style={{marginTop: 15, flex:1}}>
+            <List style={{flex:1}}>
                <ListItem itemDivider>
                   <Text style={styles.label}>VIN:   </Text><Text>{vin}</Text>
                </ListItem>

@@ -18,7 +18,7 @@ const configureStore = (initialState) => {
             // applyMiddleware(thunk)
         );
     }catch(err){
-        alert (err)
+        alert ('configureStore: '+err)
     }
 }
 

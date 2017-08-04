@@ -68,6 +68,7 @@ class CreateCar extends Component {
 
       const res = api.checkVIN(this.state.vin, this.state.session.dealership_id)
       res.then( (data) => {
+         // console.log(data)
          this.setState({
             disableCheckButton:false,
             checkingVIN:false,
@@ -124,27 +125,17 @@ class CreateCar extends Component {
                             </Button>
 
                         </Item>
-                        <Picker
-            //   iosHeader="Select one"
-              mode="dropdown"
-            //   selectedValue={this.state.selected1}
-            //   onValueChange={this.onValueChange.bind(this)}
-            >
-              <Item label="Wallet" value="key0" />
-              <Item label="ATM Card" value="key1" />
-              <Item label="Debit Card" value="key2" />
-              <Item label="Credit Card" value="key3" />
-              <Item label="Net Banking" value="key4" />
-            </Picker>
 
 
                     </Form>
                     <Button
                        disabled={this.state.disableCheckButton}
-                       //   style={{width:250}}
-                       onPress={() => this.checkVINCode()}
-                       rounded>
+                       style={{alignSelf: 'center', width:250,justifyContent: 'center',
+                       alignItems: 'center', margin:10}}
+                       onPress={() => this.checkVINCode()} >
+                     {/* rounded> */}
                        <Text style={{color:'white'}}>{this.state.captionCheckButton}</Text>
+                       <Icon name='ios-search-outline' />
                     </Button>
 
                     {this.state.checkingVIN ? <Spinner /> : null }
