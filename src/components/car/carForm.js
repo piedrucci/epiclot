@@ -19,7 +19,7 @@ class CarForm extends Component {
          mileage: '',
          date:"2016-05-15",
 
-         mileage_type: '',
+         mileage_type: mileageType[0].value,
          color: '',
          transmission: '',
          status: '',
