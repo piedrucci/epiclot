@@ -106,10 +106,10 @@ class Login extends Component {
                if ( !this.state.invalidUser ) {
                   // AsyncStorage.setItem( api.getSessionName(), JSON.stringify(info) ).then( () => {
                   //    this.props.setSession(info);
-                  //    Actions.home()
                   //    console.log(this.props);
                   // } )
                   api.saveSession(info)
+                  Actions.home()
                }
 
             }else {
