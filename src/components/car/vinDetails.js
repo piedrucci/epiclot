@@ -74,11 +74,11 @@ class VinDetail extends Component {
                </ListItem>
             </List>
 
-            <Button rounded block
+            {/* <Button block
                onPress = { () => Actions.createCar2() }
                >
                   <Text style={{color:'white', fontWeight:'bold', padding:20}}>Siguiente</Text>
-            </Button>
+            </Button> */}
 
 
 

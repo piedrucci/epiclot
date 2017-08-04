@@ -148,6 +148,16 @@ class CreateCar extends Component {
                   <Text style={styles.loginMsg}>{this.state.msgResponse}</Text>
                </Footer> }
 
+                {!this.state.validVin ? null :
+                <Footer>
+                   <Button transparent
+                     onPress = { () => Actions.createCar2() }
+                     >
+                        <Text style={{color:'white', fontWeight:'bold'}}>Next</Text>
+                        <Icon style={{color:'white'}} name='ios-arrow-forward-outline' />
+                  </Button>
+               </Footer> }
+
             </Container>
 
         )
