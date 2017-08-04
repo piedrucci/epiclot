@@ -11,7 +11,7 @@ import styles from './carStyles'
 // ELEMENTOS PARA LLENAR LOS PICKERS
 import { mileageType, color, transmission, status } from './pickerOptions'
 
-const PickerItem = Picker.Item;
+// const PickerItem = Picker.Item;
 
 // =============================================================================
 
@@ -62,7 +62,7 @@ class CarForm extends Component {
                    />
                </Item>
 
-               <DatePicker
+               {/* <DatePicker
                   style={{width: 200}}
                   date={this.state.date}
                   mode="date"
@@ -85,19 +85,19 @@ class CarForm extends Component {
                      // ... You can check the source to find the other keys.
                   }}
                   onDateChange={(date) => {this.setState({date: date})}}
-               />
+               /> */}
                <Picker
-                    iosHeader="Select one"
-                    mode="dropdown"
-                    selectedValue={this.state.mileageType}
-                    onValueChange={this.onValueChange.bind(this)}
+                  iosHeader="Select one"
+                  mode="dropdown"
+                  selectedValue={this.state.mileageType}
+                  onValueChange={this.onValueChange.bind(this)}
                   >
-                     <PickerItem label="Wallet" value="key0" />
-                    <PickerItem label="ATM Card" value="key1" />
-                    <PickerItem label="Debit Card" value="key2" />
-                    <PickerItem label="Credit Card" value="key3" />
-                    <PickerItem label="Net Banking" value="key4" />
-            </Picker>
+                     <Picker.Item label="Wallet" value="key0" />
+                     <Picker.Item label="ATM Card" value="key1" />
+                     <Picker.Item label="Debit Card" value="key2" />
+                     <Picker.Item label="Credit Card" value="key3" />
+                     <Picker.Item label="Net Banking" value="key4" />
+               </Picker>
 
                {/* <Item>
                   <Text>Mileage Type</Text>
@@ -116,14 +116,13 @@ class CarForm extends Component {
                     initValue="NO_ACTUAL!"
                     onChange={(option)=>{ alert(`${option.label} (${option.key}) nom nom nom`) }} /> */}
 
-               {/* <Item>
-                  <Text>Color</Text> */}
+               {/*
                   <Picker
                      selectedValue={this.state.color}
                      onValueChange={(itemValue, itemIndex) => this.setState({color: itemValue})}>
                      {color.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
-                  </Picker>
-               {/* </Item> */}
+                  </Picker> */}
+
 
 {/* <Item>
    <Text>Transmission</Text>
