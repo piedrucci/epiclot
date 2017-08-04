@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Text } from 'react-native'
+import { View, Text } from 'react-native'
 
 import { Container, Form, Label, Button, Item, Input, Icon, Picker } from 'native-base'
 import DatePicker from 'react-native-datepicker'
@@ -86,18 +86,24 @@ class CarForm extends Component {
                   }}
                   onDateChange={(date) => {this.setState({date: date})}}
                /> */}
-               <Picker
-                  iosHeader="Select one"
-                  mode="dropdown"
-                  selectedValue={this.state.mileageType}
-                  onValueChange={this.onValueChange.bind(this)}
-                  >
-                     <Picker.Item label="Wallet" value="key0" />
-                     <Picker.Item label="ATM Card" value="key1" />
-                     <Picker.Item label="Debit Card" value="key2" />
-                     <Picker.Item label="Credit Card" value="key3" />
-                     <Picker.Item label="Net Banking" value="key4" />
-               </Picker>
+
+               <View>
+                  <Text>Mileage Type: </Text>
+                  <Picker
+                     iosHeader="Select one"
+                     mode="dialog"
+                     selectedValue={this.state.mileageType}
+                     onValueChange={this.onValueChange.bind(this)}
+                     >
+                        <Picker.Item label="Wallet" value="key0" />
+                        <Picker.Item label="ATM Card" value="key1" />
+                        <Picker.Item label="Debit Card" value="key2" />
+                        <Picker.Item label="Credit Card" value="key3" />
+                        <Picker.Item label="Net Banking" value="key4" />
+                     </Picker>
+
+               </View>
+
 
                {/* <Item>
                   <Text>Mileage Type</Text>
