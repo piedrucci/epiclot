@@ -142,7 +142,7 @@ class Login extends Component {
 
             <Content>
 
-              <Text style={styles.title}>Epiclot</Text>
+              <Text style={styles.title}>Epiclot App</Text>
 
               {this.state.showSplash ? <Splash visible={this.state.showSplash} /> :
               <Form style={{justifyContent:'center'}}>
