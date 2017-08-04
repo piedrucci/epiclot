@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Text, Picker } from 'react-native'
+import { Text, Picker, PickerIOS } from 'react-native'
 
 import { Container, Form, Label, Button, Item, Input, Icon } from 'native-base'
 import DatePicker from 'react-native-datepicker'
@@ -78,12 +78,15 @@ class CarForm extends Component {
 
                <Item>
                   <Text>Mileage Type</Text>
+                  {/* <PickerIOS > */}
                   <Picker
+                     mode= 'dropdown'
                      style={{width:150}}
                      selectedValue={this.state.mileage_type}
                      onValueChange={(itemValue, itemIndex) => this.setState({mileage_type: itemValue})}>
                      {mileageType.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
                   </Picker>
+                  {/* </PickerIOS> */}
                </Item>
 
                {/* <Item>
