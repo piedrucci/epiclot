@@ -45,7 +45,7 @@ class CarForm extends Component {
       return (
 
             <Container>
-               <ScrollView>
+               {/* <ScrollView> */}
 
                <Header />
 
@@ -182,16 +182,16 @@ class CarForm extends Component {
 
                   </Form>
                </Content>
-               <Footer>
-               {/* <FooterTab> */}
-               <Button block>
-                  <Text>Footer</Text>
-               </Button>
-               {/* </FooterTab> */}
-               </Footer>
-            </ScrollView>
-            </Container>
 
+               <Footer>
+                  {/* <FooterTab> */}
+                  <Button block>
+                     <Text>Footer</Text>
+                  </Button>
+                  {/* </FooterTab> */}
+               </Footer>
+            {/* </ScrollView> */}
+            </Container>
 
       )
    }

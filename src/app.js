@@ -18,7 +18,7 @@ import Dashboard from './components/dashboard/index';
 import CarDetail from './components/car/detail';
 import CreateCar from './components/car/create';
 import CreateCar2 from './components/car/create2';
-import SS from './components/car/ss';
+
 // import DashboardBody from './components/dashboard/body';
 // import UserInfo from './components/user/info';
 
@@ -61,7 +61,7 @@ const App = () => {
             <FormattedWrapper locale="en" currency="USD" >
 
                 <Router >
-                    <Scene key='login' component={Login} hideNavBar={true} />
+                    <Scene key='login' component={Login} hideNavBar={true} initial={true}/>
 
                     <Scene key='home' component={Dashboard} hideNavBar={false} title='Home'
                         type={ActionConst.RESET} renderRightButton ={buttonCreateCar} renderLeftButton ={buttonLogOut}  />
@@ -70,9 +70,8 @@ const App = () => {
                     <Scene key='carDetail' component={CarDetail} hideNavBar={false} title='Car Detail' />
 
                     {/* CREAR CARRO */}
-                    <Scene key='createCar'  component={CreateCar} hideNavBar={false} title='Create'  />
-                    {/* <Scene key='createCar2' component={CreateCar2} hideNavBar={false} title='Car Form' initial={true}  /> */}
-                    <Scene key='createCar2' component={SS} hideNavBar={false} title='Car SS' initial={true}  />
+                    <Scene key='createCar'  component={CreateCar} hideNavBar={false} title='New Car'  />
+                    <Scene key='createCar2' component={CreateCar2} hideNavBar={false} title='New Car' />
 
                 </Router>
 

@@ -55,15 +55,13 @@ export default StyleSheet.flatten({
         marginTop: 10
     },
 
-    buttonPrincipal: {
+    loginButton: {
         width:300,
         marginTop: 20,
         padding: 10,
         height: 45,
         overflow: 'hidden',
-        // backgroundColor: '#18baba',
-        justifyContent: 'center',
-        alignItems: 'center',
+        alignSelf:'center',
     },
 
 });

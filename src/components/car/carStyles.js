@@ -82,7 +82,8 @@ export default StyleSheet.flatten({
       width: window.width,
       alignItems:'center',
       justifyContent:'center',
-      marginTop:5,
+      // marginTop:5,
+      height:55,
    },
 
     titleButtonNext: {
@@ -91,7 +92,7 @@ export default StyleSheet.flatten({
    },
 
    dPicker: {
-      width: window.width
+      width: window.width -10
    }
 
 });

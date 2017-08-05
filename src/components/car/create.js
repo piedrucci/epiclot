@@ -83,79 +83,63 @@ class CreateCar extends Component {
     render() {
         return(
          //   , flex:1, alignItems:'center', justifyContent:'center'
-            <Container style={{marginTop:60 }}>
+         <Container style={{marginTop:60}}>
 
-                {/* <Header>
-                    <Left>
-                        <Button transparent onPress={ ()=> {Actions.pop()} }>
-                            <Icon style={{fontSize:24}} name='ios-arrow-back-outline' />
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title>Create Car</Title>
-                    </Body>
-                    <Right>
-                        <Button transparent>
-                            <Icon name='ios-checkmark' />
-                        </Button>
-                    </Right>
-                </Header> */}
+            <Content>
 
-                {/* style={{width:350 }} */}
-                <Content>
-                    <Form >
+               <Form >
 
-                        <Item >
-                            {/* <Label>Username</Label> */}
-                            <Icon name='ios-barcode-outline' />
-                            <Input
-                                maxLength = {20}
-                                keyboardType='default'
-                              //   style={{width:250}}
-                                returnKeyType='next'
-                                placeholder='Enter VIN Code'
-                                autoCapitalize='characters'
-                                onChangeText={ (text) => this.switchButtonStatus(text) }
-                                // onSubmitEditing = { () => this.emailInput.focus() }
-                                value={this.state.vin}
-                            />
-                            <Button
-                              //  style={{margin:10}}
-                               ><Icon name='ios-camera-outline' />
-                            </Button>
+                  <Item >
+                     {/* <Label>Username</Label> */}
+                     <Icon name='ios-barcode-outline' />
+                     <Input
+                        maxLength = {20}
+                        keyboardType='default'
+                        //   style={{width:250}}
+                        returnKeyType='next'
+                        placeholder='Enter VIN Code'
+                        autoCapitalize='characters'
+                        onChangeText={ (text) => this.switchButtonStatus(text) }
+                        // onSubmitEditing = { () => this.emailInput.focus() }
+                        value={this.state.vin}
+                     />
+                     <Button
+                        //  style={{margin:10}}
+                        ><Icon name='ios-camera-outline' />
+                     </Button>
 
-                        </Item>
+                  </Item>
 
 
-                    </Form>
-                    <Button
-                       disabled={this.state.disableCheckButton}
-                       style={{alignSelf: 'center', width:250,justifyContent: 'center',
-                       alignItems: 'center', margin:10}}
-                       onPress={() => this.checkVINCode()} >
-                     {/* rounded> */}
-                       <Text style={{color:'white'}}>{this.state.captionCheckButton}</Text>
-                       <Icon name='ios-search-outline' />
-                    </Button>
+               </Form>
+               <Button
+                  disabled={this.state.disableCheckButton}
+                  style={{alignSelf: 'center', width:250,justifyContent: 'center',
+                  alignItems: 'center', margin:10}}
+                  onPress={() => this.checkVINCode()} >
+                  {/* rounded> */}
+                  <Text style={{color:'white'}}>{this.state.captionCheckButton}</Text>
+                  <Icon name='ios-search-outline' />
+               </Button>
 
-                    {this.state.checkingVIN ? <Spinner /> : null }
-                    {this.state.validVin ? <VinDetail det={this.state.vinInfo}  /> : null }
+               {this.state.checkingVIN ? <Spinner /> : null }
+               {this.state.validVin ? <VinDetail det={this.state.vinInfo}  /> : null }
 
-                </Content>
+            </Content>
 
-                {this.state.msgResponse === '' ? null :
-                <Footer>
-                  <Text style={styles.loginMsg}>{this.state.msgResponse}</Text>
-               </Footer> }
+            {this.state.msgResponse === '' ? null :
+            <Footer>
+               <Text style={styles.loginMsg}>{this.state.msgResponse}</Text>
+            </Footer> }
 
-                {!this.state.validVin ? null :
-                <Footer>
-                   <Button primary
-                      style={styles.buttonNext}
+            {!this.state.validVin ? null :
+               <Footer>
+                  <Button primary
+                     style={styles.buttonNext}
                      onPress = { () => Actions.createCar2() }
-                     >
-                        <Text style={styles.titleButtonNext}>Next</Text>
-                        <Icon style={styles.titleButtonNext} name='ios-arrow-forward-outline' />
+                  >
+                     <Text style={styles.titleButtonNext}>Next</Text>
+                     <Icon style={styles.titleButtonNext} name='ios-arrow-forward-outline' />
                   </Button>
                </Footer> }
 

@@ -47,6 +47,7 @@ class Login extends Component {
     }
 
     componentDidMount() {
+      this.setState({loading:true});
       // BackHandler.addEventListener('backPress');
       if (Platform.OS == "android" && listener == null) {
          listener = BackAndroid.addEventListener("hardwareBackPress", () => {
@@ -59,6 +60,7 @@ class Login extends Component {
          if ( value !== null ) {
             setTimeout(() => {Actions.home()}, 2000)
          }else {
+            this.setState({loading:false});
             this.setState({showSplash:false});
          }
       }) ;
@@ -109,6 +111,7 @@ class Login extends Component {
                   //    console.log(this.props);
                   // } )
                   api.saveSession(info)
+                  // setTimeout(() => {Actions.home()}, 2000)
                   Actions.home()
                }
 
@@ -143,10 +146,17 @@ class Login extends Component {
             <Content>
 
               <Text style={styles.title}>Sign in to Epiclot</Text>
-              <Text >Enter your subdomain, email and password to access your Epiclot account</Text>
 
-              {this.state.showSplash ? <Splash visible={this.state.showSplash} /> :
-              <Form style={{justifyContent:'center'}}>
+              {
+                 this.state.loading ? null :
+                 <Text style={{textAlign:'center', margin:20}}>Enter your subdomain, email and password to access your Epiclot account</Text>
+              }
+
+              {
+                 this.state.showSplash ?
+                 <Splash visible={this.state.showSplash} /> :
+
+              <Form style={{justifyContent:'center', alignItems:'center'}}>
 
                   <Item >
                       {/* <Label>Username</Label> */}
@@ -199,19 +209,17 @@ class Login extends Component {
                   </Item> */}
 
                   {/* <Item rounded> */}
-                      <Button
-                          disabled={this.state.loading}
-                          style={styles.buttonPrincipal}
-                          iconRight block
-                          onPress={() => this.loginUser()}
-                          >
-                              <Text style={{color:'white'}}>Login </Text>
-                              {this.state.loading ? <Icon name='ios-more-outline' /> : <Icon name='ios-log-in-outline' />}
+                  <Button
+                     iconRight block
+                     disabled={this.state.loading}
+                     style={styles.loginButton}
+                     onPress={() => this.loginUser()}
+                     >
+                     <Text style={{color:'white'}}>Login </Text>
+                     {this.state.loading ? <Icon name='ios-more-outline' /> : <Icon name='ios-log-in-outline' />}
+                 </Button>
 
-                          </Button>
-                  {/* </Item> */}
-
-                  {this.state.loading ? <Spinner /> : <Text/>}
+                  {this.state.loading ? <Spinner /> : null}
 
               </Form>
            }
