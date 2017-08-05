@@ -7,8 +7,8 @@ import { Actions } from 'react-native-router-flux';
 
 import { FormattedNumber, FormattedCurrency } from 'react-native-globalize';
 
-import DashboardHeader from './header';
-import DashboardSearchBar from './searchBar';
+// import DashboardHeader from './header';
+// import DashboardSearchBar from './searchBar';
 
 const URL = 'http://api.epiclot.com/epiclots/cars/3'
 

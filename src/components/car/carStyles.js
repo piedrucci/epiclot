@@ -90,4 +90,8 @@ export default StyleSheet.flatten({
       fontWeight: 'bold',
    },
 
+   dPicker: {
+      width: window.width
+   }
+
 });

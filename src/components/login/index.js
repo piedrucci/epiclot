@@ -142,7 +142,8 @@ class Login extends Component {
 
             <Content>
 
-              <Text style={styles.title}>Epiclot App</Text>
+              <Text style={styles.title}>Sign in to Epiclot</Text>
+              <Text >Enter your subdomain, email and password to access your Epiclot account</Text>
 
               {this.state.showSplash ? <Splash visible={this.state.showSplash} /> :
               <Form style={{justifyContent:'center'}}>

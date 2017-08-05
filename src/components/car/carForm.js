@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 
-import { Container, Content, Form, Label, Button, Item, Input, Icon, Picker } from 'native-base'
+import { Container, Content, Form, Label, Button, Item, Title,
+   Input, Icon, Picker, Footer, Header, Left, Right, Body, FooterTab } from 'native-base'
 import DatePicker from 'react-native-datepicker'
 import ModalPicker from 'react-native-modal-picker'
 
@@ -41,190 +42,157 @@ class CarForm extends Component {
   }
 
    render() {
-
-
       return (
-         <Container >
 
-            <Content>
-               <Form>
+            <Container>
+               <ScrollView>
 
-                  <Item floatingLabel>
-                      <Label>Mileage</Label>
-                      {/* <Icon name='ios-car-outline' /> */}
-                      <Input
-                          maxLength = {12}
-                          keyboardType='numeric'
-                          returnKeyType='next'
-                        //   placeholder='enter the mileage'
-                          onChangeText={ (text) => this.setState( {mileage:text} ) }
-                          // onSubmitEditing = { () => this.emailInput.focus() }
-                          value={this.state.mileage}
-                      />
-                  </Item>
+               <Header />
 
-                  <View style={[styles.viewMargins, styles.viewContainer]}>
-                     <Text>Mileage Type</Text>
-                     <Picker
-                        style={{marginTop:-15}}
-                        iosHeader="Mileage Type"
-                        mode="dialog"
-                        selectedValue={this.state.mileage_type}
-                        onValueChange={(value)=>this.setState({mileage_type: value})}
-                        >
-                           {mileageType.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
-                     </Picker>
-                  </View>
+               <Content style={{marginTop:54}}>
+                  <Form>
 
-                  <View style={[styles.viewMargins, styles.viewContainer]}>
-                     <Text>Color</Text>
-                     <Picker
-                        style={{marginTop:-15}}
-                        iosHeader="Select Color"
-                        mode="dialog"
-                        selectedValue={this.state.color}
-                        onValueChange={(value)=>this.setState({color: value})}
-                        >
-                           {color.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
-                     </Picker>
-                  </View>
+                     <Item >
+                        {/* <Label>Mileage1</Label> */}
+                        {/* <Icon name='ios-car-outline' /> */}
+                        <Input
+                           maxLength = {12}
+                           keyboardType='numeric'
+                           returnKeyType='next'
+                             placeholder='mileage'
+                           onChangeText={ (text) => this.setState( {mileage:text} ) }
+                           // onSubmitEditing = { () => this.emailInput.focus() }
+                           value={this.state.mileage}
+                        />
+                     </Item>
 
-                  <View style={[styles.viewMargins, styles.viewContainer]}>
-                     <Text>Transmission</Text>
-                     <Picker
-                        style={{marginTop:-15}}
-                        iosHeader="Select Transmission"
-                        mode="dialog"
-                        selectedValue={this.state.transmission}
-                        onValueChange={(value)=>this.setState({transmission: value})}
-                        >
-                           {transmission.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
-                     </Picker>
-                  </View>
+                     <Item floatingLabel>
+                        <Label>Mileage2</Label>
+                        {/* <Icon name='ios-car-outline' /> */}
+                        <Input
+                           maxLength = {12}
+                           keyboardType='numeric'
+                           returnKeyType='next'
+                           //   placeholder='enter the mileage'
+                           onChangeText={ (text) => this.setState( {mileage:text} ) }
+                           // onSubmitEditing = { () => this.emailInput.focus() }
+                           value={this.state.mileage}
+                        />
+                     </Item>
 
-                  <View style={[styles.viewMargins, styles.viewContainer]}>
-                     <Text>Status</Text>
-                     <Picker
-                        style={{marginTop:-15}}
-                        iosHeader="Select Status"
-                        mode="dialog"
-                        selectedValue={this.state.status}
-                        onValueChange={(value)=>this.setState({status: value})}
-                        >
-                           {status.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
-                     </Picker>
-                  </View>
+                     <Item floatingLabel>
+                        <Label>Mileage3</Label>
+                        {/* <Icon name='ios-car-outline' /> */}
+                        <Input
+                           maxLength = {12}
+                           keyboardType='numeric'
+                           returnKeyType='next'
+                           //   placeholder='enter the mileage'
+                           onChangeText={ (text) => this.setState( {mileage:text} ) }
+                           // onSubmitEditing = { () => this.emailInput.focus() }
+                           value={this.state.mileage}
+                        />
+                     </Item>
 
+                     <Item floatingLabel>
+                        <Label>Mileage4</Label>
+                        {/* <Icon name='ios-car-outline' /> */}
+                        <Input
+                           maxLength = {12}
+                           keyboardType='numeric'
+                           returnKeyType='next'
+                           //   placeholder='enter the mileage'
+                           onChangeText={ (text) => this.setState( {mileage:text} ) }
+                           // onSubmitEditing = { () => this.emailInput.focus() }
+                           value={this.state.mileage}
+                        />
+                     </Item>
 
-                                 <Item >
-                                     <Icon name='ios-cash-outline' />
-                                     <Input
-                                         maxLength = {12}
-                                         keyboardType='numeric'
-                                       //   style={{width:300}}
-                                         returnKeyType='next'
-                                         placeholder='Purchase Price'
-                                         onChangeText={ (text) => this.setState( {purchase_price:text} ) }
-                                         // onSubmitEditing = { () => this.emailInput.focus() }
-                                         value={this.state.purchase_price}
-                                     />
-                                 </Item>
+                     <Item floatingLabel>
+                        <Label>Mileage5</Label>
+                        {/* <Icon name='ios-car-outline' /> */}
+                        <Input
+                           maxLength = {12}
+                           keyboardType='numeric'
+                           returnKeyType='next'
+                           //   placeholder='enter the mileage'
+                           onChangeText={ (text) => this.setState( {mileage:text} ) }
+                           // onSubmitEditing = { () => this.emailInput.focus() }
+                           value={this.state.mileage}
+                        />
+                     </Item>
 
-                                 <Item >
-                                     <Icon name='ios-cash-outline' />
-                                     <Input
-                                         maxLength = {12}
-                                         keyboardType='numeric'
-                                       //   style={{width:300}}
-                                         returnKeyType='next'
-                                         placeholder='Web Price'
-                                         onChangeText={ (text) => this.setState( {webprice:text} ) }
-                                         // onSubmitEditing = { () => this.emailInput.focus() }
-                                         value={this.state.webprice}
-                                     />
-                                 </Item>
+                     <Item floatingLabel>
+                        <Label>Mileage6</Label>
+                        {/* <Icon name='ios-car-outline' /> */}
+                        <Input
+                           maxLength = {12}
+                           keyboardType='numeric'
+                           returnKeyType='next'
+                           //   placeholder='enter the mileage'
+                           onChangeText={ (text) => this.setState( {mileage:text} ) }
+                           // onSubmitEditing = { () => this.emailInput.focus() }
+                           value={this.state.mileage}
+                        />
+                     </Item>
 
-                                 <Item >
-                                     <Icon name='ios-cash-outline' />
-                                     <Input
-                                         maxLength = {12}
-                                         keyboardType='numeric'
-                                       //   style={{width:300}}
-                                         returnKeyType='next'
-                                         placeholder='Sale Price'
-                                         onChangeText={ (text) => this.setState( {sale_price:text} ) }
-                                         // onSubmitEditing = { () => this.emailInput.focus() }
-                                         value={this.state.sale_price}
-                                     />
-                                 </Item>
+                     <Item floatingLabel>
+                        <Label>Mileage7</Label>
+                        {/* <Icon name='ios-car-outline' /> */}
+                        <Input
+                           maxLength = {12}
+                           keyboardType='numeric'
+                           returnKeyType='next'
+                           //   placeholder='enter the mileage'
+                           onChangeText={ (text) => this.setState( {mileage:text} ) }
+                           // onSubmitEditing = { () => this.emailInput.focus() }
+                           value={this.state.mileage}
+                        />
+                     </Item>
 
-                                 <Item >
-                                     <Icon name='ios-cash-outline' />
-                                     <Input
-                                         maxLength = {12}
-                                         keyboardType='numeric'
-                                       //   style={{width:300}}
-                                         returnKeyType='next'
-                                         placeholder='Whosale Price'
-                                         onChangeText={ (text) => this.setState( {whosale_price:text} ) }
-                                         // onSubmitEditing = { () => this.emailInput.focus() }
-                                         value={this.state.whosale_price}
-                                     />
-                                 </Item>
+                     <Item floatingLabel>
+                        <Label>Mileage8</Label>
+                        {/* <Icon name='ios-car-outline' /> */}
+                        <Input
+                           maxLength = {12}
+                           keyboardType='numeric'
+                           returnKeyType='next'
+                           //   placeholder='enter the mileage'
+                           onChangeText={ (text) => this.setState( {mileage:text} ) }
+                           // onSubmitEditing = { () => this.emailInput.focus() }
+                           value={this.state.mileage}
+                        />
+                     </Item>
 
-
-
-
-
-
-                                 <Button style={{alignSelf: 'center', width:250,justifyContent: 'center',
-                                 alignItems: 'center', margin:10}}>
-                                    <Label style={{color:'white'}}>SAVE</Label>
-                                 </Button>
-
-               </Form>
-            </Content>
-
-            <Form>
-
-
-               {/* <DatePicker
-                  style={{width: 200}}
-                  date={this.state.date}
-                  mode="date"
-                  placeholder="select date"
-                  format="YYYY-MM-DD"
-                  minDate="2016-05-01"
-                  maxDate="2016-06-01"
-                  confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
-                  customStyles={{
-                     dateIcon: {
-                        position: 'absolute',
-                        left: 0,
-                        top: 4,
-                        marginLeft: 0
-                     },
-                     dateInput: {
-                        marginLeft: 36
-                     }
-                     // ... You can check the source to find the other keys.
-                  }}
-                  onDateChange={(date) => {this.setState({date: date})}}
-               /> */}
+                     <Item floatingLabel>
+                        <Label>Mileage9</Label>
+                        {/* <Icon name='ios-car-outline' /> */}
+                        <Input
+                           maxLength = {12}
+                           keyboardType='numeric'
+                           returnKeyType='next'
+                           //   placeholder='enter the mileage'
+                           onChangeText={ (text) => this.setState( {mileage:text} ) }
+                           // onSubmitEditing = { () => this.emailInput.focus() }
+                           value={this.state.mileage}
+                        />
+                     </Item>
 
 
 
+                  </Form>
+               </Content>
+               <Footer>
+               {/* <FooterTab> */}
+               <Button block>
+                  <Text>Footer</Text>
+               </Button>
+               {/* </FooterTab> */}
+               </Footer>
+            </ScrollView>
+            </Container>
 
-               {/* <ModalPicker
-                    data={mileageType}
-                    initValue="NO_ACTUAL!"
-                    onChange={(option)=>{ alert(`${option.label} (${option.key}) nom nom nom`) }} /> */}
 
-
-            </Form>
-
-         </Container>
       )
    }
 }
