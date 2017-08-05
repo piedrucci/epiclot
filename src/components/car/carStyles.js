@@ -3,14 +3,16 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 const window = Dimensions.get('window');
 
 export default StyleSheet.flatten({
-    title: {
-        marginTop: 50,
-        margin: 50,
-        color: '#393939',
-        // fontWeight: 'bold',
-        fontSize: 22,
-        textAlign: 'center'
+    viewContainer: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#d9d5dc',
     },
+
+    viewMargins: {
+      marginTop:14,
+      marginLeft:14,
+      marginRight:14
+   },
 
     loginMsg: {
         // marginTop: 10,

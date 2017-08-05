@@ -105,7 +105,7 @@ export default class Dashboard extends Component {
         return (
             <Container>
 
-                {/* <DashboardSearchBar /> */}
+                {this.state.loading ? null :
                 <Header style={{marginTop:54}} searchBar rounded>
                     <Item>
                         <Icon name="ios-search" />
@@ -120,6 +120,7 @@ export default class Dashboard extends Component {
                         <Text>Search</Text>
                     </Button> */}
                 </Header>
+                }
                     {/* <Router >
                         <Scene key='carList' component={DashboardBody} hideNavBar={true} />
                         <Scene key='userInfo' component={UserInfo} hideNavBar={true} />
@@ -147,7 +148,7 @@ export default class Dashboard extends Component {
                         </ListItem>
                     } />} */}
 
-                  {this.state.loading ? <Spinner /> :
+                  {this.state.loading ? <Spinner style={{marginTop:75}} /> :
                    <FlatList
                      data={this.state.cars}
                      renderItem={({item}) =>

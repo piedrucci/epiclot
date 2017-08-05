@@ -1,6 +1,7 @@
 
 // MILEAGE_TYPE
 export const mileageType = [
+   {label:'Select Mileage Type', value:''},
    {label:'Actual', value:'ACTUAL'},
    {label:'No Actual', value:'NO_ACTUAL'},
    {label:'Exempt', value:'EXEMPT'}
@@ -9,6 +10,7 @@ export const mileageType = [
 
 // COLOR
 export const color = [
+   {label:'Select Color', value:''},
    {label:'Black', value:'BLACK'},
    {label:'Blue', value:'BLUE'},
    {label:'Brown', value:'BROWN'},
@@ -27,12 +29,14 @@ export const color = [
 
 // TRANSMISSION
 export const transmission = [
+   {label:'Select Transmission', value:''},
    {label:'Automatic', value:'AUTOMATIC'},
    {label:'Manual', value:'MANUAL'},
 ]
 
-// TRANSMISSION
+// STATUS
 export const status = [
+   {label:'Select Status', value:''},
    {label:'Available', value:'AVAILABLE'},
    {label:'Repair Shop', value:'REPAIR_SHOP'},
 ]
