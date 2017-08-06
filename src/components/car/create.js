@@ -14,9 +14,11 @@ import api from '../../utilities/api';
 
 import VinDetail from './vinDetails';
 
+import Camera from 'react-native-camera';
+
 // ===========================================
 import { connect } from 'react-redux';
-import * as sessionActions from '../../actions/sessionActions';
+import * as carActions from '../../actions/carActions';
 // ================================================
 
 class CreateCar extends Component {
@@ -37,6 +39,8 @@ class CreateCar extends Component {
 
       this.checkVINCode = this.checkVINCode.bind(this)
       this.switchButtonStatus = this.switchButtonStatus.bind(this)
+      this.nextStep = this.nextStep.bind(this)
+      this.getCarInfo = this.getCarInfo.bind(this)
    }
 
 // OBTENER LOS DATOS DE LA SESSION ACTUAL
@@ -45,6 +49,7 @@ class CreateCar extends Component {
       response.then( (data) => {
          this.setState({session: JSON.parse(data)})
       } )
+      console.log(this.props);
    }
 
 // ACTIVA - DESACTIVA EL BOTON DE CHECK VIN
@@ -80,6 +85,26 @@ class CreateCar extends Component {
       } )
    }
 
+   // ENVIAR DATOS Y AVANZAR
+   nextStep() {
+      this.props.fillCarInfo({vin:this.state.vin})
+      // Actions.createCar2()
+      console.log(this.props)
+   }
+
+   getCarInfo() {
+      // alert(this.props.getCarInfo());
+      console.log(this.props.getCarInfo())
+   }
+
+   takePicture() {
+      const options = {};
+      //options.location = ...
+      this.camera.capture({metadata: options})
+      .then((data) => console.log(data))
+      .catch(err => console.error(err));
+   }
+
     render() {
         return(
          //   , flex:1, alignItems:'center', justifyContent:'center'
@@ -88,6 +113,15 @@ class CreateCar extends Component {
             <Content>
 
                <Form >
+
+                  <Camera
+                     ref={(cam) => {
+                        this.camera = cam;
+                     }}
+                     style={styles.preview}
+                     aspect={Camera.constants.Aspect.fill}>
+                     <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
+                  </Camera>
 
                   <Item >
                      {/* <Label>Username</Label> */}
@@ -127,6 +161,14 @@ class CreateCar extends Component {
 
             </Content>
 
+            <Item>
+               <Button
+                  onPress={ this.getCarInfo }
+                  >
+                  <Text>mostrar</Text>
+               </Button>
+            </Item>
+
             {this.state.msgResponse === '' ? null :
             <Footer>
                <Text style={styles.loginMsg}>{this.state.msgResponse}</Text>
@@ -136,7 +178,7 @@ class CreateCar extends Component {
                <Footer>
                   <Button primary
                      style={styles.buttonNext}
-                     onPress = { () => Actions.createCar2() }
+                     onPress = { this.nextStep }
                   >
                      <Text style={styles.titleButtonNext}>Next</Text>
                      <Icon style={styles.titleButtonNext} name='ios-arrow-forward-outline' />
@@ -152,13 +194,16 @@ class CreateCar extends Component {
 
 const mapStateToProps = (state) => {
     return {
-      //   cars: state.cars,
-        session: state.session,
+        carInfo: state.carInfo,
+      //   newCarInfo2: state.getNewCarInfo
     }
 }
 
-// const mapDispatchToProps = (dispatch) => {
-//   return { carActions, sessionActions }
-// }
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fillCarInfo: (car) => dispatch(carActions.fillCarInfo(car)),
+        getCarInfo: () => dispatch(carActions.getCarInfo())
+    };
+};
 
-export default connect(mapStateToProps, sessionActions)(CreateCar)
+export default connect(mapStateToProps, mapDispatchToProps)(CreateCar)

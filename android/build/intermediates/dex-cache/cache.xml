@@ -3,6 +3,15 @@
 
     <item
         is-multidex="false"
+        jar="/home/roberth/.gradle/caches/modules-2/files-2.1/com.adobe.xmp/xmpcore/5.1.2/55615fa2582424e38705487d1d3969af8554f637/xmpcore-5.1.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="55615fa2582424e38705487d1d3969af8554f637">
+        <dex dex="/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/pre-dexed/debug/xmpcore-5.1.2_b455436a1a88897800fbb66daf7a639bca431bd2.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/1.0.1/jars/classes.jar"
         jumboMode="false"
         optimize="true"
@@ -111,6 +120,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="/home/roberth/.gradle/caches/modules-2/files-2.1/com.google.zxing/core/3.2.1/2287494d4f5f9f3a9a2bb6980e3f32053721b315/core-3.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="2287494d4f5f9f3a9a2bb6980e3f32053721b315">
+        <dex dex="/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/pre-dexed/debug/core-3.2.1_6fcec88d3978f9a02b8309646c1c60efc60c6b68.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/libs/internal_impl-23.0.1.jar"
         jumboMode="false"
         optimize="true"
@@ -126,6 +144,15 @@
         revision="23.0.1"
         sha1="f90b593491e4044903f0bbf68dc3fa2790b151b9">
         <dex dex="/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/pre-dexed/debug/com.facebook.fbui.textlayoutbuilder-textlayoutbuilder-1.0.0_cbf94c3d84058cfe5e9519fc1be49dba0c073818.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/epiclot/react-native-camera/unspecified/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="1ce751efce489cd3da7b14c0a0744c78b5d98cd7">
+        <dex dex="/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/pre-dexed/debug/epiclot-react-native-camera-unspecified_afe916fa0234b82c97e461ea1ae215d8f22c2c3a.jar" />
     </item>
     <item
         is-multidex="false"
@@ -189,6 +216,15 @@
         revision="23.0.1"
         sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
         <dex dex="/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/pre-dexed/debug/jsr305-3.0.0_1b5a130a27b2b94ada182e98c3d16ab950e35e81.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/roberth/.gradle/caches/modules-2/files-2.1/com.drewnoakes/metadata-extractor/2.9.1/53fdf22be10c9d426ec63431c7342895bc642261/metadata-extractor-2.9.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="53fdf22be10c9d426ec63431c7342895bc642261">
+        <dex dex="/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/pre-dexed/debug/metadata-extractor-2.9.1_2f065245e1af50b40c680ac355237d4fcf57698f.jar" />
     </item>
 
 </items>

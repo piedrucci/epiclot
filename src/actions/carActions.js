@@ -1,31 +1,24 @@
 
-export const GET_CARS = 'get_cars';
-export const SELECTED_CAR = 'selected_car';
-export const CREATE_CAR = 'create_car';
+export const FILL_CAR_INFO = 'fill_car_data';
+export const GET_CAR_INFO = 'get_car_info';
 
 
-export const createCar = (car) => {
+export const fillCarInfo = (car) => {
     return {
-        type: CREATE_CAR,
+        type: FILL_CAR_INFO,
         car
     }
 }
 
-export const getCars = (arrayCars) => {
+export const getCarInfo = () => {
     return {
-        type: GET_CARS,
-        cars: arrayCars
+        type: GET_CAR_INFO,
     }
 }
 
-export const selectedCar = (carId) => {
-    return {
-        type: SELECTED_CAR,
-        payload: carId
-    }
-}
-
-
-// export const incrementCount = () => ({
-//   type: 'INCREMENT'
-// })
+// export const newCarInfo = () => {
+//     return {
+//         type: NEW_CAR_INFO,
+//         payload: carId
+//     }
+// }
