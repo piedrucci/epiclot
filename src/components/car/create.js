@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 
 import { Container, Header, Content, Icon, Left, Right, Button,
     Body, Title, Footer, FooterTab, List, ListItem, Thumbnail,
@@ -35,6 +35,7 @@ class CreateCar extends Component {
          captionCheckButton: 'Check VIN ',
          msgResponse: '',
          vinInfo: {},
+
       }
 
       this.checkVINCode = this.checkVINCode.bind(this)
@@ -49,7 +50,17 @@ class CreateCar extends Component {
       response.then( (data) => {
          this.setState({session: JSON.parse(data)})
       } )
-      console.log(this.props);
+      // console.log(this.props);
+
+      if ( this.props.vinScanned ){
+         // Alert.alert('vin escaneado', this.props.vinScanned)
+         this.setState({vin: this.props.vinScanned})
+      }
+
+   }
+
+   componentWillUnmount () {
+      this._listeners && this._listeners.forEach(listener => listener.remove());
    }
 
 // ACTIVA - DESACTIVA EL BOTON DE CHECK VIN
@@ -88,8 +99,8 @@ class CreateCar extends Component {
    // ENVIAR DATOS Y AVANZAR
    nextStep() {
       this.props.fillCarInfo({vin:this.state.vin})
-      // Actions.createCar2()
-      console.log(this.props)
+      Actions.createCar2()
+      // console.log(this.props)
    }
 
    getCarInfo() {
@@ -97,13 +108,39 @@ class CreateCar extends Component {
       console.log(this.props.getCarInfo())
    }
 
-   takePicture() {
-      const options = {};
-      //options.location = ...
-      this.camera.capture({metadata: options})
-      .then((data) => console.log(data))
-      .catch(err => console.error(err));
-   }
+   // takePicture() {
+   //    const options = {};
+   //    //options.location = ...
+   //    this.camera.capture({metadata: options})
+   //    .then((data) => console.log(data))
+   //    .catch(err => console.error(err));
+   // }
+
+   // _onBarCodeRead(e) {
+   //    // this.setState({showCamera: false});
+   //    Alert.alert(
+   //       "Barcode Found!",
+   //       "Type: " + e.type + "\nData: " + e.data
+   //    );
+   // }
+
+
+   // ===================== scanner
+   // _onBarCodeRead = (e) => {
+   //      console.log(`e.nativeEvent.data.type = ${e.nativeEvent.data.type}, e.nativeEvent.data.code = ${e.nativeEvent.data.code}`)
+   //      this._stopScan()
+   //      Alert.alert(e.nativeEvent.data.type, e.nativeEvent.data.code, [
+   //          {text: 'OK', onPress: () => this._startScan()},
+   //      ])
+   //  }
+
+    _startScan = (e) => {
+        this._barCode.startScan()
+    }
+
+    _stopScan = (e) => {
+        this._barCode.stopScan()
+    }
 
     render() {
         return(
@@ -114,14 +151,16 @@ class CreateCar extends Component {
 
                <Form >
 
-                  <Camera
+                  {/* <Camera
                      ref={(cam) => {
                         this.camera = cam;
                      }}
                      style={styles.preview}
-                     aspect={Camera.constants.Aspect.fill}>
+                     aspect={Camera.constants.Aspect.fill}
+                     onBarCodeRead={this._onBarCodeRead}
+                     >
                      <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
-                  </Camera>
+                  </Camera> */}
 
                   <Item >
                      {/* <Label>Username</Label> */}
@@ -138,7 +177,8 @@ class CreateCar extends Component {
                         value={this.state.vin}
                      />
                      <Button
-                        //  style={{margin:10}}
+                        disabled={this.state.disableCheckButton}
+                        onPress = { () => Actions.cameraScanner() }
                         ><Icon name='ios-camera-outline' />
                      </Button>
 
