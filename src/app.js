@@ -19,6 +19,7 @@ import CarDetail from './components/car/detail';
 import CreateCar from './components/car/create';
 import CreateCar2 from './components/car/create2';
 import CameraComp from './components/car/camScanner.js';
+import TabComp from './components/car/tabCar.js';
 
 // import DashboardBody from './components/dashboard/body';
 // import UserInfo from './components/user/info';
@@ -74,6 +75,7 @@ const App = () => {
                     <Scene key='createCar'  component={CreateCar} hideNavBar={false} title='New Car'  />
                     <Scene key='createCar2' component={CreateCar2} hideNavBar={false} title='New Car' />
                     <Scene key='cameraScanner' component={CameraComp} hideNavBar={false} title='Scan Vin'  />
+                    <Scene key='tabCar' component={TabComp} hideNavBar={false} title='Tab'  />
 
                 </Router>
 

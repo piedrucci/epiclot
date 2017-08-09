@@ -15,11 +15,7 @@ var api = {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-              "email": userInfo.email,
-              "password": userInfo.password,
-              "subdomain":userInfo.subdomain
-          })
+          body: JSON.stringify(userInfo)
       });
       return response;
    },

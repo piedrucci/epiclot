@@ -49,7 +49,7 @@ export default class Dashboard extends Component {
         _info = AsyncStorage.getItem(api.getSessionName())
         .then( (value) => { return JSON.parse(value) || null; } )
         .then( (JSON_Value) => {
-            // console.log(JSON_Value.dealership_id);
+            // console.log(JSON_Value);
             if ( null !== JSON_Value ) {
                 this.fetchData(JSON_Value.dealership_id).done()
             } else if ( null === JSON_Value ) {

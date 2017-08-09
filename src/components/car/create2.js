@@ -25,9 +25,11 @@ class SS extends Component {
    constructor(props) {
       super(props)
       this.state = {
+         session: {},
          mileage: '',
          date:"2016-05-15",
 
+         vin: this.props.validVin,
          mileage_type: mileageType[0].value,
          color: color[0].value,
          transmission: transmission[0].value,
@@ -36,30 +38,66 @@ class SS extends Component {
          webprice: '',
          sale_price: '',
          whosale_price: '',
+
+         isLoading: false,
       }
 
       this.saveCar = this.saveCar.bind(this)
 
    }
 
-   saveCar() {
-      alert("hey... i'm saving your data")
+   componentDidMount() {
+      const response = api.getSession()
+      response.then( (data) => {
+         this.setState({session: JSON.parse(data)})
+      } )
+   }
 
-   //    body.append('vin',vin);
-   //  body.append('id_user',user_id);
-   //  body.append('delearship_id',dealership_id);
-   //  body.append('subdomain',user_domain);
-   //  body.append('location_stock',value.location_stock);
-   //  body.append('mileage',value.mileage);
-   //  body.append('mileage_type',value.mileage_type?value.mileage_type:'N/A');
-   //  body.append('color',value.color);
-   //  body.append('status',value.status?value.status:'Available');
-   //  body.append('transmission',value.transmission);
-   //  body.append('purchase_price',value.purchase_price);
-   //  body.append('expense_date', moment(value.expense_date).format("YYYY-MM-DD"));
-   //  body.append('web_price',value.web_price);
-   //  body.append('sale_price',value.sale_price);
-   //  body.append('wholesale_price',value.wholesale_price);
+   saveCar() {
+      this.setState({isLoading:true})
+
+      const fd = new FormData()
+
+      const jsonCarInfo = {
+         newCar: true,
+         vin: this.state.vin,
+
+         user_id:this.state.session.user_id,
+         id_user:this.state.session.user_id,
+         delearship_id:this.state.session.dealership_id,
+
+         mileage: this.state.mileage,
+         mileage_type: this.state.mileage_type,
+         color: this.state.color,
+         transmission: this.state.transmission,
+         status: this.state.status,
+         purchase_price: this.state.purchase_price,
+         expense_date: "2017-01-01",
+         web_price: this.state.webprice,
+         sale_price: this.state.sale_price,
+         wholesale_price: this.state.whosale_price
+      }
+
+      for ( var key in jsonCarInfo ){
+         var value = jsonCarInfo[key];
+         fd.append(key, value)
+      }
+
+      fetch(api.getApi_Url() + 'cars',{
+         method: 'post',
+         headers: {
+            'Content-Type': 'multipart/form-data',
+         },
+         body: fd
+      }).then(response => {
+         console.log("Car Saved")
+         // console.log(response)
+         Actions.home()
+      }).catch(err => {
+         console.log(err)
+      })
+
+
    }
 
 
@@ -73,6 +111,9 @@ class SS extends Component {
             <Container style={{marginTop:60 }}>
 
                 <Content>
+
+                   {this.state.isLoading ? <Spinner /> : null }
+
                     <Form >
 
                        <Item success={true}>
@@ -226,6 +267,7 @@ class SS extends Component {
                     </Form>
 
                     <Text style={{height:30}}/>
+
 
                 </Content>
 

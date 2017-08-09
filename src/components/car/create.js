@@ -27,8 +27,9 @@ class CreateCar extends Component {
       super(props)
       this.state = {
          session: {},
-         vin: '5XXGM4A70FG352220',
+         vin: 'NM0LS7EX9G1276250',
          // vin: '1M1AW07Y1GM051234',
+         // vin: '5XXGM4A70FG352220',
          checkingVIN: false,
          validVin: false,
          disableCheckButton: false,
@@ -53,7 +54,6 @@ class CreateCar extends Component {
       // console.log(this.props);
 
       if ( this.props.vinScanned ){
-         // Alert.alert('vin escaneado', this.props.vinScanned)
          this.setState({vin: this.props.vinScanned})
       }
 
@@ -99,7 +99,8 @@ class CreateCar extends Component {
    // ENVIAR DATOS Y AVANZAR
    nextStep() {
       this.props.fillCarInfo({vin:this.state.vin})
-      Actions.createCar2()
+      Actions.createCar2({validVin: this.state.vin})
+      // Actions.tabCar()
       // console.log(this.props)
    }
 
@@ -201,13 +202,6 @@ class CreateCar extends Component {
 
             </Content>
 
-            <Item>
-               <Button
-                  onPress={ this.getCarInfo }
-                  >
-                  <Text>mostrar</Text>
-               </Button>
-            </Item>
 
             {this.state.msgResponse === '' ? null :
             <Footer>
