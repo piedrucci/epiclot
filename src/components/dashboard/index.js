@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-native';
 
 import { Header, Item, Icon, Input, Button, Container, Content, Spinner,
-   List, ListItem, Thumbnail, Body } from 'native-base';
+   List, ListItem, Thumbnail, Body, Footer, FooterTab } from 'native-base';
 
 import FitImage from 'react-native-fit-image';
 
@@ -171,7 +171,18 @@ export default class Dashboard extends Component {
 
                 </Content>
 
-                {/* <DashboardFooter /> */}
+                <Footer>
+                   <FooterTab>
+                     <Button primary active>
+                        <Icon name="ios-car" />
+                        <Text style={{color: 'white'}} >Cars</Text>
+                     </Button>
+                     <Button primary>
+                        <Icon name="ios-person" />
+                        <Text style={{color: 'white'}} >Prospects</Text>
+                     </Button>
+                  </FooterTab>
+               </Footer>
 
             </Container>
 
