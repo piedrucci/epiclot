@@ -20,7 +20,9 @@ import CreateCar from './components/car/create';
 import CreateCar2 from './components/car/create2';
 import CameraComp from './components/car/camScanner';
 import TabComp from './components/car/tabCar';
-import Prospect from './components/prospect/index2';
+import Dashboard2 from './components/prospect/index';
+//import Prospect from './components/prospect/listProspects';
+//import Cars from './components/prospect/listCars';
 
 // import DashboardBody from './components/dashboard/body';
 // import UserInfo from './components/user/info';
@@ -77,7 +79,7 @@ const App = () => {
                     <Scene key='createCar2' component={CreateCar2} hideNavBar={false} title='New Car' />
                     <Scene key='cameraScanner' component={CameraComp} hideNavBar={false} title='Scan Vin'  />
                     <Scene key='tabCar' component={TabComp} hideNavBar={false} title='Tab'  />
-                    <Scene key='prospect' component={Prospect} hideNavBar={false} title='Prospects'  />
+                    <Scene key='home2' component={Dashboard2} hideNavBar={false} title='Home2'  />
 
                 </Router>
 

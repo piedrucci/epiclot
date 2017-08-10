@@ -112,8 +112,9 @@ class Login extends Component {
                   // } )
                   api.saveSession(info)
                   // setTimeout(() => {Actions.home()}, 2000)
-                  //Actions.home()
-                  Actions.prospect()
+                  Actions.home()
+
+                  //Actions.home2()
                }
 
             }else {
