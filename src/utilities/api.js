@@ -4,6 +4,7 @@ import { Alert, AsyncStorage } from 'react-native';
 const endPoint = 'http://epiclot.com/dealer/accounts/';
 const apiEndPoint = 'http://api.epiclot.com/epiclots/';
 const apiCarsUrl = apiEndPoint + 'cars/';
+const apiProspectsUrl = apiEndPoint + 'prospectslist/';
 
 const SESSION_NAME = 'session';
 
@@ -27,6 +28,13 @@ var api = {
    async getCars(dealership_id) {
       // esto retorna un Promise.... usar  promesa.then()
       const response = await fetch( apiCarsUrl + dealership_id ).then( (res) => res.json() );
+      return response;
+
+   },
+
+   async getProspects(dealership_id) {
+      // esto retorna un Promise.... usar  promesa.then()
+      const response = await fetch( apiProspectsUrl + dealership_id ).then( (res) => res.json() );
       return response;
 
    },
