@@ -173,17 +173,13 @@ export default class Dashboard extends Component {
 
                 <Footer>
                    <FooterTab>
-                      <Button>
-                        <Text>Apps</Text>
+                     <Button primary active>
+                        <Icon name="ios-car" />
+                        <Text style={{color: 'white'}} >Cars</Text>
                      </Button>
-                     <Button>
-                        <Text>Camera</Text>
-                     </Button>
-                     <Button active>
-                        <Text>Navigate</Text>
-                     </Button>
-                     <Button>
-                        <Text>Contact</Text>
+                     <Button primary>
+                        <Icon name="ios-person" />
+                        <Text style={{color: 'white'}} >Prospects</Text>
                      </Button>
                   </FooterTab>
                </Footer>
