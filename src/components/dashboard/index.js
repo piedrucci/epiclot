@@ -21,8 +21,6 @@ import UserInfo from '../user/info';
 // import CarDetail from '../car/detail';
 // import CreateCar from '../car/create';
 
-import Elements from './listCars'
-
 import { FormattedNumber, FormattedCurrency } from 'react-native-globalize';
 
 const listOfCars = []
