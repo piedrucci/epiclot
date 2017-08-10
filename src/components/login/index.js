@@ -219,6 +219,16 @@ class Login extends Component {
                      {this.state.loading ? <Icon name='ios-more-outline' /> : <Icon name='ios-log-in-outline' />}
                  </Button>
 
+                 <Button
+                    iconRight block
+                    disabled={this.state.loading}
+                    style={styles.loginButton}
+                    onPress={() => this.loginUser()}
+                    >
+                    <Text style={{color:'white'}}>Logout </Text>
+                    {this.state.loading ? <Icon name='ios-more-outline' /> : <Icon name='ios-log-in-outline' />}
+                </Button>
+
                   {this.state.loading ? <Spinner /> : null}
 
               </Form>
