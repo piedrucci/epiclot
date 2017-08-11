@@ -112,9 +112,9 @@ class Login extends Component {
                   // } )
                   api.saveSession(info)
                   // setTimeout(() => {Actions.home()}, 2000)
-                  Actions.home()
+                  //Actions.home()
 
-                  //Actions.home2()
+                  Actions.home2()
                }
 
             }else {
@@ -221,17 +221,7 @@ class Login extends Component {
                      {this.state.loading ? <Icon name='ios-more-outline' /> : <Icon name='ios-log-in-outline' />}
                  </Button>
 
-                 <Button
-                    iconRight block
-                    disabled={this.state.loading}
-                    style={styles.loginButton}
-                    onPress={() => this.loginUser()}
-                    >
-                    <Text style={{color:'white'}}>Logout </Text>
-                    {this.state.loading ? <Icon name='ios-more-outline' /> : <Icon name='ios-log-in-outline' />}
-                </Button>
-
-                  {this.state.loading ? <Spinner /> : null}
+                 {this.state.loading ? <Spinner /> : null}
 
               </Form>
            }

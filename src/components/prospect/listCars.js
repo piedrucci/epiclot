@@ -111,32 +111,8 @@ class Cars extends Component {
                   </Button> */}
               </Header>
               }
-                  {/* <Router >
-                      <Scene key='carList' component={DashboardBody} hideNavBar={true} />
-                      <Scene key='userInfo' component={UserInfo} hideNavBar={true} />
-                  </Router> */}
 
               <Content>
-
-                 {/* <Thumbnail square size={80} source={{uri: 'http://epiclot.com/dealer/accounts/'+item.subdomain+'/photos/'+item.photo}} /> */}
-                  {/* {this.state.loading? <Spinner /> :
-                     <List
-                        refreshControl={ <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)} /> }
-                      dataArray={this.state.cars} renderRow={(item) =>
-                      <ListItem button onPress={()=>Actions.carDetail({car:item})} >
-                          <FitImage style={{borderRadius:10, width:90, height: 60}} source={{uri: 'http://epiclot.com/dealer/accounts/'+item.subdomain+'/photos/'+item.photo}} />
-                          <Body>
-                              <Text style={{fontWeight: 'bold', marginLeft: 10}}>{item.make} {item.model}</Text>
-
-                              <Text note style={{marginLeft: 10, }}>{item.year}</Text>
-                              <Text note style={{marginLeft: 10, }}>{item.condition}</Text>
-                              <Text note style={{marginLeft: 10, }}>
-                                  <FormattedCurrency value={parseFloat(item.webprice)} />
-                              </Text>
-
-                          </Body>
-                      </ListItem>
-                  } />} */}
 
                 {this.state.loading ? <Spinner style={{marginTop:75}} /> :
                  <FlatList
