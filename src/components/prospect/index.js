@@ -46,8 +46,8 @@ class Dashboard2 extends Component {
           </Content>
 
           <Footer>
-            {this.state.index == 0 ? <FAB buttonColor="blue" style={{marginButton:54}} iconTextColor="#FFFFFF" onClickAction={() => {Actions.createCar()}} visible={true} iconTextComponent={<Icon name="ios-car"/>} />
- : <FAB buttonColor="blue" style={{marginButton:54}} iconTextColor="#FFFFFF" onClickAction={() => {Actions.createProspect()}} visible={true} iconTextComponent={<Icon name="ios-person"/>} />}
+            {this.state.index == 0 ? <FAB buttonColor="blue" style={{marginButton:54}} iconTextColor="#FFFFFF" onClickAction={() => {Actions.createCar()}} visible={true} iconTextComponent={<Icon name="ios-add-outline"/>} />
+ : <FAB buttonColor="blue" style={{marginButton:54}} iconTextColor="#FFFFFF" onClickAction={() => {Actions.createProspect()}} visible={true} iconTextComponent={<Icon name="ios-add-outline"/>} />}
 
             <FooterTab>
               <Button onPress={() => this.switchScreen(0) }>
