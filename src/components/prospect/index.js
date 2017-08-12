@@ -5,6 +5,10 @@ import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-
 import { Header, Item, Icon, Input, Button, Container, Content, Spinner,
    List, ListItem, Thumbnail, Body, Footer, FooterTab } from 'native-base';
 
+import FAB from 'react-native-fab' // component Float Button
+
+import { Actions, ActionConst, Router, Scene } from 'react-native-router-flux';
+
 import Cars from './listCars' // your first screen
 
 import Prospect from './listProspects' // your second screen
@@ -34,6 +38,7 @@ class Dashboard2 extends Component {
 
       return(
         <Container>
+          {/*<Header style={{marginTop:54}}>{this.state.index == 0 ? <Text>Cars</Text> : <Text>Prospects</Text>}</Header>*/}
           <Content>
 
               {this.state.index == 0 ? <Cars/> : <Prospect/>}
@@ -41,6 +46,9 @@ class Dashboard2 extends Component {
           </Content>
 
           <Footer>
+            {this.state.index == 0 ? <FAB buttonColor="blue" style={{marginButton:54}} iconTextColor="#FFFFFF" onClickAction={() => {Actions.createCar()}} visible={true} iconTextComponent={<Icon name="ios-add-outline"/>} />
+ : <FAB buttonColor="blue" style={{marginButton:54}} iconTextColor="#FFFFFF" onClickAction={() => {Actions.createProspect()}} visible={true} iconTextComponent={<Icon name="ios-add-outline"/>} />}
+
             <FooterTab>
               <Button onPress={() => this.switchScreen(0) }>
                 <Icon name="ios-car" />

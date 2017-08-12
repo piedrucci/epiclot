@@ -21,6 +21,8 @@ import CreateCar2 from './components/car/create2';
 import CameraComp from './components/car/camScanner';
 import TabComp from './components/car/tabCar';
 import Dashboard2 from './components/prospect/index';
+import CreateProspect from './components/prospect/create';
+import ProspectDetail from './components/prospect/detail';
 //import Prospect from './components/prospect/listProspects';
 //import Cars from './components/prospect/listCars';
 
@@ -71,7 +73,7 @@ const App = () => {
                     <Scene key='home' component={Dashboard} hideNavBar={false} title='Home'
                         type={ActionConst.RESET} renderRightButton ={buttonCreateCar} renderLeftButton ={buttonLogOut}  />
 
-                     {/* MOSTRAR DETALLES DEL CARRO */}
+                    {/* MOSTRAR DETALLES DEL CARRO */}
                     <Scene key='carDetail' component={CarDetail} hideNavBar={false} title='Car Detail' />
 
                     {/* CREAR CARRO */}
@@ -79,7 +81,16 @@ const App = () => {
                     <Scene key='createCar2' component={CreateCar2} hideNavBar={false} title='New Car' />
                     <Scene key='cameraScanner' component={CameraComp} hideNavBar={false} title='Scan Vin'  />
                     <Scene key='tabCar' component={TabComp} hideNavBar={false} title='Tab'  />
-                    <Scene key='home2' component={Dashboard2} hideNavBar={false} title='Home2'  />
+
+                    {/* NEW HOME WITCH TAB BAR AND FLOAT BUTTON */}
+                    <Scene key='home2' component={Dashboard2} hideNavBar={false} title='Home'
+                    type={ActionConst.RESET} renderLeftButton ={buttonLogOut}  />
+
+                    {/* CREAR PROSPECT */}
+                    <Scene key='createProspect'  component={CreateProspect} hideNavBar={false} title='New Prospect'  />
+
+                    {/* MOSTRAR DETALLES DEL PROSPECT */}
+                    <Scene key='prospectDetail' component={ProspectDetail} hideNavBar={false} title='Prospect Detail' />
 
                 </Router>
 

@@ -5,6 +5,8 @@ import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-
 import { Header, Item, Icon, Input, Button, Container, Content, Spinner,
    List, ListItem, Thumbnail, Body, Footer, FooterTab } from 'native-base';
 
+import { Actions, ActionConst, Router, Scene } from 'react-native-router-flux';
+
 import api from '../../utilities/api';
 
 class Prospect extends Component {
@@ -39,7 +41,7 @@ class Prospect extends Component {
 
    // GET REQUEST PARA OBTENER LA LISTA COMPLETA DE PROSPECTOS DEL DEALER ACTUAL
    async fetchData(dealership_id) {
-       try{
+       try {
            // const response = await fetch(URL+dealership_id)
            const response = api.getProspects(dealership_id);
            response.then( (json) => {
@@ -52,7 +54,7 @@ class Prospect extends Component {
                // console.log(listOfCars);
                // console.log(store.getState());
            } )
-       }catch(err){
+       } catch(err){
            this.setState({
                loading: false,
                error: true
@@ -97,7 +99,7 @@ class Prospect extends Component {
              <FlatList
                data={this.state.prospects}
                renderItem={({item}) =>
-               <ListItem >
+               <ListItem button onPress={()=>Actions.prospectDetail({prospect:item})} >
                    <Body>
                        <Text style={{fontWeight: 'bold', marginLeft: 10}}>{item.firstname} {item.lastname}</Text>
 
