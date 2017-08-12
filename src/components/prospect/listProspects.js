@@ -5,6 +5,8 @@ import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-
 import { Header, Item, Icon, Input, Button, Container, Content, Spinner,
    List, ListItem, Thumbnail, Body, Footer, FooterTab } from 'native-base';
 
+import { Actions, ActionConst, Router, Scene } from 'react-native-router-flux';   
+
 import api from '../../utilities/api';
 
 class Prospect extends Component {
@@ -97,7 +99,7 @@ class Prospect extends Component {
              <FlatList
                data={this.state.prospects}
                renderItem={({item}) =>
-               <ListItem >
+               <ListItem button onPress={()=>Actions.prospectDetail({prospect:item})} >
                    <Body>
                        <Text style={{fontWeight: 'bold', marginLeft: 10}}>{item.firstname} {item.lastname}</Text>
 

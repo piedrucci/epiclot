@@ -58,7 +58,7 @@ class Login extends Component {
       // A U T O    L O G I N
       AsyncStorage.getItem( api.getSessionName() ).then( (value) => {
          if ( value !== null ) {
-            setTimeout(() => {Actions.home()}, 2000)
+            setTimeout(() => {Actions.home2()}, 2000)
          }else {
             this.setState({loading:false});
             this.setState({showSplash:false});

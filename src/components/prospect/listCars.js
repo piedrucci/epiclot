@@ -49,12 +49,6 @@ class Cars extends Component {
       } )
   }
 
- //  _onRefresh() {
- //    this.setState({refreshing: true});
- //    fetchData().then(() => { this.setState({refreshing: false}); });
- //    alert('aaaaa');
- // }
-
 // GET REQUEST PARA OBTENER LA LISTA COMPLETA DE CARROS DEL DEALER ACTUAL
   async fetchData(dealership_id) {
       try{
