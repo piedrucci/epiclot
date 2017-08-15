@@ -25,11 +25,11 @@ class CreateProspect extends Component {
       super(props)
       this.state = {
          session: {},
-         vin: 'NM0LS7EX9G1276250',
+         license: 'NM0LS7EX9G1276250',
          // vin: '1M1AW07Y1GM051234',
          // vin: '5XXGM4A70FG352220',
-         checkingVIN: false,
-         validVin: false,
+         checkingLicense: false,
+         validLicense: false,
          disableCheckButton: false,
          captionCheckButton: 'Check VIN ',
          msgResponse: '',
@@ -150,17 +150,6 @@ class CreateProspect extends Component {
 
                <Form >
 
-                  {/* <Camera
-                     ref={(cam) => {
-                        this.camera = cam;
-                     }}
-                     style={styles.preview}
-                     aspect={Camera.constants.Aspect.fill}
-                     onBarCodeRead={this._onBarCodeRead}
-                     >
-                     <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
-                  </Camera> */}
-
                   <Item >
                      {/* <Label>Username</Label> */}
                      <Icon name='ios-barcode-outline' />
@@ -169,7 +158,7 @@ class CreateProspect extends Component {
                         keyboardType='default'
                         //   style={{width:250}}
                         returnKeyType='next'
-                        placeholder='Enter driver license number'
+                        placeholder='Enter drivers license number'
                         autoCapitalize='characters'
                         onChangeText={ (text) => this.switchButtonStatus(text) }
                         // onSubmitEditing = { () => this.emailInput.focus() }
@@ -196,7 +185,7 @@ class CreateProspect extends Component {
                </Button>
 
                {this.state.checkingVIN ? <Spinner /> : null }
-               
+
             </Content>
 
 
