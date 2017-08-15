@@ -25,7 +25,7 @@ class CreateProspect extends Component {
       super(props)
       this.state = {
          session: {},
-         license: 'NM0LS7EX9G1276250',
+         license: '',
          // vin: '1M1AW07Y1GM051234',
          // vin: '5XXGM4A70FG352220',
          checkingLicense: false,
@@ -88,7 +88,7 @@ class CreateProspect extends Component {
             checkingVIN:false,
             vinInfo:data,
             validVin: (data.valid_vin) ? true : false,
-            captionCheckButton: 'Check VIN ',
+            captionCheckButton: 'Check License ',
             msgResponse: data.msg,
          })
       } )

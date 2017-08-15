@@ -11,6 +11,11 @@ import { Actions, ActionConst, Router, Scene } from 'react-native-router-flux';
 
 import api from '../../utilities/api';
 
+// ===========================================
+import { connect } from 'react-redux';
+import * as appActions from '../../actions/appActions';
+// ================================================
+
 class Prospect extends Component {
 
   constructor(props) {
@@ -23,9 +28,11 @@ class Prospect extends Component {
           searchWord: '',
           refreshing: false,
       }
+      console.log('==== RENDER PROSPECTS =====')
   }
 
   componentDidMount() {
+   //   this.props.addTypeAction({addType:'prospect'})
       let _info = '';
 
       _info = AsyncStorage.getItem(api.getSessionName())
@@ -131,4 +138,16 @@ class Prospect extends Component {
 
 }
 
-export default Prospect
+const mapStateToProps = (state) => {
+    return {
+        appGlobalParams: state.appParams,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addTypeAction: (t) => dispatch(appActions.addType(t)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Prospect)

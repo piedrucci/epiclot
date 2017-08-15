@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-native';
 
 import { Container, Header, Content, Item, Icon, Input, Button, Spinner,
-   List, ListItem, Thumbnail, Body, Footer, FooterTab, Tab, Tabs } from 'native-base';
+   List, ListItem, Thumbnail, Body, Footer, FooterTab, Tab, Tabs, TabHeading } from 'native-base';
 
 import FAB from 'react-native-fab' // component Float Button
 
@@ -13,16 +13,31 @@ import Cars from './listCars' // your first screen
 
 import Prospect from './listProspects' // your second screen
 
+// ===========================================
+import { connect } from 'react-redux';
+import * as appActions from '../../actions/appActions';
+// ================================================
 
 class Dashboard2 extends Component {
 
   constructor(props) {
       super(props)
-      this.state = {index: 0} // default screen index
+      this.state = {
+         index: 0,      // default screen index
+      }
   }
 
   switchScreen(index) {
       this.setState({index: index})
+
+      let _type = 'car'
+      if (index===1) {
+         _type = 'prospect'
+      }else if (index===2) {
+         _type = 'Settings'
+      }
+      this.props.addTypeAction({addType:_type})
+      console.log(_type)
    }
 
 
@@ -40,8 +55,8 @@ class Dashboard2 extends Component {
         <Container>
           {/*<Header style={{marginTop:54}}>{this.state.index == 0 ? <Text>Cars</Text> : <Text>Prospects</Text>}</Header>*/}
           <Header hasTabs />
-          <Tabs initialPage={1}>
-            <Tab heading="Cars">
+          <Tabs initialPage={0}>
+            <Tab heading="Cars" >
               <Content>
               <Cars />
               </Content>
@@ -85,7 +100,7 @@ class Dashboard2 extends Component {
 
       <Footer>
 
-          {/*<FooterTab>
+          <FooterTab>
             <Button onPress={() => this.switchScreen(0) }>
               <Icon name="ios-car" />
               <Text>Cars</Text>
@@ -94,11 +109,11 @@ class Dashboard2 extends Component {
               <Icon name="ios-person" />
               <Text>Prospects</Text>
             </Button>
-            <Button >
+            <Button onPress={() => this.switchScreen(2) } >
               <Icon name="navigate" />
               <Text>Settings</Text>
             </Button>
-          </FooterTab>*/}
+          </FooterTab>
 
       </Footer>
 
@@ -109,4 +124,17 @@ class Dashboard2 extends Component {
 
 }
 
-export default Dashboard2
+
+const mapStateToProps = (state) => {
+    return {
+        appGlobalParams: state.appParams,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addTypeAction: (t) => dispatch(appActions.addType(t)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard2)

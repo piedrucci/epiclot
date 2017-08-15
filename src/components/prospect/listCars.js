@@ -19,7 +19,12 @@ import { FormattedNumber, FormattedCurrency } from 'react-native-globalize';
 
 const listOfCars = []
 
-import store from '../../store';
+// import store from '../../store';
+
+// ===========================================
+import { connect } from 'react-redux';
+import * as appActions from '../../actions/appActions';
+// ================================================
 
 class Cars extends Component {
 
@@ -33,9 +38,16 @@ class Cars extends Component {
           searchWord: '',
           refreshing: false,
       }
+      console.log('==== RENDER CAR =====')
   }
 
+ //  componentWillMount() {
+ //     this.props.addTypeAction({addType:'car'})
+ //     console.log('==== recibio props ==== CAR')
+ // }
+
   componentDidMount() {
+
       let _info = '';
 
       _info = AsyncStorage.getItem(api.getSessionName())
@@ -87,7 +99,6 @@ class Cars extends Component {
   }
 
   render() {
-
       return (
           <Container>
 
@@ -161,4 +172,18 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Cars
+
+const mapStateToProps = (state) => {
+    return {
+        appGlobalParams: state.appParams,
+      //   newCarInfo2: state.getNewCarInfo
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addTypeAction: (t) => dispatch(appActions.addType(t)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cars)

@@ -26,6 +26,7 @@ class CreateCar extends Component {
    constructor(props) {
       super(props)
       this.state = {
+         addType: this.props.appGlobalParams.addType,
          session: {},
          vin: 'NM0LS7EX9G1276250',
          // vin: '1M1AW07Y1GM051234',
@@ -47,6 +48,7 @@ class CreateCar extends Component {
 
 // OBTENER LOS DATOS DE LA SESSION ACTUAL
     componentDidMount() {
+
       const response = api.getSession()
       response.then( (data) => {
          this.setState({session: JSON.parse(data)})
@@ -144,6 +146,7 @@ class CreateCar extends Component {
     }
 
     render() {
+      // console.log(this.state.addType)
         return(
          //   , flex:1, alignItems:'center', justifyContent:'center'
          <Container style={{marginTop:60}}>
@@ -229,6 +232,7 @@ class CreateCar extends Component {
 const mapStateToProps = (state) => {
     return {
         carInfo: state.carInfo,
+        appGlobalParams: state.appParams
       //   newCarInfo2: state.getNewCarInfo
     }
 }
