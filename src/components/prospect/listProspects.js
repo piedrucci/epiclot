@@ -28,11 +28,9 @@ class Prospect extends Component {
           searchWord: '',
           refreshing: false,
       }
-      console.log('==== RENDER PROSPECTS =====')
   }
 
   componentDidMount() {
-   //   this.props.addTypeAction({addType:'prospect'})
       let _info = '';
 
       _info = AsyncStorage.getItem(api.getSessionName())
@@ -121,14 +119,14 @@ class Prospect extends Component {
             />
            }
 
-           <FAB
+           {/* <FAB
     					buttonColor="blue"
     					style={{marginButton:54}}
     					iconTextColor="#FFFFFF"
     					onClickAction={() => {Actions.createProspect()}}
     					visible={true}
     					iconTextComponent={<Icon name="ios-add-outline"/>}
-   				/>
+   				/> */}
 
           </Content>
 

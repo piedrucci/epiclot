@@ -36,8 +36,9 @@ class Dashboard2 extends Component {
       }else if (index===2) {
          _type = 'Settings'
       }
+
+      // DISPARA LA ACCION AL REDUCER
       this.props.addTypeAction({addType:_type})
-      console.log(_type)
    }
 
 
@@ -54,7 +55,8 @@ class Dashboard2 extends Component {
       return(
         <Container>
           {/*<Header style={{marginTop:54}}>{this.state.index == 0 ? <Text>Cars</Text> : <Text>Prospects</Text>}</Header>*/}
-          <Header hasTabs />
+
+          {/* <Header hasTabs />
           <Tabs initialPage={0}>
             <Tab heading="Cars" >
               <Content>
@@ -69,15 +71,15 @@ class Dashboard2 extends Component {
             <Tab heading="Settings">
 
             </Tab>
-          </Tabs>
+          </Tabs> */}
 
-          {/*<Content>
+          <Content>
 
               {this.state.index == 0 ? <Cars/> : <Prospect/>}
 
           </Content>
 
-          {
+          {/* {
           	this.state.index == 0 ?
           		<FAB buttonColor="blue"
           			style={{marginButton:54}}
@@ -95,8 +97,7 @@ class Dashboard2 extends Component {
  					visible={true}
  					iconTextComponent={<Icon name="ios-add-outline"/>}
 				/>
-
-			}*/}
+			} */}
 
       <Footer>
 

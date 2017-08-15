@@ -38,16 +38,9 @@ class Cars extends Component {
           searchWord: '',
           refreshing: false,
       }
-      console.log('==== RENDER CAR =====')
   }
 
- //  componentWillMount() {
- //     this.props.addTypeAction({addType:'car'})
- //     console.log('==== recibio props ==== CAR')
- // }
-
   componentDidMount() {
-
       let _info = '';
 
       _info = AsyncStorage.getItem(api.getSessionName())
@@ -100,7 +93,7 @@ class Cars extends Component {
 
   render() {
       return (
-          <Container>
+          <Container style={{marginTop:56}}>
 
               {this.state.loading ? null :
               <Header searchBar rounded>
@@ -144,7 +137,7 @@ class Cars extends Component {
 
               </Content>
 
-              <Footer>
+              {/* <Footer>
                 <FAB buttonColor="blue"
                   style={{marginButton:54}}
                   iconTextColor="#FFFFFF"
@@ -152,7 +145,7 @@ class Cars extends Component {
                   visible={true}
                   iconTextComponent={<Icon name="ios-add-outline"/>}
         			  />
-              </Footer>
+              </Footer> */}
 
           </Container>
 

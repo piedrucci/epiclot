@@ -31,7 +31,7 @@ class CreateProspect extends Component {
          checkingLicense: false,
          validLicense: false,
          disableCheckButton: false,
-         captionCheckButton: 'Check VIN ',
+         captionCheckButton: 'Check License ',
          msgResponse: '',
          vinInfo: {},
 

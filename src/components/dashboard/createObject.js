@@ -51,4 +51,4 @@ const mapStateToProps = (state) => {
 //     };
 // };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateObject)
+export default connect(mapStateToProps, null)(CreateObject)
