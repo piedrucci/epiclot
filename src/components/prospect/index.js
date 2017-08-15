@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-native';
 
-import { Header, Item, Icon, Input, Button, Container, Content, Spinner,
-   List, ListItem, Thumbnail, Body, Footer, FooterTab } from 'native-base';
+import { Container, Header, Content, Item, Icon, Input, Button, Spinner,
+   List, ListItem, Thumbnail, Body, Footer, FooterTab, Tab, Tabs } from 'native-base';
 
 import FAB from 'react-native-fab' // component Float Button
 
@@ -39,7 +39,24 @@ class Dashboard2 extends Component {
       return(
         <Container>
           {/*<Header style={{marginTop:54}}>{this.state.index == 0 ? <Text>Cars</Text> : <Text>Prospects</Text>}</Header>*/}
-          <Content>
+          <Header hasTabs />
+          <Tabs initialPage={1}>
+            <Tab heading="Cars">
+              <Content>
+              <Cars />
+              </Content>
+            </Tab>
+            <Tab heading="Prospect">
+              <Content>
+                <Prospect />
+              </Content>
+            </Tab>
+            <Tab heading="Settings">
+
+            </Tab>
+          </Tabs>
+
+          {/*<Content>
 
               {this.state.index == 0 ? <Cars/> : <Prospect/>}
 
@@ -64,11 +81,11 @@ class Dashboard2 extends Component {
  					iconTextComponent={<Icon name="ios-add-outline"/>}
 				/>
 
-			}
+			}*/}
 
       <Footer>
 
-          <FooterTab>
+          {/*<FooterTab>
             <Button onPress={() => this.switchScreen(0) }>
               <Icon name="ios-car" />
               <Text>Cars</Text>
@@ -81,7 +98,7 @@ class Dashboard2 extends Component {
               <Icon name="navigate" />
               <Text>Settings</Text>
             </Button>
-          </FooterTab>
+          </FooterTab>*/}
 
       </Footer>
 

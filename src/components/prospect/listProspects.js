@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-native';
 
 import { Header, Item, Icon, Input, Button, Container, Content, Spinner,
-   List, ListItem, Thumbnail, Body, Footer, FooterTab } from 'native-base';
+   List, ListItem, Thumbnail, Body, Footer } from 'native-base';
+
+import FAB from 'react-native-fab' // component Float Button
 
 import { Actions, ActionConst, Router, Scene } from 'react-native-router-flux';
 
@@ -111,6 +113,15 @@ class Prospect extends Component {
                keyExtractor={item => item.sales_id}
             />
            }
+
+           <FAB
+    					buttonColor="blue"
+    					style={{marginButton:54}}
+    					iconTextColor="#FFFFFF"
+    					onClickAction={() => {Actions.createProspect()}}
+    					visible={true}
+    					iconTextComponent={<Icon name="ios-add-outline"/>}
+   				/>
 
           </Content>
 

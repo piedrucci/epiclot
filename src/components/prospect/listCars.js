@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-native';
 
 import { Header, Item, Icon, Input, Button, Container, Content, Spinner,
-   List, ListItem, Thumbnail, Body, Footer, FooterTab } from 'native-base';
+   List, ListItem, Thumbnail, Body, Footer } from 'native-base';
 
 import FitImage from 'react-native-fit-image';
+
+import FAB from 'react-native-fab' // component Float Button
 
 import { Actions, ActionConst, Router, Scene } from 'react-native-router-flux';
 
@@ -90,7 +92,7 @@ class Cars extends Component {
           <Container>
 
               {this.state.loading ? null :
-              <Header style={{marginTop:54}} searchBar rounded>
+              <Header searchBar rounded>
                   <Item>
                       <Icon name="ios-search" />
                       <Input
@@ -130,6 +132,16 @@ class Cars extends Component {
                }
 
               </Content>
+
+              <Footer>
+                <FAB buttonColor="blue"
+                  style={{marginButton:54}}
+                  iconTextColor="#FFFFFF"
+                  onClickAction={() => {Actions.createCar()}}
+                  visible={true}
+                  iconTextComponent={<Icon name="ios-add-outline"/>}
+        			  />
+              </Footer>
 
           </Container>
 
