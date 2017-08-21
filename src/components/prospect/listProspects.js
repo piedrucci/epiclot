@@ -5,8 +5,6 @@ import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-
 import { Header, Item, Icon, Input, Button, Container, Content, Spinner,
    List, ListItem, Thumbnail, Body, Footer } from 'native-base';
 
-import FAB from 'react-native-fab' // component Float Button
-
 import { Actions, ActionConst, Router, Scene } from 'react-native-router-flux';
 
 import api from '../../utilities/api';
