@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-import { Text, View } from 'react-native';
+import { Text, View, AsyncStorage } from 'react-native';
 
 import { Container, Header, Content, Icon, Left, Right, Button,
     Body, Title, Footer, FooterTab, List, ListItem, Thumbnail,
@@ -29,7 +28,7 @@ class SS extends Component {
          mileage: '',
          date:"2016-05-15",
 
-         vin: this.props.validVin,
+         vin: this.props.vinInfo.vin,
          mileage_type: mileageType[0].value,
          color: color[0].value,
          transmission: transmission[0].value,
@@ -42,15 +41,22 @@ class SS extends Component {
          isLoading: false,
       }
 
-      this.saveCar = this.saveCar.bind(this)
+      // this.saveCar = this.saveCar.bind(this)
 
    }
 
    componentDidMount() {
-      const response = api.getSession()
-      response.then( (data) => {
-         this.setState({session: JSON.parse(data)})
-      } )
+      // const response = api.getSession()
+      // response.then( (data) => {
+      //    this.setState({session: JSON.parse(data)})
+      // } )
+      this.checkSession().done()
+   }
+
+   async checkSession() {
+      const response = await AsyncStorage.getItem( api.getSessionName )
+      const json = await response.json()
+      console.log(json)
    }
 
    saveCar() {

@@ -24,6 +24,8 @@ import Dashboard2 from './components/prospect/index';
 import CreateProspect from './components/prospect/create';
 import ProspectDetail from './components/prospect/detail';
 import CreateObject from './components/dashboard/createObject';
+import CarImagesContainer from './components/car/carImagesContainer';
+import FormCar from './components/car/wq.js';
 //import Cars from './components/prospect/listCars';
 
 // import DashboardBody from './components/dashboard/body';
@@ -36,6 +38,7 @@ import api from './utilities/api';
 import { FormattedWrapper } from 'react-native-globalize';
 
 const buttonCreateCar = ()=><Icon name='ios-add-outline' fontSize={38} onPress={ () => Actions.createObject() } />
+const buttonNextCarImages = ()=><Icon name='ios-arrow-dropright' onPress={ () => Actions.createCar() } />
 const buttonSaveCar = () => <Icon name='ios-checkmark-circle-outline' fontSize={38} onPress={ () => {alert('save car')} } />
 
 const buttonLogOut = () => <Icon name='ios-log-out-outline' fontSize={38} onPress={ () => {
@@ -77,10 +80,13 @@ const App = () => {
                     <Scene key='carDetail' component={CarDetail} hideNavBar={false} title='Car Detail' />
 
                     {/* CREAR CARRO */}
-                    <Scene key='createCar'  component={CreateCar} hideNavBar={false} title='New Car'  />
+                    <Scene key='createCar'  component={CreateCar} hideNavBar={false} title='New Car'
+                     />
                     <Scene key='createCar2' component={CreateCar2} hideNavBar={false} title='New Car' />
-                    <Scene key='cameraScanner' component={CameraComp} hideNavBar={false} title='Scan Vin'  />
-                    <Scene key='tabCar' component={TabComp} hideNavBar={false} title='Tab'  />
+                    <Scene key='cameraScanner' component={CameraComp} hideNavBar={true} title='Scan Vin' />
+                    <Scene key='formCar' component={FormCar} hideNavBar={false} title='DDDDDDDDDD' />
+                    <Scene key='carImages' component={CarImagesContainer}
+                       hideNavBar={false} title='Add Images' />
 
                     {/* NEW HOME WITCH TAB BAR AND FLOAT BUTTON */}
                     <Scene key='home2' component={Dashboard2} hideNavBar={false} title='Home'

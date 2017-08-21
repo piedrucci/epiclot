@@ -9,14 +9,16 @@ const apiProspectsUrl = apiEndPoint + 'prospectslist/';
 const SESSION_NAME = 'session';
 
 var api = {
-   async sendPOST(endPointUrl, userInfo) {
-      const response = await fetch( endPointUrl , {
+
+   // ENVIA UN POST REQUEST GENERICO ... (SOLO PASARLE EL ENDPOINT Y EL PAYLOAD)
+   sendPOST(endPointUrl, payload) {
+      const response = fetch( endPointUrl , {
           method: 'POST',
           headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
           },
-          body: JSON.stringify(userInfo)
+          body: JSON.stringify(payload)
       });
       return response;
    },
@@ -25,26 +27,24 @@ var api = {
       return SESSION_NAME;
    },
 
-   async getCars(dealership_id) {
+   // OBTIENE LA LISTA DE CARROS esto retorna un Promise.... usar con async-await
+   getCars(dealership_id) {
+      const response = fetch( apiCarsUrl + dealership_id )
+      return response;
+   },
+
+   // OBTIENE LA LISTA DE PROSPECTOS esto retorna un Promise.... usar con async-await
+   getProspects(dealership_id) {
       // esto retorna un Promise.... usar  promesa.then()
-      const response = await fetch( apiCarsUrl + dealership_id ).then( (res) => res.json() );
+      const response = fetch( apiProspectsUrl + dealership_id ).then( (res) => res.json() );
       return response;
 
    },
 
-   async getProspects(dealership_id) {
-      // esto retorna un Promise.... usar  promesa.then()
-      const response = await fetch( apiProspectsUrl + dealership_id ).then( (res) => res.json() );
+   // CONSULTA EL VIN EN EL dealership_id
+   checkVIN(vin, dealership_id) {
+      const response = fetch( apiEndPoint + 'vin/' + vin + '/' + dealership_id + '/' )
       return response;
-
-   },
-
-   async checkVIN(vin, dealership_id) {
-      // esto retorna un Promise.... usar  promesa.then()
-      // alert( apiEndPoint + 'vin/' + vin + '/' + dealership_id )
-      const response = await fetch( apiEndPoint + 'vin/' + vin + '/' + dealership_id + '/' ).then( (res) => res.json() );
-      return response;
-
    },
 
    getApi_Url() {
@@ -63,40 +63,22 @@ var api = {
    },
 
 
-   async saveSession(loginInfo) {
+   saveSession(loginInfo) {
       try{
-         const response = await AsyncStorage.setItem(SESSION_NAME, JSON.stringify(loginInfo) )
-         // const json = await response.json()
-         console.log(response)
-         // alert(JSON.stringify(loginInfo));
+         const res = AsyncStorage.setItem(SESSION_NAME, JSON.stringify(loginInfo) ).then((sdf)=>console.log(sdf))
+         // console.log(`AsyncStorage: ${res}`)
+         // const resJSON = (res!==null) ? res.json() : null
+         return res
       }catch(err){
          alert(err)
          console.log('(saveSession) something went wrong: ' + err)
       }
-      // AsyncStorage.setItem( api.getSessionName(), JSON.stringify(info) ).then( () => {
-      //    this.props.setSession(info);
-      //    Actions.home()
-      //    console.log(this.props);
-      // } )
    },
 
-
-   getSession() {
-      try{
-         let session = AsyncStorage.getItem(SESSION_NAME)
-         // console.log(JSON.parse(session))
-         return session;
-      }catch(err){
-         alert(err)
-         console.log('GET TOKEN something went wrong: ' + err)
-         return null;
-      }
-   },
 
    async removeToken() {
       try{
          await AsyncStorage.removeItem(SESSION_NAME);
-         // this.getToken();
       }catch(err){
          alert(err)
          console.log('REMOVE something went wrong: ' + err)

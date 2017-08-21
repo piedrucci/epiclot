@@ -22,18 +22,20 @@ class CreateObject extends Component {
    render() {
 
 //    ==============================    RENDERIZADO CONDICIONAL DEL COMPONENTE
-      let button =  null ;
-
-      if (this.state.addType == 'car') {
-         button = <CreateCar />;
-      } else if (this.state.addType == 'prospect'){
-         button = <CreateProspect />;
-      }
+      // let button =  null ;
+      // console.log(this.state.addType);
+      //
+      // if (this.state.addType == 'car') {
+         // button = <CreateCar />;
+      // } else if (this.state.addType == 'prospect'){
+         // button = <CreateProspect />;
+      // }
 //    =========================================================================
-
+// console.log(button);
       return (
          <Content>
-            {button}
+            {/* {button} */}
+            <CreateCar />
          </Content>
       )
    }

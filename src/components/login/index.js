@@ -1,155 +1,121 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { Image, AsyncStorage, BackHandler, BackAndroid, Platform } from 'react-native';
-import PropTypes from 'prop-types';
+import { Container, Content, Header, Form, Item, Input,
+   Button, Text, Footer, FooterTab, Icon, Spinner } from 'native-base'
+import api from '../../utilities/api'
+import { Actions } from 'react-native-router-flux'
+import Splash from '../splash'
+import styles from './loginStyles'
 
-import { Text, Switch } from 'react-native';
-
-import { Container, Content, Form, Item, Input, Label,
-   Icon, Button, Footer, Spinner } from 'native-base';
-
-import { Actions } from 'react-native-router-flux';
-
-// S T Y L E S
-import styles from './loginStyles';
-
-// COMPONENTES
-import Splash from '../splash';
-
-import api from '../../utilities/api';
-
-
-import { connect } from 'react-redux';
-import * as sessionActions from '../../actions/sessionActions';
-
-
-// Keep a reference to ensure there is only one event listener
-// subscribed with BackAndroid
+// Keep a reference to ensure there is only one event listener subscribed with BackAndroid
 let listener = null
 
-// Default behavior: returning false exits the app.
-let backButtonPressFunction = () => false
 
 class Login extends Component {
+   constructor(){
+      super()
+      this.state = {
+         subdomain: 'carsofswfl',
+         email: 'info@carsofswfl.com',
+         password: '123456',
+         loading: false,
+         showSplash: true,
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            subdomain: 'carsofswfl',
-            email: 'info@carsofswfl.com',
-            password: '123456',
-            loading: false,
-            showSplash: true,
-
-            invalidUser: false,
-            loginMsg: '',
-            rememberMe: false,
-        }
-    }
-
-    componentDidMount() {
-      this.setState({loading:true});
-      // BackHandler.addEventListener('backPress');
-      if (Platform.OS == "android" && listener == null) {
-         listener = BackAndroid.addEventListener("hardwareBackPress", () => {
-            return backButtonPressFunction()
-         })
+         invalidUser: false,
+         loginMsg: ''
       }
-
-      // A U T O    L O G I N
-      AsyncStorage.getItem( api.getSessionName() ).then( (value) => {
-         if ( value !== null ) {
-            setTimeout(() => {Actions.home2()}, 2000)
-         }else {
-            this.setState({loading:false});
-            this.setState({showSplash:false});
-         }
-      }) ;
-
+      this.loginUser = this.loginUser.bind(this)
    }
 
-// LOGUEA AL USUARIO (ASYNC)
+   componentDidMount() {
+     this.setState({loading:true});
+     // BackHandler.addEventListener('backPress');
+     if (Platform.OS == "android" && listener == null) {
+        listener = BackAndroid.addEventListener("hardwareBackPress", () => {
+           return backButtonPressFunction()
+        })
+     }
+
+     this.checkSession()
+
+  }
+
+
+  // // A U T O    L O G I N
+  async checkSession() {
+     const sessionData = await AsyncStorage.getItem( api.getSessionName() )
+     if ( sessionData !== null ) {
+      //   await api.removeToken()
+      //   console.log('actions home');
+        setTimeout(() => {Actions.home2()}, 2000)
+     }else {
+        this.setState({
+           loading:false,
+           showSplash:false
+        });
+
+     }
+  }
+
+
+   // LOGUEA AL USUARIO (ASYNC)
    async loginUser() {
-        try{
-            // this.props.createCar({id:1, name:'kia picanto'});
+      try{
+         this.setState({loading:true, invalidUser:false})
 
-            // this.props.setSession({dealership_id:11});
+         const credentials = {
+            "email":this.state.email,
+            "password": this.state.password,
+            "subdomain":this.state.subdomain
+         }
 
-            this.setState({loading:true, invalidUser:false});
-            const response = await fetch(api.getApi_Url()+'auth/sign_in', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    "email":this.state.email,
-                    "password": this.state.password,
-                    "subdomain":this.state.subdomain
-                })
-            });
+         // SE ENVIA LA PETICION A LA API ...
+         const response = await api.sendPOST(`${api.getApi_Url()}auth/sign_in`, credentials)
+         const json = await response.json()
 
-            const json = await response.json()
+         this.setState({
+            loading:false,
+            invalidUser: (json.api_key===null),
+            loginMsg: (json.api_key===null) ? 'Incorrect credentials' : 'Bienvenido!'
+         })
 
-            this.setState({loading:false})
-            this.setState({invalidUser: (json.api_key===null) ? true : false });
-            this.setState({loginMsg: ( this.state.invalidUser ) ? 'Incorrect credentials' : 'Bienvenido!'});
+         if ( response.status >= 200 && response.status < 300 ) {
+            const info = {
+               "api_key": json.api_key,
+               "user_id": json.user_id,
+               "dealership_id": json.dealership_id,
+               "user": json.user,
+               "user_domain": json.user_domain,
+               "name": json.name
+            };
 
-            if ( response.status >= 200 && response.status < 300 ) {
-               const info = {
-                  "api_key": json.api_key,
-                  "user_id": json.user_id,
-                  "dealership_id": json.dealership_id,
-                  "user": json.user,
-                  "user_domain": json.user_domain,
-                  "name": json.name
-               };
-               // alert('session guardada');
-
-               if ( !this.state.invalidUser ) {
-                  // AsyncStorage.setItem( api.getSessionName(), JSON.stringify(info) ).then( () => {
-                  //    this.props.setSession(info);
-                  //    console.log(this.props);
-                  // } )
-                  api.saveSession(info)
-                  // setTimeout(() => {Actions.home()}, 2000)
-                  //Actions.home()
-
-                  Actions.home2()
-               }
-
-            }else {
-               alert('no entro');
-               api.removeToken();
+            if ( !this.state.invalidUser ) {
+               await api.saveSession(info)
+               // Actions.home()
+               setTimeout(() => {Actions.home2()}, 2000)
             }
 
-        }catch(err){
-            api.removeToken();
-            this.setState({
-                loading: false,
-                error: true
-            });
-            alert(err);
-        }
-    }
+         }else {
+            // alert('no entro');
+            await api.removeToken();
+         }
+      }catch(err){
+         await api.removeToken();
+         this.setState({
+            loading: false,
+            error: true
+         });
+         alert(err);
+      }
+   }
 
-    // carRow() {
-    //     const {cars} = this.props;
-    //     return carsData = cars.map( (car, k) => {
-    //         return <Text key={k}>{car.name}</Text>
-    //     } )
-    // }
-
-    render() {
-      // console.log(this.props);
-        return (
-
-          <Container style={styles.container}>
+   render() {
+      return (
+         <Container>
 
             <Content>
-
-              <Text style={styles.title}>Sign in to Epiclot</Text>
-
-              {
+               <Text style={styles.title}>Sign in to Epiclot</Text>
+               {
                  this.state.loading ? null :
                  <Text style={{textAlign:'center', margin:20}}>Enter your subdomain, email and password to access your Epiclot account</Text>
               }
@@ -157,109 +123,69 @@ class Login extends Component {
               {
                  this.state.showSplash ?
                  <Splash visible={this.state.showSplash} /> :
-
-              <Form style={{justifyContent:'center', alignItems:'center'}}>
-
-                  <Item >
-                      {/* <Label>Username</Label> */}
-                      <Icon name='ios-car-outline' />
-                      <Input
-                          maxLength = {45}
-                          keyboardType='default'
-                          style={styles.input_default}
-                          returnKeyType='next'
-                          placeholder='Sub Domain'
-                          onChangeText={ (text) => this.setState( {subdomain:text} ) }
-                          // onSubmitEditing = { () => this.emailInput.focus() }
-                          value={this.state.subdomain}
-                      />
+               <Form>
+                  <Item>
+                     <Icon name='ios-car-outline' />
+                     <Input
+                        style={styles.formInput}
+                        maxLength = {45}
+                        keyboardType='default'
+                        returnKeyType='next'
+                        placeholder='Sub Domain'
+                        value={this.state.subdomain}
+                        onChangeText={ (text) => this.setState( {subdomain:text} ) }
+                        // onSubmitEditing = { () => this.emailInput.focus() }
+                     />
                   </Item>
-
-                  <Item >
-                      <Icon name='ios-mail-outline' />
-                      <Input
-                          style={styles.input_default}
-                          maxLength = {45}
-                          keyboardType='email-address'
-                          returnKeyType='next'
-                          placeholder='Email'
-                          autoCorrect={false}
-                          autoCapitalize='none'
-                          onChangeText={ (text) => this.setState( {email:text} ) }
-                          // ref={ (input) => this.emailInput = input }
-                          value={this.state.email}
-                      />
+                  <Item>
+                     <Icon name='ios-mail-outline' />
+                     <Input
+                        style={styles.formInput}
+                        maxLength = {45}
+                        keyboardType='email-address'
+                        returnKeyType='next'
+                        placeholder='Email'
+                        autoCorrect={false}
+                        autoCapitalize='none'
+                        onChangeText={ (text) => this.setState( {email:text} ) }
+                        value={this.state.email}
+                        // ref={ (input) => this.emailInput = input }
+                     />
                   </Item>
-
-                  {/* <Item floatingLabel last> */}
-                  {/* <Item style={styles.input_container} regular> */}
-                  <Item >
-                      <Icon name='ios-unlock-outline' />
-                      <Input maxLength = {45} returnKeyType='go' secureTextEntry={true}
-                          style={styles.input_default}
-                          placeholder='Password'
-                          onChangeText={ (text) => this.setState( {password:text} ) }
-                          value={this.state.password}
-                      />
+                  <Item>
+                     <Icon name='ios-unlock-outline' />
+                     <Input maxLength = {45} returnKeyType='go' secureTextEntry={true}
+                        style={styles.formInput}
+                        placeholder='Password'
+                        value={this.state.password}
+                        onChangeText={ (text) => this.setState(  {password:text} ) }
+                     />
                   </Item>
-
-                  {/* <Item>
-                      <Switch
-                        onValueChange={(value) => this.setState({rememberMe: value})}
-                        style={{marginBottom: 10}}
-                        value={this.state.rememberMe} />
-                  </Item> */}
-
-                  {/* <Item rounded> */}
                   <Button
                      iconRight block
                      disabled={this.state.loading}
                      style={styles.loginButton}
-                     onPress={() => this.loginUser()}
+                     onPress={this.loginUser}
                      >
                      <Text style={{color:'white'}}>Login </Text>
                      {this.state.loading ? <Icon name='ios-more-outline' /> : <Icon name='ios-log-in-outline' />}
                  </Button>
-
                  {this.state.loading ? <Spinner /> : null}
-
-              </Form>
-           }
-
-              {/*  */}
-
-              {/* <Splash visible={this.state.showSplash} /> */}
-
-              {/* {this.carRow()} */}
-
-              {/* <Image alignSelf='center' resizeMode='contain' style={styles.logo_image} source={require('../../assets/img/epiclot.png')} /> */}
-
-
+               </Form>
+            }
             </Content>
 
-            <Footer>
-              {this.state.invalidUser ? <Text style={styles.loginMsg}>{this.state.loginMsg}</Text> : <Text/>}
-            </Footer>
+            {
+               this.state.invalidUser && this.state.loginMsg ?
+               <Footer style={styles.footerContainer}>
+                  <Text style={styles.footerMessage}>Footer</Text>
+               </Footer>
+               : null
+            }
+         </Container>
 
-          </Container>
-
-        );
-    }
+      )
+   }
 }
 
-// Login.propTypes = {
-//     dispatch: PropTypes.func.isRequired
-// };
-
-const mapStateToProps = (state) => {
-    return {
-        cars: state.cars,
-        session: state.session,
-    }
-}
-
-// const mapDispatchToProps = (dispatch) => {
-//   return { carActions, sessionActions }
-// }
-
-export default connect(mapStateToProps, sessionActions)(Login)
+export default Login

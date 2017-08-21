@@ -119,15 +119,6 @@ class Prospect extends Component {
             />
            }
 
-           {/* <FAB
-    					buttonColor="blue"
-    					style={{marginButton:54}}
-    					iconTextColor="#FFFFFF"
-    					onClickAction={() => {Actions.createProspect()}}
-    					visible={true}
-    					iconTextComponent={<Icon name="ios-add-outline"/>}
-   				/> */}
-
           </Content>
 
         </Container>

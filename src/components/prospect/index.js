@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-
-import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-native';
-
+import { Text, FlatList } from 'react-native';
 import { Container, Header, Content, Item, Icon, Input, Button, Spinner,
    List, ListItem, Thumbnail, Body, Footer, FooterTab, Tab, Tabs, TabHeading } from 'native-base';
 
-import FAB from 'react-native-fab' // component Float Button
+// import FAB from 'react-native-fab' // component Float Button
 
 import { Actions, ActionConst, Router, Scene } from 'react-native-router-flux';
 
@@ -24,9 +22,13 @@ class Dashboard2 extends Component {
       super(props)
       this.state = {
          index: 0,      // default screen index
+         carFilter: ''
       }
+      this.findElement = this.findElement.bind(this)
   }
 
+// ACTUALIZA EL STORE PARA SABER QUE COMPONENTE CARGAR
+// AL MOMENTO DE PRESIONAR AGREGAR (+)
   switchScreen(index) {
       this.setState({index: index})
 
@@ -42,84 +44,61 @@ class Dashboard2 extends Component {
    }
 
 
+   findElement(str) {
+      // console.log(`escribio: ${str}`)
+      this.setState({carFilter:str})
+      // console.log(`actualizo estado carFilter: ${this.state.carFilter}`)
+   }
+
   render() {
     let AppComponent = Cars;
+    let iconSearch = <Icon name="ios-car" />
 
     if (this.state.index == 0) {
        AppComponent = Cars
     } else {
        AppComponent = Prospect
+       iconSearch = <Icon name="ios-person" />
     }
 
 
       return(
-        <Container>
-          {/*<Header style={{marginTop:54}}>{this.state.index == 0 ? <Text>Cars</Text> : <Text>Prospects</Text>}</Header>*/}
+         <Container>
+            <Header style={{marginTop:56}} searchBar rounded>
+               <Item>
+                  <Icon name="ios-search" />
+                  <Input
+                     placeholder="Search"
+                     onChangeText={ (text) => this.findElement( text ) }
+                  />
+                  {iconSearch}
+               </Item>
+            </Header>
 
-          {/* <Header hasTabs />
-          <Tabs initialPage={0}>
-            <Tab heading="Cars" >
-              <Content>
-              <Cars />
-              </Content>
-            </Tab>
-            <Tab heading="Prospect">
-              <Content>
-                <Prospect />
-              </Content>
-            </Tab>
-            <Tab heading="Settings">
+            <Content>
 
-            </Tab>
-          </Tabs> */}
+               {this.state.index == 0 ? <Cars carFilter={this.state.carFilter} /> : <Prospect/>}
 
-          <Content>
+            </Content>
 
-              {this.state.index == 0 ? <Cars/> : <Prospect/>}
+            <Footer>
+               <FooterTab>
+                  <Button onPress={() => this.switchScreen(0) }>
+                     <Icon name="ios-car" />
+                     <Text>Cars</Text>
+                  </Button>
+                  <Button onPress={() => this.switchScreen(1) }>
+                     <Icon name="ios-person" />
+                     <Text>Prospects</Text>
+                  </Button>
+                  <Button onPress={() => this.switchScreen(2) } >
+                     <Icon name="navigate" />
+                     <Text>Settings</Text>
+                  </Button>
+               </FooterTab>
+            </Footer>
 
-          </Content>
-
-          {/* {
-          	this.state.index == 0 ?
-          		<FAB buttonColor="blue"
-          			style={{marginButton:54}}
-          			iconTextColor="#FFFFFF"
-          			onClickAction={() => {Actions.createCar()}}
-          			visible={true}
-          			iconTextComponent={<Icon name="ios-add-outline"/>}
-      			/>
- 			:
- 				<FAB
- 					buttonColor="blue"
- 					style={{marginButton:54}}
- 					iconTextColor="#FFFFFF"
- 					onClickAction={() => {Actions.createProspect()}}
- 					visible={true}
- 					iconTextComponent={<Icon name="ios-add-outline"/>}
-				/>
-			} */}
-
-      <Footer>
-
-          <FooterTab>
-            <Button onPress={() => this.switchScreen(0) }>
-              <Icon name="ios-car" />
-              <Text>Cars</Text>
-            </Button>
-            <Button onPress={() => this.switchScreen(1) }>
-              <Icon name="ios-person" />
-              <Text>Prospects</Text>
-            </Button>
-            <Button onPress={() => this.switchScreen(2) } >
-              <Icon name="navigate" />
-              <Text>Settings</Text>
-            </Button>
-          </FooterTab>
-
-      </Footer>
-
-
-        </Container>
+         </Container>
       )
   }
 
