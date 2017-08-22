@@ -22,7 +22,7 @@ class Dashboard2 extends Component {
       super(props)
       this.state = {
          index: 0,      // default screen index
-         carFilter: ''
+         listFilter: ''
       }
       this.findElement = this.findElement.bind(this)
   }
@@ -37,6 +37,7 @@ class Dashboard2 extends Component {
          _type = 'prospect'
       }else if (index===2) {
          _type = 'Settings'
+         alert('Under construction')
       }
 
       // DISPARA LA ACCION AL REDUCER
@@ -46,7 +47,7 @@ class Dashboard2 extends Component {
 
    findElement(str) {
       // console.log(`escribio: ${str}`)
-      this.setState({carFilter:str})
+      this.setState({listFilter:str})
       // console.log(`actualizo estado carFilter: ${this.state.carFilter}`)
    }
 
@@ -77,7 +78,11 @@ class Dashboard2 extends Component {
 
             <Content>
 
-               {this.state.index == 0 ? <Cars carFilter={this.state.carFilter} /> : <Prospect/>}
+               {
+                  this.state.index == 0
+                  ? <Cars carFilter={this.state.listFilter} />
+                  : <Prospect prospectFilter={this.state.listFilter} />
+               }
 
             </Content>
 

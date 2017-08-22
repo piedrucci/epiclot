@@ -102,8 +102,8 @@ class CreateCar extends Component {
             msgResponse: json.msg,
          })
          if (json.valid_vin){
-            const buttonNextCarImages = ()=><Icon name='ios-arrow-dropright' onPress={ () => this.nextStep() } />
-            Actions.refresh({renderRightButton: buttonNextCarImages})
+            // const buttonNextCarImages = ()=><Icon name='ios-arrow-dropright' onPress={ () => this.nextStep() } />
+            Actions.refresh({ rightTitle: 'Next', onRight:()=>this.nextStep() })
          }
       }catch(err) {
          console.log(err)

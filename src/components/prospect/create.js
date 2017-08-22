@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, AsyncStorage } from 'react-native';
 
 import { Container, Header, Content, Icon, Left, Right, Button,
     Body, Title, Footer, FooterTab, List, ListItem, Thumbnail,
@@ -45,17 +45,25 @@ class CreateProspect extends Component {
 
 // OBTENER LOS DATOS DE LA SESSION ACTUAL
     componentDidMount() {
-      const response = api.getSession()
-      response.then( (data) => {
-         this.setState({session: JSON.parse(data)})
-      } )
-      // console.log(this.props);
+      this.checkSession()
 
       if ( this.props.vinScanned ){
          this.setState({vin: this.props.vinScanned})
       }
 
+      Actions.refresh({title: 'Add Prospect'})
    }
+
+   async checkSession() {
+      const response = await AsyncStorage.getItem(api.getSessionName())
+      const json = JSON.parse(response)
+       if ( null !== json ) {
+          this.setState({session:json})
+       } else if ( null === json ) {
+           this.setState({loading:false});
+           alert('Empty data');
+       }
+  }
 
    componentWillUnmount () {
       this._listeners && this._listeners.forEach(listener => listener.remove());

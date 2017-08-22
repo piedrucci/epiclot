@@ -53,8 +53,9 @@ class CarImagesContainer extends Component {
 
    renderSceneRightButton() {
       if (this.state.arrayImages.length>0){
-         const buttonNextCarImages = ()=><Icon name='ios-arrow-dropright' onPress={ () => this.nextStep() } />
-         Actions.refresh({renderRightButton: buttonNextCarImages})
+         // const buttonNextCarImages = ()=><Icon name='ios-arrow-dropright' onPress={ () => this.nextStep() } />
+         // Actions.refresh({renderRightButton: buttonNextCarImages})
+         Actions.refresh({ rightTitle: 'Next', onRight:()=>this.nextStep() })
       }
    }
 

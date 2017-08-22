@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-native';
-
-import { Header, Item, Icon, Input, Button, Container, Content, Spinner,
-   List, ListItem, Thumbnail, Body, Footer } from 'native-base';
-
-import { Actions, ActionConst, Router, Scene } from 'react-native-router-flux';
-
+import { Container, Content, Spinner, ListItem, Body, CheckBox, Left, Thumbnail } from 'native-base';
+import FitImage from 'react-native-fit-image';
+import { Actions } from 'react-native-router-flux';
 import api from '../../utilities/api';
+import { FormattedCurrency } from 'react-native-globalize';
 
-// ===========================================
-import { connect } from 'react-redux';
-import * as appActions from '../../actions/appActions';
-// ================================================
+const listOfProspects = []
 
 class Prospect extends Component {
 
@@ -20,121 +15,140 @@ class Prospect extends Component {
       super(props);
       this.state = {
           error: false,
-          search: '',
           prospects: [],
           loading: true,
-          searchWord: '',
           refreshing: false,
+          dealership_id: null,
       }
+      this.handleRefresh = this.handleRefresh.bind(this)
   }
 
   componentDidMount() {
-      let _info = '';
-
-      _info = AsyncStorage.getItem(api.getSessionName())
-      .then( (value) => { return JSON.parse(value) || null; } )
-      .then( (JSON_Value) => {
-          // console.log(JSON_Value);
-          if ( null !== JSON_Value ) {
-              this.fetchData(JSON_Value.dealership_id).done()
-          } else if ( null === JSON_Value ) {
-              this.setState({loading:false});
-              alert('Empty data');
-          }
-      } )
+      this.checkSession().done()
   }
 
-   // GET REQUEST PARA OBTENER LA LISTA COMPLETA DE PROSPECTOS DEL DEALER ACTUAL
-   async fetchData(dealership_id) {
-       try {
-           // const response = await fetch(URL+dealership_id)
-           const response = api.getProspects(dealership_id);
-           response.then( (json) => {
-               // const json = await response.json()
-               this.setState({
-                   loading: false,
-                   prospects: json
-               })
-               listOfProspects = json;
-               // console.log(listOfCars);
-               // console.log(store.getState());
-           } )
-       } catch(err){
-           this.setState({
-               loading: false,
-               error: true
-           });
-           alert(err);
-       }
-   }
+  async checkSession() {
+     const response = await AsyncStorage.getItem(api.getSessionName())
+     const json = JSON.parse(response)
+      if ( null !== json ) {
+         this.setState({dealership_id:json.dealership_id})
+          this.fetchData(json.dealership_id)
+      } else if ( null === json ) {
+          this.setState({loading:false});
+          alert('Empty data');
+      }
+ }
 
-   /* Function: findWord
-      Description: esta funcion busca en el arreglo retornado por el servicio
-   */
-   findWord(word) {
-       const newData = listOfProspects.filter( (item) => {
+  componentWillReceiveProps(nextProps) {
+     this.findWord(nextProps.prospectFilter)
+  }
+
+// GET REQUEST PARA OBTENER LA LISTA COMPLETA DE PROSPECTOS DEL DEALER ACTUAL
+  async fetchData(dealership_id) {
+      try{
+         const response = await api.getProspects(dealership_id)
+         // if ( response.status === 500 )
+         const json = await response.json()
+         this.setState({
+            loading: false,
+            prospects: json,
+            refreshing:false,
+         })
+         listOfProspects = json;
+      }catch(err){
+         this.setState({
+            loading: false,
+            error: true,
+            refreshing:false,
+         });
+         alert(err);
+      }
+  }
+
+  findWord(word) {
+     try{
+        const newData = listOfProspects.filter( (item) => {
            const itemData = item.firstname.toLowerCase();
            const itemData2 = item.lastname.toLowerCase();
-           const textData  = word.toLowerCase();
+           const textData  = word.trim().toLowerCase();
            return (itemData.indexOf(textData) > -1) || (itemData2.indexOf(textData) > -1)
-       } );
-       // console.log(newData);
-       this.setState({prospects:newData});
-   }
-
-  render() {
-      return(
-        <Container>
-          {this.state.loading ? null :
-          <Header style={{marginTop:54}} searchBar rounded>
-              <Item>
-                  <Icon name="ios-search" />
-                  <Input
-                      placeholder="Search"
-                      onChangeText={ (text) => this.findWord( text ) }
-                  />
-                  <Icon name="ios-car" />
-              </Item>
-
-          </Header>
-          }
-
-          <Content>
-            {this.state.loading ? <Spinner style={{marginTop:75}} /> :
-             <FlatList
-               data={this.state.prospects}
-               renderItem={({item}) =>
-               <ListItem button onPress={()=>Actions.prospectDetail({prospect:item})} >
-                   <Body>
-                       <Text style={{fontWeight: 'bold', marginLeft: 10}}>{item.firstname} {item.lastname}</Text>
-
-                       <Text note style={{marginLeft: 10, }}>{item.address} </Text>
-                       <Text note style={{marginLeft: 10, }}>{item.city} - {item.state} </Text>
-                       {item.cellphone==='' ? null : <Text note style={{marginLeft: 10, }}>phone: {item.cellphone} </Text>}
-                   </Body>
-               </ListItem>}
-               keyExtractor={item => item.sales_id}
-            />
-           }
-
-          </Content>
-
-        </Container>
-      )
+        } );
+        // console.log(newData);
+        this.setState({prospects:newData});
+     }catch(err) {
+        alert(err)
+     }
   }
 
+  handleRefresh() {
+     this.setState({refreshing: true})
+     this.fetchData(this.state.dealership_id).done()
+ }
+
+  render() {
+      return (
+          <Container>
+
+              <Content>
+
+                {
+                   this.state.loading
+                   ? <Spinner style={{marginTop:75}} />
+                   :
+                 <FlatList
+                   data={this.state.prospects}
+                   keyExtractor={item => item.sales_id}
+                   refreshing={this.state.refreshing}
+                   onRefresh={this.handleRefresh}
+                   renderItem={({item}) =>
+                   <ListItem avatar onPress={()=>Actions.prospectDetail({prospect:item})} >
+                      <Left>
+                        <Thumbnail source={require('./../../assets/img/noun_49517_cc.png')} />
+                     </Left>
+                     <Body>
+                        <Text style={styles.itemTitle}>{item.firstname} {item.lastname}</Text>
+                        {/* <Text note style={styles.itemDetail}>{item.address}</Text> */}
+                        <Text note style={styles.itemDetail}>{item.city} {item.state}</Text>
+                        {item.cellphone==='' ? null : <Text note style={{marginLeft: 10, }}>phone: {item.cellphone} </Text>}
+                     </Body>
+                  </ListItem>}
+                />
+               }
+
+              </Content>
+          </Container>
+
+      );
+  }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        appGlobalParams: state.appParams,
-    }
-}
+const styles = StyleSheet.create({
+  thumbnailCarImage: {
+     borderRadius:10,
+     width:90,
+     height: 60
+  },
+  itemTitle:{
+     fontWeight: 'bold',
+     marginLeft: 10
+  },
+  itemDetail: {
+     marginLeft: 10,
+  },
+});
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        addTypeAction: (t) => dispatch(appActions.addType(t)),
-    };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Prospect)
+// const mapStateToProps = (state) => {
+//     return {
+//         appGlobalParams: state.appParams,
+//     }
+// }
+//
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         addTypeAction: (t) => dispatch(appActions.addType(t)),
+//     };
+// };
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Cars)
+export default (Prospect)

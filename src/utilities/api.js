@@ -36,7 +36,7 @@ var api = {
    // OBTIENE LA LISTA DE PROSPECTOS esto retorna un Promise.... usar con async-await
    getProspects(dealership_id) {
       // esto retorna un Promise.... usar  promesa.then()
-      const response = fetch( apiProspectsUrl + dealership_id ).then( (res) => res.json() );
+      const response = fetch( apiProspectsUrl + dealership_id );
       return response;
 
    },

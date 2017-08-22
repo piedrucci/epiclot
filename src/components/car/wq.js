@@ -35,6 +35,7 @@ class FormCar extends Component{
 
    componentDidMount() {
       this.checkSession().done()
+      Actions.refresh({ rightTitle: 'Save', onRight:()=>this.saveCar() })
    }
 
    async checkSession() {
@@ -42,7 +43,7 @@ class FormCar extends Component{
       this.setState({session: JSON.parse(session)})
    }
 
-   saveCar() {
+   async saveCar() {
       this.setState({isLoading:true})
 
       const fd = new FormData()
@@ -76,37 +77,32 @@ class FormCar extends Component{
       let photo = {};
 
       this.state.images.map( (image, index) => {
-         photo = {
-             uri: image,
-             type: 'image/jpeg',
-             name: jsonCarInfo.vin + '_' + index,
-         }
-         fd.append('image_'+index, photo)
-         // return null
+         // photo = {
+         //     uri: image,
+         //     type: 'image/jpeg',
+         //     name: jsonCarInfo.vin + '_' + index,
+         // }
+         // fd.append('image_'+index, photo)
+         // // return null
+            fd.append(index,{ uri: image,type: 'image/jpeg', name: index.toString() + 'appPhoto.jpg'})
          }
        )
+      //  console.log(fd)
 
-
-      fetch(api.getApi_Url() + 'cars',{
+      const response = await fetch(api.getApi_Url() + 'cars',{
+      // fetch(api.getApi_Url() + 'cars',{
          method: 'post',
          headers: {
             'Content-Type': 'multipart/form-data',
          },
          body: fd
-      }).then(response => {
-         console.log("Car Saved")
-         Actions.home2()
-      }).catch(err => {
-         console.log(err)
       })
 
-   }
-
-   renderSceneRightButton() {
-      if (this.state.arrayImages.length>0){
-         const buttonSaveCar = ()=><Icon name='ios-arrow-dropright' onPress={ () => this.nextStep() } />
-         Actions.refresh({renderRightButton: buttonNextCarImages})
+      if (response.status === 200 ) {
+         console.log("Car Saved, statusCode: "+response.status)
+         Actions.home2()
       }
+
    }
 
    render() {
@@ -115,9 +111,6 @@ class FormCar extends Component{
       const currentDate = moment().format("YYYY-MM-DD").toString()
       // console.log(`------> ${currentDate}`)
       return (
-         // <View style={{marginTop:60}}>
-         //    <Text>QQQQQQQQQQQQQQ</Text>
-         // </View>
          <Container style={{marginTop:60 }}>
 
              <Content>
@@ -282,7 +275,7 @@ class FormCar extends Component{
              </Content>
 
 
-             <Footer>
+             {/* <Footer>
                 <Button primary
                    style={styles.buttonNext}
                   onPress = {this.saveCar}
@@ -290,7 +283,7 @@ class FormCar extends Component{
                      <Text style={styles.titleButtonNext}>Save</Text>
                      <Icon style={styles.titleButtonNext} name='ios-checkmark-outline' />
                </Button>
-            </Footer>
+            </Footer> */}
 
          </Container>
       )

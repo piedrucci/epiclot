@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-native';
-import { Container, Content, Spinner, ListItem, Body } from 'native-base';
+import { Container, Content, Spinner, ListItem, Body, CheckBox } from 'native-base';
 import FitImage from 'react-native-fit-image';
 import { Actions } from 'react-native-router-flux';
 import api from '../../utilities/api';
@@ -23,7 +23,9 @@ class Cars extends Component {
           cars: [],
           loading: true,
           refreshing: false,
+          dealership_id: null,
       }
+      this.handleRefresh = this.handleRefresh.bind(this)
   }
 
   componentDidMount() {
@@ -34,6 +36,7 @@ class Cars extends Component {
       .then( (JSON_Value) => {
           // console.log(JSON_Value);
           if ( null !== JSON_Value ) {
+             this.setState({dealership_id:JSON_Value.dealership_id})
               this.fetchData(JSON_Value.dealership_id).done()
           } else if ( null === JSON_Value ) {
               this.setState({loading:false});
@@ -53,13 +56,15 @@ class Cars extends Component {
          const json = await response.json()
          this.setState({
             loading: false,
-            cars: json
+            cars: json,
+            refreshing:false,
          })
          listOfCars = json;
       }catch(err){
          this.setState({
             loading: false,
-            error: true
+            error: true,
+            refreshing:false,
          });
          alert(err);
       }
@@ -80,6 +85,11 @@ class Cars extends Component {
      }
   }
 
+  handleRefresh() {
+     this.setState({refreshing: true})
+     this.fetchData(this.state.dealership_id).done()
+ }
+
   render() {
       return (
           <Container>
@@ -93,6 +103,8 @@ class Cars extends Component {
                  <FlatList
                    data={this.state.cars}
                    keyExtractor={item => item.vin}
+                   refreshing={this.state.refreshing}
+                   onRefresh={this.handleRefresh}
                    renderItem={({item}) =>
                      <ListItem button onPress={()=>Actions.carDetail({car:item})} >
                        <FitImage style={styles.thumbnailCarImage} source={{uri: 'http://epiclot.com/dealer/accounts/'+item.subdomain+'/photos/'+item.photo}} />
