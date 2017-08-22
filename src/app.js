@@ -19,7 +19,6 @@ import CarDetail from './components/car/detail';
 import CreateCar from './components/car/create';
 import CreateCar2 from './components/car/create2';
 import CameraComp from './components/car/camScanner';
-import TabComp from './components/car/tabCar';
 import Dashboard2 from './components/prospect/index';
 import CreateProspect from './components/prospect/create';
 import ProspectDetail from './components/prospect/detail';
