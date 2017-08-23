@@ -21,6 +21,7 @@ class CarImagesContainer extends Component {
    async imagePicker() {
       try{
          const images = await ImagePicker.openPicker({multiple:true})
+         // console.log(images)
          images.map( (image, index)=>this.setState({arrayImages:[...this.state.arrayImages, image.path ]}) )
          this.renderSceneRightButton()
       }catch(err) {

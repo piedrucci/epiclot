@@ -41,6 +41,7 @@ class FormCar extends Component{
    async checkSession() {
       const session = await AsyncStorage.getItem(api.getSessionName())
       this.setState({session: JSON.parse(session)})
+      console.log(session)
    }
 
    async saveCar() {
@@ -55,6 +56,7 @@ class FormCar extends Component{
          user_id:this.state.session.user_id,
          id_user:this.state.session.user_id,
          delearship_id:this.state.session.dealership_id,
+         subdomain:this.state.session.user_domain,
 
          mileage: this.state.mileage,
          mileage_type: this.state.mileage_type,
@@ -76,21 +78,19 @@ class FormCar extends Component{
 
       let photo = {};
 
+      // agregar todas las imagenes al formData
       this.state.images.map( (image, index) => {
-         // photo = {
-         //     uri: image,
-         //     type: 'image/jpeg',
-         //     name: jsonCarInfo.vin + '_' + index,
-         // }
-         // fd.append('image_'+index, photo)
-         // // return null
-            fd.append(index,{ uri: image,type: 'image/jpeg', name: index.toString() + 'appPhoto.jpg'})
+            photo = {
+                uri: image,
+                type: 'image/jpeg',
+                name: `${jsonCarInfo.vin}_${index}`,
+            }
+            fd.append(`image_${index}`, photo)
          }
-       )
-      //  console.log(fd)
+      )
 
+      // enviar el POST con toda la info(incluyendo imagenes) ....
       const response = await fetch(api.getApi_Url() + 'cars',{
-      // fetch(api.getApi_Url() + 'cars',{
          method: 'post',
          headers: {
             'Content-Type': 'multipart/form-data',
@@ -98,11 +98,11 @@ class FormCar extends Component{
          body: fd
       })
 
+      // status 200 para determinar si la peticion tuvo exito!.
       if (response.status === 200 ) {
          console.log("Car Saved, statusCode: "+response.status)
          Actions.home2()
       }
-
    }
 
    render() {
