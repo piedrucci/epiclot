@@ -33,10 +33,20 @@ export default class ProspectDetail extends Component {
             prospect: this.props.prospect,
             loading: false
         }
+        this.editInfo = this.editInfo.bind(this)
     }
 
     componentDidMount() {
+      Actions.refresh({
+         // title: 'Add Prospect',
+         rightTitle: 'Edit',
+         onRight:()=>this.editInfo()
+      })
     }
+
+    editInfo = () => {
+      Actions.createObject({prospect: this.state.prospect})
+   }
 
     render({ prospect } = this.props) {
         const {

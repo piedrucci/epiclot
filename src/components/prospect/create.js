@@ -18,27 +18,28 @@ class CreateProspect extends Component {
       super(props)
       this.state = {
          session: {},
+         prospect: props.prospect || null,
 
-         newProspect: true,
-         driver_license: '1234567890',
-         sales_id: 0,
-         dealership_id: '',
-         firstname: 'Roberth',
-         lastname: 'Mejias',
-         address: 'Avenida',
-         zipcode: '07157',
-         state:'Panama',
-         city:'Ciudad de Panama',
-         cellphone: '60169131',
-         emailaddress: 'roberth@beecode.co',
-         looking_for:'toyota camry',
-         dob:'1958-03-15',
-         license_state:'FL',
-         license_issued:'2015-07-20',
-         license_expiration:'2018-01-01',
-         license_height:'5.3',
-         sex:'M',
-         user_id:'',
+         newProspect: (props.prospect===null),
+         driver_license: (props.prospect===null)?'1234567890':(props.prospect.license),
+         sales_id: (props.prospect===null)?0:(props.prospect.sales_id),
+         dealership_id: (props.prospect===null)?'':(props.prospect.dealership_id),
+         firstname: (props.prospect===null)?'roberth':(props.prospect.firstname),
+         lastname: (props.prospect===null)?'mejias':(props.prospect.lastname),
+         address: (props.prospect===null)?'avenida':(props.prospect.address),
+         zipcode: (props.prospect===null)?'07157':(props.prospect.zipcode),
+         state:(props.prospect===null)?'PA':(props.prospect.state),
+         city:(props.prospect===null)?'Ciudad de Panama':(props.prospect.city),
+         cellphone: (props.prospect===null)?'507 60169131':(props.prospect.cellphone),
+         emailaddress: (props.prospect===null)?'roberth@beecode.co':(props.prospect.emailaddress),
+         looking_for: (props.prospect===null)?'ford explorer':(props.prospect.looking_for),
+         dob:(props.prospect===null)?'1958-03-15':(props.prospect.birthday),
+         license_state:(props.prospect===null)?'FL':(props.prospect.licensestate),
+         license_issued:(props.prospect===null)?'2015-07-20':(props.prospect.license_issued),
+         license_expiration:(props.prospect===null)?'2018-01-01':(props.prospect.license_expiration),
+         license_height:(props.prospect===null)?'5.3':(props.prospect.license_height),
+         sex:(props.prospect===null)?'Male':(props.prospect.sex),
+         user_id:(props.prospect===null)?'':(props.prospect.user),
 
          checkingLicense: false,
          validLicense: false,
@@ -171,10 +172,13 @@ class CreateProspect extends Component {
     }
 
     async saveInfo() {
+
+      if ( this.state.prospect )
+
       this.setState({savingInfo:true})
       const prospect = {
-         newProspect: true,
-      	sales_id: 0,
+         newProspect: this.state.newProspect,
+      	sales_id: this.state.sales_id,
       	dealership_id: this.state.session.dealership_id,
       	firstname: this.state.firstname,
       	lastname: this.state.lastname,
@@ -194,7 +198,7 @@ class CreateProspect extends Component {
       	sex: this.state.sex,
       	user_id: this.state.session.user_id
       }
-      // console.log(prospect)
+      console.log(prospect)
       // const response = await api.sendPOST(api.getApi_Url()+'prospect}', prospect)
       // console.log(response)
       const response = await fetch(api.getApi_Url() + 'prospect',{
@@ -216,6 +220,7 @@ class CreateProspect extends Component {
    }
 
     render() {
+      // console.log(this.state.prospect)
         return(
          //   , flex:1, alignItems:'center', justifyContent:'center'
             <Content style={{marginTop:60}}>

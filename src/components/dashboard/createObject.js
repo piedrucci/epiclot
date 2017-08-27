@@ -16,6 +16,7 @@ class CreateObject extends Component {
       super(props)
       this.state = {
          addType: this.props.appGlobalParams.addType,
+         prospect: props.prospect || null,
       }
    }
 
@@ -26,7 +27,7 @@ class CreateObject extends Component {
       if (this.state.addType == 'car') {
          renderedComponent = <CreateCar />;
       } else if (this.state.addType == 'prospect'){
-         renderedComponent = <CreateProspect />;
+         renderedComponent = <CreateProspect prospect={this.state.prospect} />;
       }
 //    =========================================================================
 
