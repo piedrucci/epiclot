@@ -1,23 +1,18 @@
 import React, { Component } from 'react';
-
 import PropTypes from 'prop-types';
-
 import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-native';
-
-import { Header, Item, Icon, Input, Button, Container, Content, Spinner,
-   List, ListItem, Thumbnail, Body, Footer, FooterTab } from 'native-base';
-
+import { Container, Content, Spinner, ListItem, Body, CheckBox } from 'native-base';
 import FitImage from 'react-native-fit-image';
-
-import { Actions, ActionConst, Router, Scene } from 'react-native-router-flux';
-
+import { Actions } from 'react-native-router-flux';
 import api from '../../utilities/api';
-
-import { FormattedNumber, FormattedCurrency } from 'react-native-globalize';
+import { FormattedCurrency } from 'react-native-globalize';
 
 const listOfCars = []
 
-import store from '../../store';
+// ===========================================
+// import { connect } from 'react-redux';
+// import * as appActions from '../../actions/appActions';
+// ================================================
 
 class Cars extends Component {
 
@@ -25,12 +20,12 @@ class Cars extends Component {
       super(props);
       this.state = {
           error: false,
-          search: '',
           cars: [],
           loading: true,
-          searchWord: '',
           refreshing: false,
+          dealership_id: null,
       }
+      this.handleRefresh = this.handleRefresh.bind(this)
   }
 
   componentDidMount() {
@@ -41,6 +36,7 @@ class Cars extends Component {
       .then( (JSON_Value) => {
           // console.log(JSON_Value);
           if ( null !== JSON_Value ) {
+             this.setState({dealership_id:JSON_Value.dealership_id})
               this.fetchData(JSON_Value.dealership_id).done()
           } else if ( null === JSON_Value ) {
               this.setState({loading:false});
@@ -49,104 +45,111 @@ class Cars extends Component {
       } )
   }
 
+  componentWillReceiveProps(nextProps) {
+     this.findWord(nextProps.carFilter)
+  }
+
 // GET REQUEST PARA OBTENER LA LISTA COMPLETA DE CARROS DEL DEALER ACTUAL
   async fetchData(dealership_id) {
       try{
-          // const response = await fetch(URL+dealership_id)
-          const response = api.getCars(dealership_id);
-          response.then( (json) => {
-              // const json = await response.json()
-              this.setState({
-                  loading: false,
-                  cars: json
-              })
-              listOfCars = json;
-              // console.log(listOfCars);
-              // console.log(store.getState());
-          } )
+         const response = await api.getCars(dealership_id);
+         const json = await response.json()
+         this.setState({
+            loading: false,
+            cars: json,
+            refreshing:false,
+         })
+         listOfCars = json;
       }catch(err){
-          this.setState({
-              loading: false,
-              error: true
-          });
-          alert(err);
+         this.setState({
+            loading: false,
+            error: true,
+            refreshing:false,
+         });
+         alert(err);
       }
   }
 
   findWord(word) {
-      const newData = listOfCars.filter( (item) => {
-          const itemData = item.make.toLowerCase();
-          const itemData2 = item.model.toLowerCase();
-          const textData  = word.toLowerCase();
-          return (itemData.indexOf(textData) > -1) || (itemData2.indexOf(textData) > -1)
-      } );
-      // console.log(newData);
-      this.setState({cars:newData});
+     try{
+        const newData = listOfCars.filter( (item) => {
+           const itemData = item.make.toLowerCase();
+           const itemData2 = item.model.toLowerCase();
+           const textData  = word.trim().toLowerCase();
+           return (itemData.indexOf(textData) > -1) || (itemData2.indexOf(textData) > -1)
+        } );
+        // console.log(newData);
+        this.setState({cars:newData});
+     }catch(err) {
+        alert(err)
+     }
   }
 
-  render() {
+  handleRefresh() {
+     this.setState({refreshing: true})
+     this.fetchData(this.state.dealership_id).done()
+ }
 
-      return (
-          <Container>
+ render() {
+    return (
 
-              {this.state.loading ? null :
-              <Header style={{marginTop:54}} searchBar rounded>
-                  <Item>
-                      <Icon name="ios-search" />
-                      <Input
-                          placeholder="Search"
-                          // onChangeText={ (text) => this.setState( {searchWord:text} ) }
-                          onChangeText={ (text) => this.findWord( text ) }
-                      />
-                      <Icon name="ios-car" />
-                  </Item>
-                  {/* <Button transparent>
-                      <Text>Search</Text>
-                  </Button> */}
-              </Header>
-              }
+      <Content>
 
-              <Content>
+         {
+            this.state.loading
+            ? <Spinner style={{marginTop:75}} />
+            :
+            <FlatList
+               data={this.state.cars}
+               keyExtractor={item => item.vin}
+               refreshing={this.state.refreshing}
+               onRefresh={this.handleRefresh}
+               renderItem={({item}) =>
+               <ListItem button onPress={()=>Actions.carDetail({car:item})} >
+                  <FitImage style={styles.thumbnailCarImage} source={{uri: 'http://epiclot.com/dealer/accounts/'+item.subdomain+'/photos/'+item.photo}} />
+                  <Body>
+                     <Text style={styles.itemTitle}>{item.make} {item.model}</Text>
 
-                {this.state.loading ? <Spinner style={{marginTop:75}} /> :
-                 <FlatList
-                   data={this.state.cars}
-                   renderItem={({item}) =>
-                   <ListItem button onPress={()=>Actions.carDetail({car:item})} >
-                       <FitImage style={{borderRadius:10, width:90, height: 60}} source={{uri: 'http://epiclot.com/dealer/accounts/'+item.subdomain+'/photos/'+item.photo}} />
-                       <Body>
-                           <Text style={{fontWeight: 'bold', marginLeft: 10}}>{item.make} {item.model}</Text>
+                     <Text note style={styles.itemDetail}>{item.year}</Text>
+                     <Text note style={styles.itemDetail}>{item.condition}</Text>
+                     <Text note style={styles.itemDetail}><FormattedCurrency value={parseFloat(item.webprice)} /></Text>
+                  </Body>
+               </ListItem>}
+            />
+         }
 
-                           <Text note style={{marginLeft: 10, }}>{item.year}</Text>
-                           <Text note style={{marginLeft: 10, }}>{item.condition}</Text>
-                           <Text note style={{marginLeft: 10, }}>
-                               <FormattedCurrency value={parseFloat(item.webprice)} />
-                           </Text>
-
-                       </Body>
-                   </ListItem>}
-                   keyExtractor={item => item.vin}
-                />
-               }
-
-              </Content>
-
-          </Container>
-
-      );
-  }
+      </Content>
+   );
+}
 }
 
 const styles = StyleSheet.create({
-  footer: {
-      // color: 'blue',
-      fontWeight: 'bold',
-      fontSize: 18,
-      textAlign: 'center'
+  thumbnailCarImage: {
+     borderRadius:10,
+     width:90,
+     height: 60
   },
-  fitImage: {
-      borderRadius: 20,
-    },
+  itemTitle:{
+     fontWeight: 'bold',
+     marginLeft: 10
+  },
+  itemDetail: {
+     marginLeft: 10,
+  },
 });
 
-export default Cars
+
+// const mapStateToProps = (state) => {
+//     return {
+//         appGlobalParams: state.appParams,
+//     }
+// }
+//
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         addTypeAction: (t) => dispatch(appActions.addType(t)),
+//     };
+// };
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Cars)
+export default (Cars)

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, AsyncStorage } from 'react-native';
 
 import { Container, Header, Content, Icon, Left, Right, Button,
     Body, Title, Footer, FooterTab, List, ListItem, Thumbnail,
@@ -27,9 +27,9 @@ class CreateCar extends Component {
       super(props)
       this.state = {
          session: {},
-         vin: 'NM0LS7EX9G1276250',
+         // vin: 'NM0LS7EX9G1276250',
          // vin: '1M1AW07Y1GM051234',
-         // vin: '5XXGM4A70FG352220',
+         vin: '5XXGM4A70FG352220',
          checkingVIN: false,
          validVin: false,
          disableCheckButton: false,
@@ -47,20 +47,23 @@ class CreateCar extends Component {
 
 // OBTENER LOS DATOS DE LA SESSION ACTUAL
     componentDidMount() {
-      const response = api.getSession()
-      response.then( (data) => {
-         this.setState({session: JSON.parse(data)})
-      } )
       // console.log(this.props);
+      this.setSessionData()
 
       if ( this.props.vinScanned ){
          this.setState({vin: this.props.vinScanned})
       }
 
+      Actions.refresh({title: 'Add Car'})
    }
 
    componentWillUnmount () {
       this._listeners && this._listeners.forEach(listener => listener.remove());
+   }
+
+   async setSessionData() {
+      const session = await AsyncStorage.getItem(api.getSessionName())
+      this.setState({session: JSON.parse(session)})
    }
 
 // ACTIVA - DESACTIVA EL BOTON DE CHECK VIN
@@ -72,7 +75,7 @@ class CreateCar extends Component {
 
 
 // CUEQUEA EL VIN INGRESADO EN EL TEXTBOX
-    checkVINCode() {
+    async checkVINCode() {
 
       this.setState({
          disableCheckButton:true,
@@ -82,40 +85,49 @@ class CreateCar extends Component {
          msgResponse: ''
       })
 
-      const res = api.checkVIN(this.state.vin, this.state.session.dealership_id)
-      res.then( (data) => {
-         // console.log(data)
+      try{
+         const response = await api.checkVIN(this.state.vin, this.state.session.dealership_id)
+         const json = await response.json()
+
+         let vinDetails = json
+         delete vinDetails.details;
+         delete vinDetails.msg;
+
          this.setState({
             disableCheckButton:false,
             checkingVIN:false,
-            vinInfo:data,
-            validVin: (data.valid_vin) ? true : false,
+            vinInfo:vinDetails,
+            validVin: (json.valid_vin) ? true : false,
             captionCheckButton: 'Check VIN ',
-            msgResponse: data.msg,
+            msgResponse: json.msg,
          })
-      } )
+         if (json.valid_vin){
+            // const buttonNextCarImages = ()=><Icon name='ios-arrow-dropright' onPress={ () => this.nextStep() } />
+            Actions.refresh({ rightTitle: 'Next', onRight:()=>this.nextStep() })
+         }
+      }catch(err) {
+         console.log(err)
+         this.setState({
+            disableCheckButton:false,
+            checkingVIN:false,
+            vinInfo:null,
+            validVin: false,
+            captionCheckButton: 'Check VIN ',
+            msgResponse: '',
+         })
+      }
+
    }
 
    // ENVIAR DATOS Y AVANZAR
    nextStep() {
-      this.props.fillCarInfo({vin:this.state.vin})
-      Actions.createCar2({validVin: this.state.vin})
-      // Actions.tabCar()
-      // console.log(this.props)
+      Actions.carImages({vinInfo: this.state.vinInfo})
    }
 
    getCarInfo() {
       // alert(this.props.getCarInfo());
       console.log(this.props.getCarInfo())
    }
-
-   // takePicture() {
-   //    const options = {};
-   //    //options.location = ...
-   //    this.camera.capture({metadata: options})
-   //    .then((data) => console.log(data))
-   //    .catch(err => console.error(err));
-   // }
 
    // _onBarCodeRead(e) {
    //    // this.setState({showCamera: false});
@@ -145,23 +157,8 @@ class CreateCar extends Component {
 
     render() {
         return(
-         //   , flex:1, alignItems:'center', justifyContent:'center'
-         <Container style={{marginTop:60}}>
-
-            <Content>
-
-               <Form >
-
-                  {/* <Camera
-                     ref={(cam) => {
-                        this.camera = cam;
-                     }}
-                     style={styles.preview}
-                     aspect={Camera.constants.Aspect.fill}
-                     onBarCodeRead={this._onBarCodeRead}
-                     >
-                     <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
-                  </Camera> */}
+           <Content style={{marginTop:60}}>
+             <Form >
 
                   <Item >
                      {/* <Label>Username</Label> */}
@@ -185,8 +182,8 @@ class CreateCar extends Component {
 
                   </Item>
 
-
                </Form>
+
                <Button
                   disabled={this.state.disableCheckButton}
                   style={{alignSelf: 'center', width:250,justifyContent: 'center',
@@ -200,31 +197,19 @@ class CreateCar extends Component {
                {this.state.checkingVIN ? <Spinner /> : null }
                {this.state.validVin ? <VinDetail det={this.state.vinInfo}  /> : null }
 
-            </Content>
-
-
-            {this.state.msgResponse === '' ? null :
-            <Footer>
+               {this.state.msgResponse === '' ? null :
+            // <Text>
                <Text style={styles.loginMsg}>{this.state.msgResponse}</Text>
-            </Footer> }
+            // </Text>
+         }
 
-            {!this.state.validVin ? null :
-               <Footer>
-                  <Button primary
-                     style={styles.buttonNext}
-                     onPress = { this.nextStep }
-                  >
-                     <Text style={styles.titleButtonNext}>Next</Text>
-                     <Icon style={styles.titleButtonNext} name='ios-arrow-forward-outline' />
-                  </Button>
-               </Footer> }
-
-            </Container>
+           </Content>
 
         )
     }
 
 }
+
 
 const mapStateToProps = (state) => {
     return {

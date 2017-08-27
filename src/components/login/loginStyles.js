@@ -3,33 +3,38 @@ import { StyleSheet, Dimensions } from 'react-native';
 const window = Dimensions.get('window');
 
 export default StyleSheet.flatten({
-    title: {
-        // marginTop: 50,
-        // margin: 50,
-        color: '#393939',
-        fontSize: 22,
-        fontWeight: 'bold',
-        textAlign: 'center'
+   container: {
+      flex: 1,
+      flexDirection:'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      // backgroundColor:'#efefef',
+   },
+
+    footerContainer: {
+        backgroundColor: '#003366',
     },
 
-    loginMsg: {
-        // marginTop: 10,
+    footerMessage: {
         color: '#efefef',
         // fontWeight: 'bold',
-        fontSize: 18,
-        textAlign: 'center',
+        fontSize: 16,
         textAlignVertical:'center',
-        backgroundColor: '#003366',
-        width: window.width
     },
 
-    container: {
-        flex: 1,
-        flexDirection:'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        // backgroundColor:'#efefef',
-    },
+    formInput: {
+      color: '#393939',
+   },
+
+    title: {
+      // marginTop: 50,
+      // margin: 50,
+      color: '#575757',
+      fontSize: 22,
+      fontWeight: 'bold',
+      textAlign: 'center'
+   },
+
 
     content: {
         alignItems: 'center',
@@ -44,12 +49,6 @@ export default StyleSheet.flatten({
         resizeMode: 'contain'
     },
 
-    input_default: {
-      flex:1,
-        // backgroundColor:'white',
-        color: '#393939',
-        // backgroundColor:'rgba(66,66,66,0.9)',
-    },
 
     input_container: {
         marginTop: 10

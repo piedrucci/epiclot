@@ -24,12 +24,11 @@ export default StyleSheet.flatten({
         backgroundColor: '#003366',
         width: window.width
     },
-
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        // flexDirection: 'column',
+        flexDirection: 'column',
         // backgroundColor:'#121212',
         // backgroundColor:'#34495e',
         // backgroundColor:'#efefef',
