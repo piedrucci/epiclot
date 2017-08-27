@@ -41,7 +41,6 @@ class FormCar extends Component{
    async checkSession() {
       const session = await AsyncStorage.getItem(api.getSessionName())
       this.setState({session: JSON.parse(session)})
-      console.log(session)
    }
 
    async saveCar() {
@@ -83,11 +82,12 @@ class FormCar extends Component{
             photo = {
                 uri: image,
                 type: 'image/jpeg',
-                name: `${jsonCarInfo.vin}_${index}`,
+                name: `${jsonCarInfo.vin}_${index}.jpg`,
             }
             fd.append(`image_${index}`, photo)
          }
       )
+      // console.log(fd)
 
       // enviar el POST con toda la info(incluyendo imagenes) ....
       const response = await fetch(api.getApi_Url() + 'cars',{

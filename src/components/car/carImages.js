@@ -15,7 +15,7 @@ class ImageElement extends Component {
    }
 
    componentDidMount() {
-
+      console.log(containerMarginTop)
    }
 
    componentWillReceiveProps(nextProps) {
@@ -38,9 +38,9 @@ class ImageElement extends Component {
       )
 
       return (
-         <View style={styles.imageContainer}>
+         <View style={(items>0)?styles.imageContainer:styles.emptyImageContainer}>
             {(items>0) ?elements:
-               <View style={{marginTop:containerMarginTop}}>
+               <View style={styles.emptyImageContainer}>
                   <Image
                      style={{width:128, height:128}}
                      source={require('./../../assets/img/if_icon-images_211678.png')}
@@ -56,13 +56,18 @@ class ImageElement extends Component {
 const styles = StyleSheet.create({
    imageContainer: {
       flex:1,
-      flexDirection: 'column',
-      justifyContent: 'center',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+   },
+   emptyImageContainer: {
+      flex:1,
+      // flexDirection: 'column',
       alignItems: 'center',
+      marginTop:containerMarginTop,
    },
    imageStyle: {
-      width: imageWidth,
-      height: imageWidth,
+      width: imageWidth-10,
+      height: imageWidth-10,
       margin: 5
    },
 });

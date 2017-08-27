@@ -81,13 +81,14 @@ class Prospect extends Component {
   }
 
   handleRefresh() {
+     alert('refresing...')
      this.setState({refreshing: true})
      this.fetchData(this.state.dealership_id).done()
  }
 
   render() {
       return (
-          <Container>
+         //  <Container>
 
               <Content>
 
@@ -116,7 +117,7 @@ class Prospect extends Component {
                }
 
               </Content>
-          </Container>
+         //  </Container>
 
       );
   }

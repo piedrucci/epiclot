@@ -115,6 +115,9 @@ class Login extends Component {
 
             <Content>
                <Text style={styles.title}>Sign in to Epiclot</Text>
+               <Image style={{width:120, height:120, alignSelf:'center'}} source={require('./../../assets/img/logofinal.png')} />
+            {/* </Content>
+            <Content> */}
                {
                  this.state.loading ? null :
                  <Text style={{textAlign:'center', margin:20}}>Enter your subdomain, email and password to access your Epiclot account</Text>

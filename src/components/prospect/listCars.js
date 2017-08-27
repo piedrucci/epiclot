@@ -90,40 +90,37 @@ class Cars extends Component {
      this.fetchData(this.state.dealership_id).done()
  }
 
-  render() {
-      return (
-          <Container>
+ render() {
+    return (
 
-              <Content>
+      <Content>
 
-                {
-                   this.state.loading
-                   ? <Spinner style={{marginTop:75}} />
-                   :
-                 <FlatList
-                   data={this.state.cars}
-                   keyExtractor={item => item.vin}
-                   refreshing={this.state.refreshing}
-                   onRefresh={this.handleRefresh}
-                   renderItem={({item}) =>
-                     <ListItem button onPress={()=>Actions.carDetail({car:item})} >
-                       <FitImage style={styles.thumbnailCarImage} source={{uri: 'http://epiclot.com/dealer/accounts/'+item.subdomain+'/photos/'+item.photo}} />
-                       <Body>
-                           <Text style={styles.itemTitle}>{item.make} {item.model}</Text>
+         {
+            this.state.loading
+            ? <Spinner style={{marginTop:75}} />
+            :
+            <FlatList
+               data={this.state.cars}
+               keyExtractor={item => item.vin}
+               refreshing={this.state.refreshing}
+               onRefresh={this.handleRefresh}
+               renderItem={({item}) =>
+               <ListItem button onPress={()=>Actions.carDetail({car:item})} >
+                  <FitImage style={styles.thumbnailCarImage} source={{uri: 'http://epiclot.com/dealer/accounts/'+item.subdomain+'/photos/'+item.photo}} />
+                  <Body>
+                     <Text style={styles.itemTitle}>{item.make} {item.model}</Text>
 
-                           <Text note style={styles.itemDetail}>{item.year}</Text>
-                           <Text note style={styles.itemDetail}>{item.condition}</Text>
-                           <Text note style={styles.itemDetail}><FormattedCurrency value={parseFloat(item.webprice)} /></Text>
-                       </Body>
-                    </ListItem>}
-                />
-               }
+                     <Text note style={styles.itemDetail}>{item.year}</Text>
+                     <Text note style={styles.itemDetail}>{item.condition}</Text>
+                     <Text note style={styles.itemDetail}><FormattedCurrency value={parseFloat(item.webprice)} /></Text>
+                  </Body>
+               </ListItem>}
+            />
+         }
 
-              </Content>
-          </Container>
-
-      );
-  }
+      </Content>
+   );
+}
 }
 
 const styles = StyleSheet.create({

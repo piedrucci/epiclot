@@ -83,9 +83,8 @@ const App = () => {
                      />
                     <Scene key='createCar2' component={CreateCar2} hideNavBar={false} title='New Car' />
                     <Scene key='cameraScanner' component={CameraComp} hideNavBar={true} title='Scan Vin' />
-                    <Scene key='formCar' component={FormCar} hideNavBar={false} title='DDDDDDDDDD' />
-                    <Scene key='carImages' component={CarImagesContainer}
-                       hideNavBar={false} title='Add Images' />
+                    <Scene key='formCar' component={FormCar} hideNavBar={false} title='Car Info' />
+                    <Scene key='carImages' component={CarImagesContainer} hideNavBar={false} title='Add Images' />
 
                     {/* NEW HOME WITCH TAB BAR AND FLOAT BUTTON */}
                     <Scene key='home2' component={Dashboard2} hideNavBar={false} title='Home'

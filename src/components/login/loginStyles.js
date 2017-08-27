@@ -29,7 +29,7 @@ export default StyleSheet.flatten({
     title: {
       // marginTop: 50,
       // margin: 50,
-      color: '#393939',
+      color: '#575757',
       fontSize: 22,
       fontWeight: 'bold',
       textAlign: 'center'

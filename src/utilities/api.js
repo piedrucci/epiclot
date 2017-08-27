@@ -13,7 +13,7 @@ var api = {
    // ENVIA UN POST REQUEST GENERICO ... (SOLO PASARLE EL ENDPOINT Y EL PAYLOAD)
    sendPOST(endPointUrl, payload) {
       const response = fetch( endPointUrl , {
-          method: 'POST',
+          method: 'post',
           headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',

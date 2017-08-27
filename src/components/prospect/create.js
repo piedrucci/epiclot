@@ -1,23 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-import { StyleSheet, Text, View, Alert, AsyncStorage } from 'react-native';
-
+import { StyleSheet, Text, View, Alert, AsyncStorage, Dimensions } from 'react-native';
 import { Container, Header, Content, Icon, Left, Right, Button,
     Body, Title, Footer, FooterTab, List, ListItem, Thumbnail,
     Item, Input, Form, Label, Spinner, InputGroup, Picker } from 'native-base';
-
 import { Actions } from 'react-native-router-flux';
-
 import styles from './carStyles';
 import api from '../../utilities/api';
+import DatePicker from 'react-native-datepicker'
 
-import Camera from 'react-native-camera';
 
-// ===========================================
-import { connect } from 'react-redux';
-import * as carActions from '../../actions/carActions';
-// ================================================
+const {height, width} = Dimensions.get('window')
 
 class CreateProspect extends Component {
 
@@ -25,22 +18,45 @@ class CreateProspect extends Component {
       super(props)
       this.state = {
          session: {},
-         license: '',
-         // vin: '1M1AW07Y1GM051234',
-         // vin: '5XXGM4A70FG352220',
+
+         newProspect: true,
+         driver_license: '1234567890',
+         sales_id: 0,
+         dealership_id: '',
+         firstname: 'Roberth',
+         lastname: 'Mejias',
+         address: 'Avenida',
+         zipcode: '07157',
+         state:'Panama',
+         city:'Ciudad de Panama',
+         cellphone: '60169131',
+         emailaddress: 'roberth@beecode.co',
+         looking_for:'toyota camry',
+         dob:'1958-03-15',
+         license_state:'FL',
+         license_issued:'2015-07-20',
+         license_expiration:'2018-01-01',
+         license_height:'5.3',
+         sex:'M',
+         user_id:'',
+
          checkingLicense: false,
          validLicense: false,
          disableCheckButton: false,
-         captionCheckButton: 'Check License ',
+         captionCheckButton: "Scan driver's license ",
          msgResponse: '',
          vinInfo: {},
+         savingInfo: false,
 
       }
+
+      this.handleChange = this.handleChange.bind(this)
+      this.saveInfo = this.saveInfo.bind(this)
 
       this.checkVINCode = this.checkVINCode.bind(this)
       this.switchButtonStatus = this.switchButtonStatus.bind(this)
       this.nextStep = this.nextStep.bind(this)
-      this.getCarInfo = this.getCarInfo.bind(this)
+      // this.getCarInfo = this.getCarInfo.bind(this)
    }
 
 // OBTENER LOS DATOS DE LA SESSION ACTUAL
@@ -51,12 +67,17 @@ class CreateProspect extends Component {
          this.setState({vin: this.props.vinScanned})
       }
 
-      Actions.refresh({title: 'Add Prospect'})
+      Actions.refresh({
+         title: 'Add Prospect',
+         rightTitle: 'Save',
+         onRight:()=>this.saveInfo()
+      })
    }
 
    async checkSession() {
       const response = await AsyncStorage.getItem(api.getSessionName())
       const json = JSON.parse(response)
+      // console.log(json)
        if ( null !== json ) {
           this.setState({session:json})
        } else if ( null === json ) {
@@ -110,9 +131,9 @@ class CreateProspect extends Component {
       // console.log(this.props)
    }
 
-   getCarInfo() {
-      // alert(this.props.getCarInfo());
-      console.log(this.props.getCarInfo())
+   handleChange(e, data){
+      console.log(data);
+      // alert(e.target.value)
    }
 
    // takePicture() {
@@ -149,89 +170,364 @@ class CreateProspect extends Component {
         this._barCode.stopScan()
     }
 
+    async saveInfo() {
+      this.setState({savingInfo:true})
+      const prospect = {
+         newProspect: true,
+      	sales_id: 0,
+      	dealership_id: this.state.session.dealership_id,
+      	firstname: this.state.firstname,
+      	lastname: this.state.lastname,
+      	address: this.state.address,
+      	zipcode: this.state.zipcode,
+      	city: this.state.city,
+      	state: this.state.state,
+      	cellphone: this.state.cellphone,
+      	emailaddress: this.state.emailaddress,
+      	looking_for: this.state.looking_for,
+      	dob: this.state.dob,
+      	driver_license: this.state.driver_license,
+      	license_state: this.state.license_state,
+      	license_issued: this.state.license_issued,
+      	license_expiration: this.state.license_expiration,
+      	license_height: this.state.license_height,
+      	sex: this.state.sex,
+      	user_id: this.state.session.user_id
+      }
+      // console.log(prospect)
+      // const response = await api.sendPOST(api.getApi_Url()+'prospect}', prospect)
+      // console.log(response)
+      const response = await fetch(api.getApi_Url() + 'prospect',{
+         method: 'post',
+         headers: {
+             'Accept': 'application/json',
+             'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(prospect)
+      })
+
+      // status 200 para determinar si la peticion tuvo exito!.
+      if (response.status === 200 ) {
+         console.log("Prospect Saved, statusCode: "+response.status)
+         Actions.home2()
+      }
+      this.setState({savingInfo:false})
+
+   }
+
     render() {
         return(
          //   , flex:1, alignItems:'center', justifyContent:'center'
-         <Container style={{marginTop:60}}>
+            <Content style={{marginTop:60}}>
 
-            <Content>
-
+               {
+                  this.state.savingInfo
+                  ? <Spinner />
+                  :
                <Form >
 
+                  <Button
+                     disabled={this.state.disableCheckButton}
+                     style={{alignSelf: 'center', width:(width*65)/100,justifyContent: 'center',
+                     alignItems: 'center', margin:10}}
+                     onPress={() => Actions.cameraScanner() } >
+                     <Text style={{color:'white'}}>{this.state.captionCheckButton}</Text>
+                     <Icon name='ios-camera-outline' />
+                  </Button>
+
                   <Item >
-                     {/* <Label>Username</Label> */}
+                     <Icon name='ios-barcode-outline' />
+                     <Input
+                        // maxLength = {20}
+                        keyboardType='default'
+                        //   style={{width:250}}
+                        returnKeyType='next'
+                        placeholder='Driver license'
+                        autoCapitalize='characters'
+                        onChangeText={ (text) => this.setState({driver_license:text}) }
+                        // onSubmitEditing = { () => this.emailInput.focus() }
+                        value={this.state.driver_license}
+                     />
+
+                  </Item>
+
+                  <Item >
                      <Icon name='ios-barcode-outline' />
                      <Input
                         maxLength = {20}
                         keyboardType='default'
                         //   style={{width:250}}
                         returnKeyType='next'
-                        placeholder='Enter drivers license number'
+                        placeholder='Firstname'
                         autoCapitalize='characters'
-                        onChangeText={ (text) => this.switchButtonStatus(text) }
+                        onChangeText={ (text) => this.setState({firstname:text}) }
                         // onSubmitEditing = { () => this.emailInput.focus() }
-                        value={this.state.vin}
+                        value={this.state.firstname}
                      />
-                     <Button
-                        disabled={this.state.disableCheckButton}
-                        onPress = { () => Actions.cameraScanner() }
-                        ><Icon name='ios-camera-outline' />
-                     </Button>
-
                   </Item>
 
+                  <Item >
+                     <Icon name='ios-barcode-outline' />
+                     <Input
+                        maxLength = {20}
+                        keyboardType='default'
+                        //   style={{width:250}}
+                        returnKeyType='next'
+                        placeholder='Lastname'
+                        autoCapitalize='characters'
+                        onChangeText={ (text) => this.setState({lastname:text}) }
+                        // onSubmitEditing = { () => this.emailInput.focus() }
+                        value={this.state.lastname}
+                     />
+                  </Item>
+
+                  {/* <View style={[styles.viewMargins, styles.viewContainer]}>
+                     <Text>State</Text>
+                     <Picker
+                       style={{marginTop:-15}}
+                       iosHeader="State"
+                       mode="dialog"
+                       selectedValue={this.state.state}
+                       onValueChange={(value)=>this.setState({state: value})}
+                     >
+                       {transmission.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
+                     </Picker>
+                  </View>
+
+                  <View style={[styles.viewMargins, styles.viewContainer]}>
+                     <Text>City</Text>
+                     <Picker
+                       style={{marginTop:-15}}
+                       iosHeader="State"
+                       mode="dialog"
+                       selectedValue={this.state.state}
+                       onValueChange={(value)=>this.setState({state: value})}
+                     >
+                       {transmission.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
+                     </Picker>
+                  </View> */}
+
+                  <Item >
+                     <Icon name='ios-pin-outline' />
+                     <Input
+                        maxLength = {45}
+                        keyboardType='default'
+                        //   style={{width:250}}
+                        returnKeyType='next'
+                        placeholder='Address'
+                        autoCapitalize='characters'
+                        onChangeText={ (text) => this.setState({address:text}) }
+                        // onSubmitEditing = { () => this.emailInput.focus() }
+                        value={this.state.address}
+                     />
+                  </Item>
+
+                  <Item >
+                     <Icon name='ios-navigate-outline' />
+                     <Input
+                        maxLength = {20}
+                        keyboardType='default'
+                        //   style={{width:250}}
+                        returnKeyType='next'
+                        placeholder='State'
+                        autoCapitalize='characters'
+                        onChangeText={ (text) => this.setState({state:text}) }
+                        // onSubmitEditing = { () => this.emailInput.focus() }
+                        value={this.state.state}
+                     />
+                  </Item>
+
+                  <Item >
+                     <Icon name='ios-navigate-outline' />
+                     <Input
+                        maxLength = {20}
+                        keyboardType='default'
+                        //   style={{width:250}}
+                        returnKeyType='next'
+                        placeholder='City'
+                        autoCapitalize='characters'
+                        onChangeText={ (text) => this.setState({city:text}) }
+                        // onSubmitEditing = { () => this.emailInput.focus() }
+                        value={this.state.city}
+                     />
+                  </Item>
+
+                  <Item >
+                     <Icon name='ios-more-outline' />
+                     <Input
+                        maxLength = {20}
+                        keyboardType='default'
+                        //   style={{width:250}}
+                        returnKeyType='next'
+                        placeholder='Zip Code'
+                        autoCapitalize='characters'
+                        onChangeText={ (text) => this.setState({zipcode:text}) }
+                        // onSubmitEditing = { () => this.emailInput.focus() }
+                        value={this.state.zipcode}
+                     />
+                  </Item>
+
+                  <Item >
+                     <Icon name='ios-phone-portrait-outline' />
+                     <Input
+                        maxLength = {20}
+                        keyboardType='default'
+                        //   style={{width:250}}
+                        returnKeyType='next'
+                        placeholder='Cellphone'
+                        autoCapitalize='characters'
+                        onChangeText={ (text) => this.setState({cellphone:text}) }
+                        // onSubmitEditing = { () => this.emailInput.focus() }
+                        value={this.state.cellphone}
+                     />
+                  </Item>
+
+                  <Item >
+                     <Icon name='ios-at-outline' />
+                     <Input
+                        maxLength = {20}
+                        keyboardType='default'
+                        //   style={{width:250}}
+                        returnKeyType='next'
+                        placeholder='email'
+                        autoCapitalize='characters'
+                        onChangeText={ (text) => this.setState({emailaddress:text}) }
+                        // onSubmitEditing = { () => this.emailInput.focus() }
+                        value={this.state.emailaddress}
+                     />
+                  </Item>
+
+                  <Item >
+                     <Icon name='ios-search-outline' />
+                     <Input
+                        maxLength = {20}
+                        keyboardType='default'
+                        //   style={{width:250}}
+                        returnKeyType='next'
+                        placeholder='Looking For'
+                        autoCapitalize='characters'
+                        onChangeText={ (text) => this.setState({looking_for:text}) }
+                        // onSubmitEditing = { () => this.emailInput.focus() }
+                        value={this.state.looking_for}
+                     />
+                  </Item>
+
+                 <DatePicker
+                    style={styles.dPicker}
+                    date={this.state.dob}
+                    mode="date"
+                    placeholder="Date of Birth"
+                    format="YYYY-MM-DD"
+                    minDate ="1950-01-01"
+                  //   maxDate ={currentDate}
+                  //   maxDate ={Moment.format('YYYY-MM-DD')}
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    customStyles={{
+                       dateIcon: {
+                          position: 'absolute',
+                          left: 0,
+                          top: 4,
+                          marginLeft: 0
+                       },
+                       dateInput: {
+                          marginLeft: 36
+                       }
+                       // ... You can check the source to find the other keys.
+                    }}
+                    onDateChange={(date) => {this.setState({dob: date})}}
+                 />
+
+                 <DatePicker
+                    style={styles.dPicker}
+                    date={this.state.license_issued}
+                    mode="date"
+                    placeholder="License Issued"
+                    format="YYYY-MM-DD"
+                    minDate ="2010-01-01"
+                  //   maxDate ={currentDate}
+                  //   maxDate ={Moment.format('YYYY-MM-DD')}
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    customStyles={{
+                       dateIcon: {
+                          position: 'absolute',
+                          left: 0,
+                          top: 4,
+                          marginLeft: 0
+                       },
+                       dateInput: {
+                          marginLeft: 36
+                       }
+                       // ... You can check the source to find the other keys.
+                    }}
+                    onDateChange={(date) => {this.setState({license_issued: date})}}
+                 />
+
+                 <DatePicker
+                    style={styles.dPicker}
+                    date={this.state.license_expiration}
+                    mode="date"
+                    placeholder="License Expiration"
+                    format="YYYY-MM-DD"
+                    minDate ="2010-01-01"
+                  //   maxDate ={currentDate}
+                  //   maxDate ={Moment.format('YYYY-MM-DD')}
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    customStyles={{
+                       dateIcon: {
+                          position: 'absolute',
+                          left: 0,
+                          top: 4,
+                          marginLeft: 0
+                       },
+                       dateInput: {
+                          marginLeft: 36
+                       }
+                       // ... You can check the source to find the other keys.
+                    }}
+                    onDateChange={(date) => {this.setState({license_expiration: date})}}
+                 />
+
+                 <Item >
+                    <Icon name='ios-more-outline' />
+                    <Input
+                       maxLength = {20}
+                       keyboardType='default'
+                       //   style={{width:250}}
+                       returnKeyType='next'
+                       placeholder='License Height'
+                       autoCapitalize='characters'
+                       onChangeText={ (text) => this.setState({license_height:text}) }
+                       // onSubmitEditing = { () => this.emailInput.focus() }
+                       value={this.state.license_height}
+                    />
+                 </Item>
+
+                 <View style={[styles.viewMargins, styles.viewContainer]}>
+                    <Text>Sex</Text>
+                    <Picker
+                      style={{marginTop:-15}}
+                      iosHeader="State"
+                      mode="dialog"
+                      selectedValue={this.state.sex}
+                      onValueChange={(value)=>this.setState({sex: value})}
+                    >
+                      <Picker.Item label="Male" value="M" />
+                      <Picker.Item label="Female" value="F" />
+                    </Picker>
+                 </View>
 
                </Form>
-               <Button
-                  disabled={this.state.disableCheckButton}
-                  style={{alignSelf: 'center', width:250,justifyContent: 'center',
-                  alignItems: 'center', margin:10}}
-                  onPress={() => this.checkVINCode()} >
-                  {/* rounded> */}
-                  <Text style={{color:'white'}}>{this.state.captionCheckButton}</Text>
-                  <Icon name='ios-search-outline' />
-               </Button>
-
-               {this.state.checkingVIN ? <Spinner /> : null }
+               }
 
             </Content>
 
-
-            {this.state.msgResponse === '' ? null :
-            <Footer>
-               <Text style={styles.loginMsg}>{this.state.msgResponse}</Text>
-            </Footer> }
-
-            {!this.state.validVin ? null :
-               <Footer>
-                  <Button primary
-                     style={styles.buttonNext}
-                     onPress = { this.nextStep }
-                  >
-                     <Text style={styles.titleButtonNext}>Next</Text>
-                     <Icon style={styles.titleButtonNext} name='ios-arrow-forward-outline' />
-                  </Button>
-               </Footer> }
-
-            </Container>
 
         )
     }
 
 }
 
-const mapStateToProps = (state) => {
-    return {
-        carInfo: state.carInfo,
-      //   newCarInfo2: state.getNewCarInfo
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fillCarInfo: (car) => dispatch(carActions.fillCarInfo(car)),
-        getCarInfo: () => dispatch(carActions.getCarInfo())
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateProspect)
+export default CreateProspect
