@@ -3261,10 +3261,6 @@ react-native-experimental-navigation@^0.28.0:
     fbjs "^0.8.1"
     prop-types "^15.5.10"
 
-react-native-fab@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/react-native-fab/-/react-native-fab-1.0.5.tgz#1b503727becb63148b251020bbbcfc39234442ac"
-
 react-native-fit-image@^1.4.9:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/react-native-fit-image/-/react-native-fit-image-1.5.2.tgz#208bee4234f563b0250780f6da69d8de2950f466"
@@ -3281,13 +3277,11 @@ react-native-image-crop-picker@^0.15.1:
   version "0.15.1"
   resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.15.1.tgz#344595473dcb13ca382ecf47f8c51894b3b1cda7"
 
-react-native-keyboard-aware-scroll-view@^0.2.9:
-  version "0.2.9"
-  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.2.9.tgz#2a1ae49cfae90a9665b21763c1f8bd03ed5fb92c"
-  dependencies:
-    react-timer-mixin "^0.13.3"
+react-native-image-picker@^0.26.4:
+  version "0.26.4"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.26.4.tgz#e53b0564bef44cb3c96ff81594e1e874daa1f0b3"
 
-"react-native-keyboard-aware-scroll-view@https://github.com/GeekyAnts/react-native-keyboard-aware-scroll-view":
+react-native-keyboard-aware-scroll-view@^0.2.9, "react-native-keyboard-aware-scroll-view@https://github.com/GeekyAnts/react-native-keyboard-aware-scroll-view":
   version "0.2.9"
   resolved "https://github.com/GeekyAnts/react-native-keyboard-aware-scroll-view#f4805f254d6cc8e3329f5fb224944401f66655db"
   dependencies:
