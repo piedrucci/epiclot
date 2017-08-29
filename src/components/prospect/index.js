@@ -90,16 +90,16 @@ class Dashboard2 extends Component {
                <FooterTab>
                   <Button onPress={() => this.switchScreen(0) }>
                      <Icon name="ios-car" />
-                     <Text>Cars</Text>
+                     {/* <Text>Cars</Text> */}
                   </Button>
                   <Button onPress={() => this.switchScreen(1) }>
                      <Icon name="ios-person" />
-                     <Text>Prospects</Text>
+                     {/* <Text>Prospects</Text> */}
                   </Button>
-                  <Button onPress={() => this.switchScreen(2) } >
+                  {/* <Button onPress={() => this.switchScreen(2) } >
                      <Icon name="navigate" />
                      <Text>Settings</Text>
-                  </Button>
+                  </Button> */}
                </FooterTab>
             </Footer>
 
