@@ -83,7 +83,14 @@ var api = {
          alert(err)
          console.log('REMOVE something went wrong: ' + err)
       }
-   }
+   },
+
+
+   async checkSession() {
+      const response = await AsyncStorage.getItem(SESSION_NAME)
+      const json = await JSON.parse(response)
+      return json
+  }
 
 }
 

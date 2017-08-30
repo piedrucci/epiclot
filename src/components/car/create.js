@@ -176,7 +176,7 @@ class CreateCar extends Component {
                      />
                      <Button
                         disabled={this.state.disableCheckButton}
-                        onPress = { () => Actions.cameraScanner() }
+                        onPress = { () => Actions.cameraScanner({title:'Scan Vin'}) }
                         ><Icon name='ios-camera-outline' />
                      </Button>
 

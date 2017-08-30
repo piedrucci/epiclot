@@ -15,11 +15,16 @@ import { Actions } from 'react-native-router-flux'
 import Camera from 'react-native-camera'
 
 class CameraComp extends Component {
-   constructor() {
-      super()
+   constructor(props) {
+      super(props)
       this.state = {
-         license: []
+         title: props.title || 'Scan',
+         license: [],
       }
+   }
+
+   componentDidMount() {
+      Actions.refresh({title: this.state.title})
    }
 
    _onBarCodeRead(e) {
