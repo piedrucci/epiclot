@@ -1,17 +1,7 @@
 import React, { Component } from 'react';
-import {
-   AppRegistry,
-   Dimensions,
-   StyleSheet,
-   Text,
-   TouchableHighlight,
-   View,
-   Alert, AlertIOS, Platform
-
-} from 'react-native';
-
+import { AppRegistry, Dimensions, StyleSheet, Text, TouchableHighlight,
+   View, Alert, AlertIOS, Platform } from 'react-native';
 import { Actions } from 'react-native-router-flux'
-
 import Camera from 'react-native-camera'
 
 class CameraComp extends Component {
@@ -19,61 +9,57 @@ class CameraComp extends Component {
       super(props)
       this.state = {
          title: props.title || 'Scan',
+         target: props.target || 'car',
          license: [],
       }
+      this.barCodeRead = this.barCodeRead.bind(this)
    }
 
    componentDidMount() {
       Actions.refresh({title: this.state.title})
    }
 
-   _onBarCodeRead(e) {
-      // this.setState({showCamera: false});
-      // 0=pasap, 1=lic, 2=nombre, 3=apel, 5=direc, 8=fecnac, 9=expiracion, 10=expedicion
+   // _onBarCodeRead(e) {
+   barCodeRead(e) {
+      try{
+         // this.setState({showCamera: false});
+         // 0=pasap, 1=lic, 2=nombre, 3=apel, 5=direc, 8=fecnac, 9=expiracion, 10=expedicion
 
-      // if (Platform.OS === 'ios') {
-      //    AlertIOS.alert(
-      //       "Barcode Found!",
-      //       "Type: " + e.type + "\nData: " + e.data
-      //    )
-      // }else {
-      //    Alert.alert(
-      //       "Barcode Found!",
-      //       "Type: " + e.type + "\nData: " + e.data
-      //    )
-      // }
-      const splitLicense = e.data.split("|")
-      const fullLicenseInfo = splitLicense.map( (item, index) => item.replace(/_/g, ' ') )
+         // if (Platform.OS === 'ios') {
+         //    AlertIOS.alert(
+         //       "Barcode Found!",
+         //       "Type: " + e.type + "\nData: " + e.data
+         //    )
+         // }else {
+            // Alert.alert(
+            //    "Barcode Found!",
+            //    "Type: " + e.type + "\nData: " + e.data
+            // )
+         // }
 
-      const info = {
-         driver_license: fullLicenseInfo[0],
-         firstname: fullLicenseInfo[2],
-         lastname: fullLicenseInfo[3],
+         const info = null;
+
+         if (this.state.target === 'car'){
+            info = { vin: e.data }
+            Actions.createCar({car:info})
+         }else if (this.state.target === 'prospect'){
+            const splitLicense = e.data.split("|")
+            const fullLicenseInfo = splitLicense.map( (item, index) => item.replace(/_/g, ' ') )
+            info = {
+               driver_license: fullLicenseInfo[0],
+               firstname: fullLicenseInfo[2],
+               lastname: fullLicenseInfo[3],
+               address: fullLicenseInfo[5],
+               dob: fullLicenseInfo[8],
+               license_expiration: fullLicenseInfo[9],
+               license_issued: fullLicenseInfo[10],
+               license_height: fullLicenseInfo[11],
+            }
+            Actions.createProspect({prospect:info})
+         }
+      }catch(err){
+         alert(err)
       }
-
-      // driver_license: (props.prospect===null)?'1234567890':(props.prospect.license),
-      // sales_id: (props.prospect===null)?0:(props.prospect.sales_id),
-      // dealership_id: (props.prospect===null)?'':(props.prospect.dealership_id),
-      // firstname: (props.prospect===null)?'roberth':(props.prospect.firstname),
-      // lastname: (props.prospect===null)?'mejias':(props.prospect.lastname),
-      // address: (props.prospect===null)?'avenida':(props.prospect.address),
-      // zipcode: (props.prospect===null)?'07157':(props.prospect.zipcode),
-      // state:(props.prospect===null)?'PA':(props.prospect.state),
-      // city:(props.prospect===null)?'Ciudad de Panama':(props.prospect.city),
-      // cellphone: (props.prospect===null)?'507 60169131':(props.prospect.cellphone),
-      // emailaddress: (props.prospect===null)?'roberth@beecode.co':(props.prospect.emailaddress),
-      // looking_for: (props.prospect===null)?'ford explorer':(props.prospect.looking_for),
-      // dob:(props.prospect===null)?'1958-03-15':(props.prospect.birthday),
-      // license_state:(props.prospect===null)?'FL':(props.prospect.licensestate),
-      // license_issued:(props.prospect===null)?'2015-07-20':(props.prospect.license_issued),
-      // license_expiration:(props.prospect===null)?'2018-01-01':(props.prospect.license_expiration),
-      // license_height:(props.prospect===null)?'5.3':(props.prospect.license_height),
-      // sex:(props.prospect===null)?'Male':(props.prospect.sex),
-      // user_id:(props.prospect===null)?'':(props.prospect.user),
-
-
-
-      Actions.createProspect({prospect:info})
    }
 
 
@@ -86,7 +72,8 @@ class CameraComp extends Component {
           }}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}
-          onBarCodeRead={this._onBarCodeRead}
+         //  onBarCodeRead={this._onBarCodeRead}
+          onBarCodeRead={this.barCodeRead}
           type={Camera.constants.Type.back}
           >
           {/* <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text> */}

@@ -21,7 +21,7 @@ class CreateProspect extends Component {
          prospect: props.prospect || null,
 
          newProspect: (props.prospect===null),
-         driver_license: (props.prospect===null)?'':(props.prospect.license),
+         driver_license: (props.prospect===null)?'':(props.prospect.driver_license),
          sales_id: (props.prospect===null)?0:(props.prospect.sales_id),
          dealership_id: (props.prospect===null)?'':(props.prospect.dealership_id),
          firstname: (props.prospect===null)?'':(props.prospect.firstname),
@@ -33,7 +33,7 @@ class CreateProspect extends Component {
          cellphone: (props.prospect===null)?'':(props.prospect.cellphone),
          emailaddress: (props.prospect===null)?'':(props.prospect.emailaddress),
          looking_for: (props.prospect===null)?'':(props.prospect.looking_for),
-         dob:(props.prospect===null)?'':(props.prospect.birthday),
+         dob:(props.prospect===null)?'':(props.prospect.dob),
          license_state:(props.prospect===null)?'':(props.prospect.licensestate),
          license_issued:(props.prospect===null)?'':(props.prospect.license_issued),
          license_expiration:(props.prospect===null)?'':(props.prospect.license_expiration),
@@ -256,7 +256,11 @@ class CreateProspect extends Component {
                      disabled={this.state.disableCheckButton}
                      style={{alignSelf: 'center', width:(width*65)/100,justifyContent: 'center',
                      alignItems: 'center', margin:10}}
-                     onPress={() => Actions.cameraScanner({title:'Scan License'}) } >
+                     onPress={() => Actions.cameraScanner(
+                        {
+                           title:'Scan License',
+                           target: 'prospect'
+                        }) } >
                      <Text style={{color:'white'}}>{this.state.captionCheckButton}</Text>
                      <Icon name='ios-camera-outline' />
                   </Button>

@@ -1,14 +1,9 @@
 import React, { Component } from  'react';
 import { Text, View, Image, Dimensions, AsyncStorage } from 'react-native';
-
 import api from '../../utilities/api';
-
 import Carousel from 'react-native-snap-carousel';
-
 import FitImage from 'react-native-fit-image';
-
 const { width, height } = Dimensions.get('window');
-
 const entryBorderRadius = 8;
 
 const styles = {

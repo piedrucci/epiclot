@@ -65,12 +65,15 @@ class Login extends Component {
    async loginUser() {
 
       this.setState({invalidUser: true})
-      if ( this.state.subdomain === '' ){
-         this.setState({loginMsg: 'Enter the Subdomain'})
+      if ( this.state.subdomain.trim() === '' ){
+         // this.setState({loginMsg: 'Enter the Subdomain'})
+         alert('Enter the Subdomain')
       }else if ( this.state.email === '' ){
-         this.setState({loginMsg: 'Enter the email'})
+         // this.setState({loginMsg: 'Enter the email'})
+         alert('Enter the email')
       }else if ( this.state.password === '' ){
-         this.setState({loginMsg: 'Enter the password'})
+         // this.setState({loginMsg: 'Enter the password'})
+         alert('Enter the password')
       }else{
          try{
             this.setState({loading:true, invalidUser:false})
@@ -110,6 +113,7 @@ class Login extends Component {
                }
 
             }else {
+               alert(this.state.loginMsg)
                this.setState({loading:false})
                await api.removeToken();
             }
@@ -128,7 +132,7 @@ class Login extends Component {
 
    render() {
       return (
-         <Container>
+         <Container style={styles.container}>
 
             <Content>
                <Text style={styles.title}>Sign in to Epiclot</Text>
@@ -137,7 +141,7 @@ class Login extends Component {
             <Content> */}
                {
                  this.state.loading ? null :
-                 <Text style={{textAlign:'center', margin:20}}>Enter your subdomain, email and password to access your Epiclot account</Text>
+                 <Text style={styles.subtitle}>Enter your subdomain, email and password to access your Epiclot account</Text>
               }
 
               {
@@ -195,13 +199,13 @@ class Login extends Component {
             }
             </Content>
 
+            {/* <Footer style={styles.footerContainer}>
             {
                this.state.invalidUser && this.state.loginMsg ?
-               <Footer style={styles.footerContainer}>
                   <Text style={styles.footerMessage}>{this.state.loginMsg}</Text>
-               </Footer>
                : null
             }
+            </Footer> */}
          </Container>
 
       )

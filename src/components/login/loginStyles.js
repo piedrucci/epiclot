@@ -35,6 +35,15 @@ export default StyleSheet.flatten({
       textAlign: 'center'
    },
 
+    subtitle: {
+      // marginTop: 50,
+      // margin: 50,
+      color: '#505050',
+      // fontSize: 22,
+      // fontWeight: 'bold',
+      textAlign: 'center'
+   },
+
 
     content: {
         alignItems: 'center',

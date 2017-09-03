@@ -4,11 +4,8 @@ import { Container, Header, Content, Item, Icon, Input, Button, Spinner,
    List, ListItem, Thumbnail, Body, Footer, FooterTab, Tab, Tabs, TabHeading } from 'native-base';
 
 // import FAB from 'react-native-fab' // component Float Button
-
 import { Actions, ActionConst, Router, Scene } from 'react-native-router-flux';
-
 import Cars from './listCars' // your first screen
-
 import Prospect from './listProspects' // your second screen
 
 // ===========================================
@@ -86,7 +83,7 @@ class Dashboard2 extends Component {
 
             </Content>
 
-            <Footer>
+            <Footer style={{height:40}}>
                <FooterTab>
                   <Button onPress={() => this.switchScreen(0) }>
                      <Icon name="ios-car" />

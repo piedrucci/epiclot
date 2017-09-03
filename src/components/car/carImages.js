@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Dimensions, StyleSheet, Text } from 'react-native'
+import { View, Image, Dimensions, StyleSheet, Text, TouchableHighlight } from 'react-native'
 
 
 const window = Dimensions.get('window')
@@ -26,15 +26,34 @@ class ImageElement extends Component {
 
    }
 
+   deleteImage(val) {
+      this.setState({
+         images: this.state.images.filter(function(img){
+            return img !== val
+         })
+      });
+      this.props.removeImage(val)
+   }
+
    render() {
       const items = this.state.images.length
 
       const elements = this.state.images.map( (image, index) =>
-         <Image
+         // <Image
+         //    key={index}
+         //    style={styles.imageStyle}
+         //    source={{uri: image}}
+         // />
+         < Image source = {{uri: image}}
             key={index}
             style={styles.imageStyle}
-            source={{uri: image}}
-         />
+            ref = {component => this._imageDelete = component} >
+            < TouchableHighlight underlayColor = "#ffa456"
+               onPress = {this.deleteImage.bind(this, image)}
+               style = {{ backgroundColor: '#fff'}} >
+               < Text style = {styles.deleteImage} > x < /Text>
+            </TouchableHighlight >
+         < /Image>
       )
 
       return (

@@ -16,6 +16,7 @@ class CarImagesContainer extends Component {
 
       this.imagePicker = this.imagePicker.bind(this)
       this.selectFromCamera = this.selectFromCamera.bind(this)
+      this.deleteImage = this.deleteImage.bind(this)
    }
 
    async imagePicker() {
@@ -60,11 +61,25 @@ class CarImagesContainer extends Component {
       }
    }
 
+   deleteImage(val) {
+      this.setState({
+         arrayImages: this.state.arrayImages.filter(function(img){
+            return img !== val
+         })
+      });
+      // console.log(this.state.arrayImages.length)
+      const buttonTitle = (this.state.arrayImages.length>1) ? 'Next' : ''
+
+      Actions.refresh({ rightTicdtle: buttonTitle, onRight:()=>this.nextStep() })
+   }
+
+
+
    render() {
       return (
          <Container style={[styles.container],{marginTop:64}}>
             <Content>
-               <ImageElement images={this.state.arrayImages}/>
+               <ImageElement images={this.state.arrayImages} removeImage={this.deleteImage} />
             </Content>
 
             <Footer>

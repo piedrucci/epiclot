@@ -29,7 +29,8 @@ class CreateCar extends Component {
          session: {},
          // vin: 'NM0LS7EX9G1276250',
          // vin: '1M1AW07Y1GM051234',
-         vin: '5XXGM4A70FG352220',
+         // vin: '5XXGM4A70FG352220',
+         vin: props.car.vin || '',
          checkingVIN: false,
          validVin: false,
          disableCheckButton: false,
@@ -50,9 +51,9 @@ class CreateCar extends Component {
       // console.log(this.props);
       this.setSessionData()
 
-      if ( this.props.vinScanned ){
-         this.setState({vin: this.props.vinScanned})
-      }
+      // if ( this.props.vinScanned ){
+      //    this.setState({vin: this.props.vinScanned})
+      // }
 
       Actions.refresh({title: 'Add Car'})
    }
@@ -129,24 +130,6 @@ class CreateCar extends Component {
       console.log(this.props.getCarInfo())
    }
 
-   // _onBarCodeRead(e) {
-   //    // this.setState({showCamera: false});
-   //    Alert.alert(
-   //       "Barcode Found!",
-   //       "Type: " + e.type + "\nData: " + e.data
-   //    );
-   // }
-
-
-   // ===================== scanner
-   // _onBarCodeRead = (e) => {
-   //      console.log(`e.nativeEvent.data.type = ${e.nativeEvent.data.type}, e.nativeEvent.data.code = ${e.nativeEvent.data.code}`)
-   //      this._stopScan()
-   //      Alert.alert(e.nativeEvent.data.type, e.nativeEvent.data.code, [
-   //          {text: 'OK', onPress: () => this._startScan()},
-   //      ])
-   //  }
-
     _startScan = (e) => {
         this._barCode.startScan()
     }
@@ -161,12 +144,10 @@ class CreateCar extends Component {
              <Form >
 
                   <Item >
-                     {/* <Label>Username</Label> */}
                      <Icon name='ios-barcode-outline' />
                      <Input
                         maxLength = {20}
                         keyboardType='default'
-                        //   style={{width:250}}
                         returnKeyType='next'
                         placeholder='Enter VIN Code'
                         autoCapitalize='characters'
@@ -176,7 +157,11 @@ class CreateCar extends Component {
                      />
                      <Button
                         disabled={this.state.disableCheckButton}
-                        onPress = { () => Actions.cameraScanner({title:'Scan Vin'}) }
+                        onPress = { () => Actions.cameraScanner(
+                           {
+                              title:'Scan VIN',
+                              target: 'car'
+                           }) }
                         ><Icon name='ios-camera-outline' />
                      </Button>
 
@@ -198,9 +183,7 @@ class CreateCar extends Component {
                {this.state.validVin ? <VinDetail det={this.state.vinInfo}  /> : null }
 
                {this.state.msgResponse === '' ? null :
-            // <Text>
                <Text style={styles.loginMsg}>{this.state.msgResponse}</Text>
-            // </Text>
          }
 
            </Content>
@@ -209,6 +192,10 @@ class CreateCar extends Component {
     }
 
 }
+
+CreateCar.defaultProps = {
+  car: {vin: ''}
+};
 
 
 const mapStateToProps = (state) => {
