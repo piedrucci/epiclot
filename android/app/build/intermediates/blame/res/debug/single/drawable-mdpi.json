@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/res/merged/debug/drawable-mdpi/src_assets_img_if_iconimages_211678.png",
+        "source": "/home/roberth/code/reactnative/epiclot/android/app/src/main/res/drawable-mdpi/src_assets_img_if_iconimages_211678.png"
+    },
+    {
+        "merged": "/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/res/merged/debug/drawable-mdpi/node_modules_reactnativerouterflux_src_menu_burger.png",
+        "source": "/home/roberth/code/reactnative/epiclot/android/app/src/main/res/drawable-mdpi/node_modules_reactnativerouterflux_src_menu_burger.png"
+    },
+    {
+        "merged": "/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/res/merged/debug/drawable-mdpi/node_modules_reactnativedatepicker_date_icon.png",
+        "source": "/home/roberth/code/reactnative/epiclot/android/app/src/main/res/drawable-mdpi/node_modules_reactnativedatepicker_date_icon.png"
+    },
+    {
+        "merged": "/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/res/merged/debug/drawable-mdpi/src_assets_img_logofinal.png",
+        "source": "/home/roberth/code/reactnative/epiclot/android/app/src/main/res/drawable-mdpi/src_assets_img_logofinal.png"
+    },
+    {
+        "merged": "/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/res/merged/debug/drawable-mdpi/node_modules_reactnativeexperimentalnavigation_assets_back.png",
+        "source": "/home/roberth/code/reactnative/epiclot/android/app/src/main/res/drawable-mdpi/node_modules_reactnativeexperimentalnavigation_assets_back.png"
+    },
+    {
+        "merged": "/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/res/merged/debug/drawable-mdpi/node_modules_reactnativerouterflux_src_back_chevron.png",
+        "source": "/home/roberth/code/reactnative/epiclot/android/app/src/main/res/drawable-mdpi/node_modules_reactnativerouterflux_src_back_chevron.png"
+    },
+    {
+        "merged": "/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/res/merged/debug/drawable-mdpi/src_assets_img_noun_49517_cc.png",
+        "source": "/home/roberth/code/reactnative/epiclot/android/app/src/main/res/drawable-mdpi/src_assets_img_noun_49517_cc.png"
+    }
+]

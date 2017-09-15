@@ -579,19 +579,19 @@ public final class R {
 		public static final int abc_textfield_search_default_mtrl_alpha = 0x7f02004d;
 		public static final int abc_textfield_search_material = 0x7f02004e;
 		public static final int abc_vector_test = 0x7f02004f;
-		public static final int notification_template_icon_bg = 0x7f02005c;
-		public static final int ucrop_ic_angle = 0x7f020050;
-		public static final int ucrop_ic_crop = 0x7f020051;
-		public static final int ucrop_ic_cross = 0x7f020052;
-		public static final int ucrop_ic_done = 0x7f020053;
-		public static final int ucrop_ic_next = 0x7f020054;
-		public static final int ucrop_ic_reset = 0x7f020055;
-		public static final int ucrop_ic_rotate = 0x7f020056;
-		public static final int ucrop_ic_scale = 0x7f020057;
-		public static final int ucrop_shadow_upside = 0x7f020058;
-		public static final int ucrop_vector_ic_crop = 0x7f020059;
-		public static final int ucrop_vector_loader = 0x7f02005a;
-		public static final int ucrop_vector_loader_animated = 0x7f02005b;
+		public static final int notification_template_icon_bg = 0x7f020063;
+		public static final int ucrop_ic_angle = 0x7f020057;
+		public static final int ucrop_ic_crop = 0x7f020058;
+		public static final int ucrop_ic_cross = 0x7f020059;
+		public static final int ucrop_ic_done = 0x7f02005a;
+		public static final int ucrop_ic_next = 0x7f02005b;
+		public static final int ucrop_ic_reset = 0x7f02005c;
+		public static final int ucrop_ic_rotate = 0x7f02005d;
+		public static final int ucrop_ic_scale = 0x7f02005e;
+		public static final int ucrop_shadow_upside = 0x7f02005f;
+		public static final int ucrop_vector_ic_crop = 0x7f020060;
+		public static final int ucrop_vector_loader = 0x7f020061;
+		public static final int ucrop_vector_loader_animated = 0x7f020062;
 	}
 	public static final class id {
 		public static final int action0 = 0x7f0c005f;

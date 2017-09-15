@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import { StyleSheet, Text, View, Alert, AsyncStorage } from 'react-native';
-
 import { Container, Header, Content, Icon, Left, Right, Button,
     Body, Title, Footer, FooterTab, List, ListItem, Thumbnail,
     Item, Input, Form, Label, Spinner, InputGroup, Picker } from 'native-base';
-
 import { Actions } from 'react-native-router-flux';
-
 import styles from './carStyles';
 import api from '../../utilities/api';
-
 import VinDetail from './vinDetails';
-
 import Camera from 'react-native-camera';
 
 // ===========================================
@@ -30,9 +24,10 @@ class CreateCar extends Component {
          // vin: 'NM0LS7EX9G1276250',
          // vin: '1M1AW07Y1GM051234',
          vin: '5XXGM4A70FG352220',
+         // vin: props.car.vin || '',
          checkingVIN: false,
          validVin: false,
-         disableCheckButton: false,
+         disableCheckButton: true,
          captionCheckButton: 'Check VIN ',
          msgResponse: '',
          vinInfo: {},
@@ -50,9 +45,9 @@ class CreateCar extends Component {
       // console.log(this.props);
       this.setSessionData()
 
-      if ( this.props.vinScanned ){
-         this.setState({vin: this.props.vinScanned})
-      }
+      // if ( this.props.vinScanned ){
+      //    this.setState({vin: this.props.vinScanned})
+      // }
 
       Actions.refresh({title: 'Add Car'})
    }
@@ -75,7 +70,8 @@ class CreateCar extends Component {
 
 
 // CUEQUEA EL VIN INGRESADO EN EL TEXTBOX
-    async checkVINCode() {
+     checkVINCode() {
+      Actions.refresh({ rightTitle: '', onRight:()=>this.nextStep() })
 
       this.setState({
          disableCheckButton:true,
@@ -86,25 +82,34 @@ class CreateCar extends Component {
       })
 
       try{
-         const response = await api.checkVIN(this.state.vin, this.state.session.dealership_id)
-         const json = await response.json()
+         const res =  api.checkVIN(this.state.vin, this.state.session.dealership_id)
+         res
+         .then((response) => response.json())
+         .then((responseJson) => {
 
-         let vinDetails = json
-         delete vinDetails.details;
-         delete vinDetails.msg;
+            if (responseJson.valid_vin){
+               delete responseJson.details;
+               delete responseJson.msg;
+            }
 
-         this.setState({
-            disableCheckButton:false,
-            checkingVIN:false,
-            vinInfo:vinDetails,
-            validVin: (json.valid_vin) ? true : false,
-            captionCheckButton: 'Check VIN ',
-            msgResponse: json.msg,
+            this.setState({
+               disableCheckButton:false,
+               checkingVIN:false,
+               vinInfo:responseJson,
+               validVin: (responseJson.valid_vin) ? true : false,
+               captionCheckButton: 'Check VIN ',
+               msgResponse: responseJson.msg,
+            })
+            if (responseJson.valid_vin){
+               // const buttonNextCarImages = ()=><Icon name='ios-arrow-dropright' onPress={ () => this.nextStep() } />
+               Actions.refresh({ rightTitle: 'Next', onRight:()=>this.nextStep() })
+            } else {
+               //alert(responseJson.msg)
+            }
          })
-         if (json.valid_vin){
-            // const buttonNextCarImages = ()=><Icon name='ios-arrow-dropright' onPress={ () => this.nextStep() } />
-            Actions.refresh({ rightTitle: 'Next', onRight:()=>this.nextStep() })
-         }
+         .catch((error) => {
+            console.error(error)
+         });
       }catch(err) {
          console.log(err)
          this.setState({
@@ -121,31 +126,13 @@ class CreateCar extends Component {
 
    // ENVIAR DATOS Y AVANZAR
    nextStep() {
-      Actions.carImages({vinInfo: this.state.vinInfo})
+      Actions.carImages({vinInfo: this.state.vinInfo, newCar: true})
    }
 
    getCarInfo() {
       // alert(this.props.getCarInfo());
       console.log(this.props.getCarInfo())
    }
-
-   // _onBarCodeRead(e) {
-   //    // this.setState({showCamera: false});
-   //    Alert.alert(
-   //       "Barcode Found!",
-   //       "Type: " + e.type + "\nData: " + e.data
-   //    );
-   // }
-
-
-   // ===================== scanner
-   // _onBarCodeRead = (e) => {
-   //      console.log(`e.nativeEvent.data.type = ${e.nativeEvent.data.type}, e.nativeEvent.data.code = ${e.nativeEvent.data.code}`)
-   //      this._stopScan()
-   //      Alert.alert(e.nativeEvent.data.type, e.nativeEvent.data.code, [
-   //          {text: 'OK', onPress: () => this._startScan()},
-   //      ])
-   //  }
 
     _startScan = (e) => {
         this._barCode.startScan()
@@ -161,12 +148,10 @@ class CreateCar extends Component {
              <Form >
 
                   <Item >
-                     {/* <Label>Username</Label> */}
                      <Icon name='ios-barcode-outline' />
                      <Input
                         maxLength = {20}
                         keyboardType='default'
-                        //   style={{width:250}}
                         returnKeyType='next'
                         placeholder='Enter VIN Code'
                         autoCapitalize='characters'
@@ -175,9 +160,13 @@ class CreateCar extends Component {
                         value={this.state.vin}
                      />
                      <Button
-                        disabled={this.state.disableCheckButton}
-                        onPress = { () => Actions.cameraScanner() }
-                        ><Icon name='ios-camera-outline' />
+                        // disabled={this.state.disableCheckButton}
+                        onPress = { () => Actions.cameraScanner(
+                           {
+                              title:'Scan VIN',
+                              target: 'car'
+                           }) }
+                        ><Icon name='ios-barcode-outline' />
                      </Button>
 
                   </Item>
@@ -198,9 +187,7 @@ class CreateCar extends Component {
                {this.state.validVin ? <VinDetail det={this.state.vinInfo}  /> : null }
 
                {this.state.msgResponse === '' ? null :
-            // <Text>
                <Text style={styles.loginMsg}>{this.state.msgResponse}</Text>
-            // </Text>
          }
 
            </Content>
@@ -209,6 +196,10 @@ class CreateCar extends Component {
     }
 
 }
+
+CreateCar.defaultProps = {
+  car: {vin: ''}
+};
 
 
 const mapStateToProps = (state) => {

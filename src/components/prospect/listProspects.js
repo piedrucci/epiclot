@@ -81,7 +81,7 @@ class Prospect extends Component {
   }
 
   handleRefresh() {
-     alert('refresing...')
+   //   alert('refreshing...')
      this.setState({refreshing: true})
      this.fetchData(this.state.dealership_id).done()
  }

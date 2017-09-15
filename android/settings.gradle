@@ -1,9 +1,9 @@
+rootProject.name = 'epiclot'
+
 include ':react-native-camera'
 project(':react-native-camera').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-camera/android')
 
 include ':react-native-image-crop-picker'
 project(':react-native-image-crop-picker').projectDir = new File(settingsDir, '../node_modules/react-native-image-crop-picker/android')
-
-rootProject.name = 'epiclot'
 
 include ':app'

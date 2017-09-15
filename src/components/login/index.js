@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, AsyncStorage, BackHandler, BackAndroid, Platform } from 'react-native';
+import { Image, AsyncStorage, BackHandler, BackAndroid, Platform, Dimensions } from 'react-native';
 import { Container, Content, Header, Form, Item, Input,
    Button, Text, Footer, FooterTab, Icon, Spinner } from 'native-base'
 import api from '../../utilities/api'
@@ -15,9 +15,12 @@ class Login extends Component {
    constructor(){
       super()
       this.state = {
-         subdomain: 'carsofswfl',
-         email: 'info@carsofswfl.com',
-         password: '123456',
+         subdomain: '',
+         email: '',
+         password: '',
+         // subdomain: 'carsofswfl',
+         // email: 'info@carsofswfl.com',
+         // password: '123456',
          loading: false,
          showSplash: true,
 
@@ -60,58 +63,76 @@ class Login extends Component {
 
    // LOGUEA AL USUARIO (ASYNC)
    async loginUser() {
-      try{
-         this.setState({loading:true, invalidUser:false})
 
-         const credentials = {
-            "email":this.state.email,
-            "password": this.state.password,
-            "subdomain":this.state.subdomain
-         }
+      this.setState({invalidUser: true})
+      if ( this.state.subdomain.trim() === '' ){
+         // this.setState({loginMsg: 'Enter the Subdomain'})
+         alert('Enter the Subdomain')
+      }else if ( this.state.email === '' ){
+         // this.setState({loginMsg: 'Enter the email'})
+         alert('Enter the email')
+      }else if ( this.state.password === '' ){
+         // this.setState({loginMsg: 'Enter the password'})
+         alert('Enter the password')
+      }else{
+         try{
+            this.setState({loading:true, invalidUser:false})
 
-         // SE ENVIA LA PETICION A LA API ...
-         const response = await api.sendPOST(`${api.getApi_Url()}auth/sign_in`, credentials)
-         const json = await response.json()
-
-         this.setState({
-            loading:false,
-            invalidUser: (json.api_key===null),
-            loginMsg: (json.api_key===null) ? 'Incorrect credentials' : 'Bienvenido!'
-         })
-
-         if ( response.status >= 200 && response.status < 300 ) {
-            const info = {
-               "api_key": json.api_key,
-               "user_id": json.user_id,
-               "dealership_id": json.dealership_id,
-               "user": json.user,
-               "user_domain": json.user_domain,
-               "name": json.name
-            };
-
-            if ( !this.state.invalidUser ) {
-               await api.saveSession(info)
-               // Actions.home()
-               setTimeout(() => {Actions.home2()}, 2000)
+            const credentials = {
+               "email":this.state.email,
+               "password": this.state.password,
+               "subdomain":this.state.subdomain
             }
 
-         }else {
-            // alert('no entro');
+            // SE ENVIA LA PETICION A LA API ...
+            const response = await api.sendPOST(`${api.getApi_Url()}auth/sign_in`, credentials)
+            const json = await response.json()
+
+            this.setState({
+               invalidUser: (json.api_key===null),
+               loginMsg: (json.api_key===null) ? 'Incorrect credentials' : 'Bienvenido!'
+            })
+
+            if ( response.status >= 200 && response.status < 300 ) {
+               this.setState({showSplash:true})
+               const info = {
+                  "api_key": json.api_key,
+                  "user_id": json.user_id,
+                  "dealership_id": json.dealership_id,
+                  "user": json.user,
+                  "user_domain": json.user_domain,
+                  "name": json.name
+               };
+
+               if ( !this.state.invalidUser ) {
+                  await api.saveSession(info)
+                  setTimeout(() => {
+                     this.setState({loading:false})
+                     Actions.home2()
+                  }, 2000)
+               }
+
+            }else {
+               alert(this.state.loginMsg)
+               this.setState({loading:false})
+               await api.removeToken();
+            }
+         }catch(err){
             await api.removeToken();
+            this.setState({
+               loading: false,
+               error: true
+            });
+            alert(err);
          }
-      }catch(err){
-         await api.removeToken();
-         this.setState({
-            loading: false,
-            error: true
-         });
-         alert(err);
+
       }
+
    }
 
    render() {
       return (
-         <Container>
+         <Container style={styles.container}>
 
             <Content>
                <Text style={styles.title}>Sign in to Epiclot</Text>
@@ -120,7 +141,7 @@ class Login extends Component {
             <Content> */}
                {
                  this.state.loading ? null :
-                 <Text style={{textAlign:'center', margin:20}}>Enter your subdomain, email and password to access your Epiclot account</Text>
+                 <Text style={styles.subtitle}>Enter your subdomain, email and password to access your Epiclot account</Text>
               }
 
               {
@@ -178,13 +199,13 @@ class Login extends Component {
             }
             </Content>
 
+            {/* <Footer style={styles.footerContainer}>
             {
                this.state.invalidUser && this.state.loginMsg ?
-               <Footer style={styles.footerContainer}>
-                  <Text style={styles.footerMessage}>Footer</Text>
-               </Footer>
+                  <Text style={styles.footerMessage}>{this.state.loginMsg}</Text>
                : null
             }
+            </Footer> */}
          </Container>
 
       )

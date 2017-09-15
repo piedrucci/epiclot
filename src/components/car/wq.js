@@ -17,23 +17,26 @@ class FormCar extends Component{
       this.state = {
          isLoading: false,
 
-         vin: this.props.vinInfo.vin,
-         mileage_type: mileageType[0].value,
-         color: color[0].value,
-         transmission: transmission[0].value,
-         status: status[0].value,
+         vin: this.props.vinInfo.vin.vin,
+         newCar: this.props.vinInfo.newCar,
+         mileage_type: (this.props.vinInfo.newCar)?mileageType[0].value:this.props.vinInfo.vin.mileage_type,
+         color: (this.props.vinInfo.newCar)?color[0].value:this.props.vinInfo.vin.color,
+         transmission:  (this.props.vinInfo.newCar)?transmission[0].value:this.props.vinInfo.vin.transmission,
+         status: (this.props.vinInfo.newCar)?status[0].value:this.props.vinInfo.vin.status,
          images: props.vinInfo.images,
 
-         mileage: '',
+         mileage: (this.props.vinInfo.newCar)?'':this.props.vinInfo.vin.mileage,
+         webprice: (this.props.vinInfo.newCar)?'':this.props.vinInfo.vin.webprice,
          purchase_price: '',
-         webprice: '',
-         sale_price: '',
-         whosale_price: '',
+         sale_price: (this.props.vinInfo.newCar)?'':this.props.vinInfo.vin.sale_price,
+         wholesale_price: (this.props.vinInfo.newCar)?'':this.props.vinInfo.vin.whosale_price,
+         expense_date: ''
       }
       this.saveCar = this.saveCar.bind(this)
    }
 
    componentDidMount() {
+
       this.checkSession().done()
       Actions.refresh({ rightTitle: 'Save', onRight:()=>this.saveCar() })
    }
@@ -44,71 +47,110 @@ class FormCar extends Component{
    }
 
    async saveCar() {
-      this.setState({isLoading:true})
 
-      const fd = new FormData()
+      if (this.state.mileage==='') {
+         alert('Enter the mileage')
+      }else if (this.state.mileage_type==='') {
+         alert('Enter the mileage type')
+      }else if (this.state.color==='') {
+         alert('Enter the color')
+      }else if (this.state.transmission==='') {
+         alert('Enter the transmission')
+      }else if (this.state.status==='') {
+         alert('Enter the status')
+      }else if (this.state.webprice==='') {
+         alert('Enter the web price')
+      }else if (this.state.sale_price==='') {
+         alert('Enter the sale price')
+      }else if (this.state.expense_date==='' && this.state.newCar) {
+         alert('Enter the expense date')
+      }else{
 
-      const jsonCarInfo = {
-         newCar: true,
-         vin: this.state.vin,
+         this.setState({isLoading:true})
 
-         user_id:this.state.session.user_id,
-         id_user:this.state.session.user_id,
-         delearship_id:this.state.session.dealership_id,
-         subdomain:this.state.session.user_domain,
+         const fd = new FormData()
 
-         mileage: this.state.mileage,
-         mileage_type: this.state.mileage_type,
-         color: this.state.color,
-         transmission: this.state.transmission,
-         status: this.state.status,
-         purchase_price: this.state.purchase_price,
-         expense_date: "2017-01-01",
-         web_price: this.state.webprice,
-         sale_price: this.state.sale_price,
-         wholesale_price: this.state.whosale_price
-      }
+         const arrDate = this.state.expense_date.split("-")
+         const jsonCarInfo = {
+            newCar: this.state.newCar,
+            vin: this.state.vin,
 
-      // AGREGA AL CADA VALOR DEL JSON AL FORMDATA
-      for ( var key in jsonCarInfo ){
-         var value = jsonCarInfo[key];
-         fd.append(key, value)
-      }
+            user_id:this.state.session.user_id,
+            id_user:this.state.session.user_id,
+            delearship_id:this.state.session.dealership_id,
+            subdomain:this.state.session.user_domain,
 
-      let photo = {};
+            mileage: this.state.mileage,
+            mileage_type: this.state.mileage_type,
+            color: this.state.color,
+            transmission: this.state.transmission,
+            status: this.state.status,
+            purchase_price: this.state.purchase_price,
+            // expense_date: "2017-01-01",
+            expense_date: arrDate[2]+'-'+arrDate[0]+'-'+arrDate[1],
+            web_price: this.state.webprice,
+            sale_price: this.state.sale_price,
+            wholesale_price: this.state.wholesale_price
+         }
 
-      // agregar todas las imagenes al formData
-      this.state.images.map( (image, index) => {
+         if ( this.state.newCar === false ) {
+            delete jsonCarInfo.expense_date
+            delete jsonCarInfo.wholesale_price
+         }
+
+         // AGREGA AL CADA VALOR DEL JSON AL FORMDATA
+         for ( var key in jsonCarInfo ){
+            var value = jsonCarInfo[key];
+            fd.append(key, value)
+         }
+
+         let photo = {};
+
+         // agregar todas las imagenes al formData
+         this.state.images.map( (image, index) => {
             photo = {
-                uri: image,
-                type: 'image/jpeg',
-                name: `${jsonCarInfo.vin}_${index}.jpg`,
+               uri: image,
+               type: 'image/jpeg',
+               name: `${jsonCarInfo.vin}_${index}.jpg`,
             }
             fd.append(`image_${index}`, photo)
          }
       )
       // console.log(fd)
 
-      // enviar el POST con toda la info(incluyendo imagenes) ....
-      const response = await fetch(api.getApi_Url() + 'cars',{
-         method: 'post',
-         headers: {
-            'Content-Type': 'multipart/form-data',
-         },
-         body: fd
-      })
+      try{
+         // enviar el POST con toda la info(incluyendo imagenes) ....
+         const response = await fetch(api.getApi_Url() + 'cars',{
+            method: 'post',
+            headers: {
+               'Content-Type': 'multipart/form-data',
+            },
+            body: fd
+         })
 
-      // status 200 para determinar si la peticion tuvo exito!.
-      if (response.status === 200 ) {
-         console.log("Car Saved, statusCode: "+response.status)
+         // status 200 para determinar si la peticion tuvo exito!.
+         if (response.status === 200 ) {
+            console.log("Car Saved, statusCode: "+response.status)
+            Actions.home2()
+         }
+         console.log(`status code: ${response.status}`)
+      }catch(err) {
+         console.log(err)
+         alert(err)
+      }finally{
          Actions.home2()
       }
+
    }
+
+
+
+}
 
    render() {
       moment.locale('en');
       // const currentDate = moment(new Date()).format("YYYY-MM-DD")
-      const currentDate = moment().format("YYYY-MM-DD").toString()
+      const currentDate = moment().format("MM-DD-YYYY").toString()
       // console.log(`------> ${currentDate}`)
       return (
          <Container style={{marginTop:60 }}>
@@ -129,7 +171,7 @@ class FormCar extends Component{
                            placeholder='Mileage'
                           onChangeText={ (text) => this.setState( {mileage:text} ) }
                           // onSubmitEditing = { () => this.emailInput.focus() }
-                        //   value={this.state.mileage}
+                          value={this.state.mileage}
                        />
                     </Item>
 
@@ -172,6 +214,7 @@ class FormCar extends Component{
                        </Picker>
                     </View>
 
+
                     <View style={[styles.viewMargins, styles.viewContainer]}>
                        <Text>Status</Text>
                        <Picker
@@ -184,6 +227,8 @@ class FormCar extends Component{
                           {status.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
                        </Picker>
                     </View>
+
+                    {this.state.newCar?
 
                     <Item >
                        <Icon name='ios-cash-outline' />
@@ -198,6 +243,7 @@ class FormCar extends Component{
                           value={this.state.purchase_price}
                        />
                     </Item>
+                    :null}
 
                     <Item >
                        <Icon name='ios-cash-outline' />
@@ -213,6 +259,7 @@ class FormCar extends Component{
                        />
                     </Item>
 
+                    {this.state.newCar?
                     <Item >
                        <Icon name='ios-cash-outline' />
                        <Input
@@ -226,7 +273,10 @@ class FormCar extends Component{
                           value={this.state.sale_price}
                        />
                     </Item>
+                 :null}
 
+
+                  {this.state.newCar?
                     <Item >
                        <Icon name='ios-cash-outline' />
                        <Input
@@ -235,18 +285,20 @@ class FormCar extends Component{
                           //   style={{width:300}}
                           returnKeyType='next'
                           placeholder='Whosale Price'
-                          onChangeText={ (text) => this.setState( {whosale_price:text} ) }
+                          onChangeText={ (text) => this.setState( {wholesale_price:text} ) }
                           // onSubmitEditing = { () => this.emailInput.focus() }
                           value={this.state.whosale_price}
                        />
                     </Item>
+                 :null}
 
+                 {this.state.newCar?
                     <DatePicker
                        style={styles.dPicker}
-                       date={this.state.date}
+                       date={this.state.expense_date}
                        mode="date"
-                       placeholder="select date"
-                       format="YYYY-MM-DD"
+                       placeholder="Expense Date"
+                       format="MM-DD-YYYY"
                        minDate ="2016-05-01"
                        maxDate ={currentDate}
                      //   maxDate ={Moment.format('YYYY-MM-DD')}
@@ -264,8 +316,9 @@ class FormCar extends Component{
                           }
                           // ... You can check the source to find the other keys.
                        }}
-                       onDateChange={(date) => {this.setState({date: date})}}
+                       onDateChange={(date) => {this.setState({expense_date: date})}}
                     />
+                    :null}
 
                  </Form>
 

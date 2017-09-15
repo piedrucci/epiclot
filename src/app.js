@@ -82,7 +82,7 @@ const App = () => {
                     <Scene key='createCar'  component={CreateCar} hideNavBar={false} title='New Car'
                      />
                     <Scene key='createCar2' component={CreateCar2} hideNavBar={false} title='New Car' />
-                    <Scene key='cameraScanner' component={CameraComp} hideNavBar={true} title='Scan Vin' />
+                    <Scene key='cameraScanner' component={CameraComp} hideNavBar={false} title='Scan Vin' />
                     <Scene key='formCar' component={FormCar} hideNavBar={false} title='Car Info' />
                     <Scene key='carImages' component={CarImagesContainer} hideNavBar={false} title='Add Images' />
 
