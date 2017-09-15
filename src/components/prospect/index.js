@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, FlatList } from 'react-native';
+import { Text, FlatList, Dimensions, StyleSheet } from 'react-native';
 import { Container, Header, Content, Item, Icon, Input, Button, Spinner,
    List, ListItem, Thumbnail, Body, Footer, FooterTab, Tab, Tabs, TabHeading } from 'native-base';
 
@@ -12,6 +12,9 @@ import Prospect from './listProspects' // your second screen
 import { connect } from 'react-redux';
 import * as appActions from '../../actions/appActions';
 // ================================================
+
+const {height, width} = Dimensions.get('window')
+const footerHeight = parseInt((6 * height) / 100)
 
 class Dashboard2 extends Component {
 
@@ -49,20 +52,25 @@ class Dashboard2 extends Component {
    }
 
   render() {
-    let AppComponent = Cars;
-    let iconSearch = <Icon name="ios-car" />
+     try{
+        let AppComponent = Cars;
+        let iconSearch = <Icon name="ios-car" />
 
-    if (this.state.index == 0) {
-       AppComponent = Cars
-    } else {
-       AppComponent = Prospect
-       iconSearch = <Icon name="ios-person" />
-    }
+        if (this.state.index == 0) {
+           AppComponent = Cars
+        } else {
+           AppComponent = Prospect
+           iconSearch = <Icon name="ios-person" />
+        }
+     }catch(err){
+        console.log(err)
+        alert(err)
+     }
 
 
       return(
          <Container>
-            <Header style={{marginTop:56}} searchBar rounded>
+            {/* <Header style={{marginTop:56}} searchBar rounded>
                <Item>
                   <Icon name="ios-search" />
                   <Input
@@ -71,9 +79,9 @@ class Dashboard2 extends Component {
                   />
                   {iconSearch}
                </Item>
-            </Header>
+            </Header> */}
 
-            <Content>
+            <Content style={{marginTop:56}}>
 
                {
                   this.state.index == 0
@@ -83,7 +91,7 @@ class Dashboard2 extends Component {
 
             </Content>
 
-            <Footer style={{height:40}}>
+            <Footer style={styles.footerTab}>
                <FooterTab>
                   <Button onPress={() => this.switchScreen(0) }>
                      <Icon name="ios-car" />
@@ -118,5 +126,13 @@ const mapDispatchToProps = (dispatch) => {
         addTypeAction: (t) => dispatch(appActions.addType(t)),
     };
 };
+
+
+const styles = StyleSheet.flatten({
+   footerTab: {
+      height: footerHeight
+   },
+});
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard2)

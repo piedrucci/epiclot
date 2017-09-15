@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import {AsyncStorage} from 'react-native'
 import { Container, Header, Content, Footer, FooterTab, Button, Text, Icon } from 'native-base'
 import ImagePicker from 'react-native-image-crop-picker'
 import { Actions } from 'react-native-router-flux';
 import ImageElement from './carImages'
+import api from '../../utilities/api'
 import styles from './carStyles'
 
 
@@ -11,13 +13,53 @@ class CarImagesContainer extends Component {
       super(props)
       this.state = {
          arrayImages: [],
-         vinInfo: props.vinInfo
+         vinInfo: props.vinInfo,
+         newCar: props.newCar,
+         dealership_id: null,
+         nameImages: [],
       }
-
       this.imagePicker = this.imagePicker.bind(this)
       this.selectFromCamera = this.selectFromCamera.bind(this)
       this.deleteImage = this.deleteImage.bind(this)
    }
+
+   componentDidMount() {
+      if (this.state.newCar===false) {
+         this.checkSession().done()
+         this.getPhotos(this.state.vinInfo.vin)
+      }
+   }
+
+   async checkSession() {
+      const response = await AsyncStorage.getItem(api.getSessionName())
+      const json = JSON.parse(response)
+      if ( null !== json ) {
+         this.setState({dealership_id:json.dealership_id})
+      } else if ( null === json ) {
+         alert('Empty data');
+      }
+   }
+
+
+   // carga las rutas de las fotos asociadas al vin...
+    async getPhotos(vin) {
+        try{
+            const response = await fetch(api.getApiUrlPhotosByVIN(vin)+'/'+this.state.dealership_id)
+            const json = await response.json()
+            if (json.length>0){
+               json.map(
+                  (image, index)=>
+                  this.setState({
+                     arrayImages:[...this.state.arrayImages, api.getUrlPhotoHost(image.subdomain, image.photo) ],
+                     nameImages:[...this.state.nameImages, image.photo],
+                  })
+               )
+               this.renderSceneRightButton()
+            }
+        }catch(err){
+            alert(err);
+        }
+    }
 
    async imagePicker() {
       try{
@@ -46,10 +88,12 @@ class CarImagesContainer extends Component {
    }
 
    nextStep() {
-      const carInfo = this.state.vinInfo
-      carInfo.images = this.state.arrayImages
+      const carInfo = {
+         newCar: this.state.newCar,
+         vin: this.state.vinInfo,
+         images: this.state.arrayImages,
+      }
       // console.log(carInfo)
-      // Actions.createCar2({vinInfo: this.state.vinInfo})
       Actions.formCar({vinInfo: carInfo})
    }
 
@@ -62,6 +106,7 @@ class CarImagesContainer extends Component {
    }
 
    deleteImage(val) {
+      console.log(val)
       this.setState({
          arrayImages: this.state.arrayImages.filter(function(img){
             return img !== val
@@ -70,7 +115,7 @@ class CarImagesContainer extends Component {
       // console.log(this.state.arrayImages.length)
       const buttonTitle = (this.state.arrayImages.length>1) ? 'Next' : ''
 
-      Actions.refresh({ rightTicdtle: buttonTitle, onRight:()=>this.nextStep() })
+      Actions.refresh({ rightTitle: buttonTitle, onRight:()=>this.nextStep() })
    }
 
 

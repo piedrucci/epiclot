@@ -66,7 +66,6 @@ export default class PhotoSwiper extends Component {
             return (
                 <View key={`entry.photo-${index}`} style={styles.container}>
                     <FitImage style={{width:width,height:180}} source={{uri:api.getUrlPhotoHost(entry.subdomain, entry.photo)}} />
-                    {/* <Text style={styles.title}>{ entry.photo }</Text> */}
                 </View>
             );
         });

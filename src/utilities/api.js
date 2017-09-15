@@ -43,7 +43,7 @@ var api = {
 
    // CONSULTA EL VIN EN EL dealership_id
    checkVIN(vin, dealership_id) {
-      const response = fetch( apiEndPoint + 'vin/' + vin + '/' + dealership_id + '/' )
+      const response = fetch( apiEndPoint + 'vin/' + vin + '/' + dealership_id )
       return response;
    },
 

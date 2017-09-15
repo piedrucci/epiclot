@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Sun Sep 03 16:51:06 EST 2017
+#Tue Sep 12 01:02:44 EST 2017
 20.base=/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/res/resources-debug.ap_
 143.base=/home/roberth/code/reactnative/epiclot/android/app/build/intermediates/assets/debug
 439.set=ANDROID_RESOURCE

@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import { StyleSheet, Text, ScrollView, Platform } from 'react-native';
-
 import FitImage from 'react-native-fit-image';
-
 import { Container, Header, Content, Icon, Left, Right, Button,
     Body, Title, Footer, FooterTab, List, ListItem, Thumbnail,
     Item, Input, Form, Label, Spinner, InputGroup } from 'native-base';
-
 import { FormattedNumber, FormattedCurrency } from 'react-native-globalize';
-
 import PhotoSwiper from './photoSwiper';
-
 const mTop = (Platform.OS === 'ios') ? 66 : 56;
+import { Actions } from 'react-native-router-flux';
 
 const styles = {
     label: {
@@ -36,6 +31,18 @@ export default class CarDetail extends Component {
             loading: false
         }
     }
+
+    componentDidMount() {
+      Actions.refresh({
+         // title: 'Add Prospect',
+         rightTitle: 'Edit',
+         onRight:()=>this.editInfo()
+      })
+    }
+
+    editInfo = () => {
+      Actions.carImages({vinInfo: this.props.car, newCar: false})
+   }
 
     render({ car } = this.props) {
         const {

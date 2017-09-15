@@ -21,7 +21,7 @@ class CreateProspect extends Component {
          prospect: props.prospect || null,
 
          newProspect: (props.prospect===null),
-         driver_license: (props.prospect===null)?'':(props.prospect.driver_license),
+         driver_license: (props.prospect===null)?'':(props.prospect.license),
          sales_id: (props.prospect===null)?0:(props.prospect.sales_id),
          dealership_id: (props.prospect===null)?'':(props.prospect.dealership_id),
          firstname: (props.prospect===null)?'':(props.prospect.firstname),
@@ -41,26 +41,6 @@ class CreateProspect extends Component {
          sex:(props.prospect===null)?'':(props.prospect.sex),
          user_id:(props.prospect===null)?'':(props.prospect.user),
 
-         // newProspect: (props.prospect===null),
-         // driver_license: (props.prospect===null)?'1234567890':(props.prospect.license),
-         // sales_id: (props.prospect===null)?0:(props.prospect.sales_id),
-         // dealership_id: (props.prospect===null)?'':(props.prospect.dealership_id),
-         // firstname: (props.prospect===null)?'roberth':(props.prospect.firstname),
-         // lastname: (props.prospect===null)?'mejias':(props.prospect.lastname),
-         // address: (props.prospect===null)?'avenida':(props.prospect.address),
-         // zipcode: (props.prospect===null)?'07157':(props.prospect.zipcode),
-         // state:(props.prospect===null)?'PA':(props.prospect.state),
-         // city:(props.prospect===null)?'Ciudad de Panama':(props.prospect.city),
-         // cellphone: (props.prospect===null)?'507 60169131':(props.prospect.cellphone),
-         // emailaddress: (props.prospect===null)?'roberth@beecode.co':(props.prospect.emailaddress),
-         // looking_for: (props.prospect===null)?'ford explorer':(props.prospect.looking_for),
-         // dob:(props.prospect===null)?'1958-03-15':(props.prospect.birthday),
-         // license_state:(props.prospect===null)?'FL':(props.prospect.licensestate),
-         // license_issued:(props.prospect===null)?'2015-07-20':(props.prospect.license_issued),
-         // license_expiration:(props.prospect===null)?'2018-01-01':(props.prospect.license_expiration),
-         // license_height:(props.prospect===null)?'5.3':(props.prospect.license_height),
-         // sex:(props.prospect===null)?'Male':(props.prospect.sex),
-         // user_id:(props.prospect===null)?'':(props.prospect.user),
 
          checkingLicense: false,
          validLicense: false,
@@ -83,17 +63,21 @@ class CreateProspect extends Component {
 
 // OBTENER LOS DATOS DE LA SESSION ACTUAL
     componentDidMount() {
-      this.checkSession()
+      try{
+         this.checkSession()
 
-      if ( this.props.vinScanned ){
-         this.setState({vin: this.props.vinScanned})
+         if ( this.props.vinScanned ){
+            this.setState({vin: this.props.vinScanned})
+         }
+
+         Actions.refresh({
+            title: 'Add Prospect',
+            rightTitle: 'Save',
+            onRight:()=>this.saveInfo()
+         })
+      }catch(err){
+         console.log(err)
       }
-
-      Actions.refresh({
-         title: 'Add Prospect',
-         rightTitle: 'Save',
-         onRight:()=>this.saveInfo()
-      })
    }
 
    async checkSession() {
@@ -194,49 +178,94 @@ class CreateProspect extends Component {
 
     async saveInfo() {
 
-      if ( this.state.prospect )
+      // if ( this.state.prospect )
+      if ( this.state.driver_license === '' ){
+         alert('Enter the driver\'s license')
+      }else if ( this.state.firstname === '' ){
+         alert('Enter the firstname')
+      }else if ( this.state.lastname === '' ){
+         alert('Enter the lastname')
+      }else if ( this.state.cellphone === '' ){
+         alert('Enter the cellphone')
+      }else if ( this.state.emailaddress === '' ){
+         alert('Enter the email address')
+      }else if ( this.state.looking_for === '' ){
+         alert('Enter what looking for')
+      }else if ( this.state.dob === '' ){
+         alert('Enter the day of birth')
+      }else{
+         try{
+            this.setState({savingInfo:true})
 
-      this.setState({savingInfo:true})
-      const prospect = {
-         newProspect: this.state.newProspect,
-      	sales_id: this.state.sales_id,
-      	dealership_id: this.state.session.dealership_id,
-      	firstname: this.state.firstname,
-      	lastname: this.state.lastname,
-      	address: this.state.address,
-      	zipcode: this.state.zipcode,
-      	city: this.state.city,
-      	state: this.state.state,
-      	cellphone: this.state.cellphone,
-      	emailaddress: this.state.emailaddress,
-      	looking_for: this.state.looking_for,
-      	dob: this.state.dob,
-      	driver_license: this.state.driver_license,
-      	license_state: this.state.license_state,
-      	license_issued: this.state.license_issued,
-      	license_expiration: this.state.license_expiration,
-      	license_height: this.state.license_height,
-      	sex: this.state.sex,
-      	user_id: this.state.session.user_id
-      }
-      console.log(prospect)
-      // const response = await api.sendPOST(api.getApi_Url()+'prospect}', prospect)
-      // console.log(response)
-      const response = await fetch(api.getApi_Url() + 'prospect',{
-         method: 'post',
-         headers: {
-             'Accept': 'application/json',
-             'Content-Type': 'application/json',
-         },
-         body: JSON.stringify(prospect)
-      })
+            if (typeof this.state.dob==='undefined'){this.setState({dob: ''})}
 
-      // status 200 para determinar si la peticion tuvo exito!.
-      if (response.status === 200 ) {
-         console.log("Prospect Saved, statusCode: "+response.status)
-         Actions.home2()
+            const arrLic=[]
+            const lic_iss = ""
+            const lic_exp = ""
+
+            // preparar las fechas ......
+            if (this.state.license_issued!=='' && this.state.license_issued !==null){
+               arrLic = this.state.license_issued.split('-')
+               lic_iss = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
+            }
+            if (this.state.license_expiration!=='' && this.state.license_expiration !==null){
+               arrLic = this.state.license_expiration.split('-')
+               lic_exp = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
+            }
+
+            const prospect = {
+               newProspect: this.state.newProspect,
+               sales_id: this.state.sales_id,
+               dealership_id: this.state.session.dealership_id,
+               firstname: this.state.firstname,
+               lastname: this.state.lastname,
+               address: this.state.address,
+               zipcode: this.state.zipcode,
+               city: this.state.city,
+               state: this.state.state,
+               cellphone: this.state.cellphone,
+               emailaddress: this.state.emailaddress,
+               looking_for: this.state.looking_for,
+               dob: (this.state.dob)?this.state.dob.substr(6, 4)+'-'+this.state.dob.substr(0, 2)+'-'+this.state.dob.substr(0, 2):'',
+               driver_license: this.state.driver_license,
+               license_state: this.state.license_state,
+               license_issued: lic_iss,
+               license_expiration: lic_exp,
+               license_height: this.state.license_height,
+               sex: this.state.sex,
+               user_id: this.state.session.user_id
+            }
+
+            if ( typeof this.state.dob === 'undefined' ){delete prospect.dob}
+
+            // console.log(prospect)
+            // const response = await api.sendPOST(api.getApi_Url()+'prospect}', prospect)
+            // console.log(response)
+
+            const response = await fetch(api.getApi_Url() + 'prospect',{
+               method: 'post',
+               headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify(prospect)
+            })
+
+            // status 200 para determinar si la peticion tuvo exito!.
+            if (response.status === 200 ) {
+               console.log("Prospect Saved, statusCode: "+response.status)
+               Actions.home2()
+            }
+            this.setState({savingInfo:false})
+         }catch(err){
+            console.log(err)
+            alert(err)
+         }finally{
+            Actions.home2()
+         }
+
       }
-      this.setState({savingInfo:false})
+
 
    }
 
@@ -262,7 +291,7 @@ class CreateProspect extends Component {
                            target: 'prospect'
                         }) } >
                      <Text style={{color:'white'}}>{this.state.captionCheckButton}</Text>
-                     <Icon name='ios-camera-outline' />
+                     <Icon name='ios-barcode-outline' />
                   </Button>
 
                   <Item >
@@ -447,8 +476,8 @@ class CreateProspect extends Component {
                     date={this.state.dob}
                     mode="date"
                     placeholder="Date of Birth"
-                    format="YYYY-MM-DD"
-                    minDate ="1950-01-01"
+                    format="MM-DD-YYYY"
+                    minDate ="01-01-1950"
                   //   maxDate ={currentDate}
                   //   maxDate ={Moment.format('YYYY-MM-DD')}
                     confirmBtnText="Confirm"
@@ -468,7 +497,7 @@ class CreateProspect extends Component {
                     onDateChange={(date) => {this.setState({dob: date})}}
                  />
 
-                 <DatePicker
+                 {/* <DatePicker
                     style={styles.dPicker}
                     date={this.state.license_issued}
                     mode="date"
@@ -489,12 +518,15 @@ class CreateProspect extends Component {
                        dateInput: {
                           marginLeft: 36
                        }
-                       // ... You can check the source to find the other keys.
                     }}
                     onDateChange={(date) => {this.setState({license_issued: date})}}
-                 />
+                 /> */}
+                 <Item floatingLabel disabled >
+                    <Label>License Issued</Label>
+                    <Input value={this.state.license_issued} />
+                  </Item>
 
-                 <DatePicker
+                 {/* <DatePicker
                     style={styles.dPicker}
                     date={this.state.license_expiration}
                     mode="date"
@@ -515,10 +547,13 @@ class CreateProspect extends Component {
                        dateInput: {
                           marginLeft: 36
                        }
-                       // ... You can check the source to find the other keys.
                     }}
                     onDateChange={(date) => {this.setState({license_expiration: date})}}
-                 />
+                 /> */}
+                 <Item disabled floatingLabel>
+                    <Label>License Expiration</Label>
+                    <Input value={this.state.license_expiration} />
+                  </Item>
 
                  <Item >
                     <Icon name='ios-more-outline' />
@@ -535,7 +570,7 @@ class CreateProspect extends Component {
                     />
                  </Item>
 
-                 <View style={[styles.viewMargins, styles.viewContainer]}>
+                 {/* <View style={[styles.viewMargins, styles.viewContainer]}>
                     <Text>Sex</Text>
                     <Picker
                       style={{marginTop:-15}}
@@ -547,7 +582,7 @@ class CreateProspect extends Component {
                       <Picker.Item label="Male" value="M" />
                       <Picker.Item label="Female" value="F" />
                     </Picker>
-                 </View>
+                 </View> */}
 
                </Form>
                }

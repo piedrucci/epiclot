@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, AsyncStorage, BackHandler, BackAndroid, Platform } from 'react-native';
+import { Image, AsyncStorage, BackHandler, BackAndroid, Platform, Dimensions } from 'react-native';
 import { Container, Content, Header, Form, Item, Input,
    Button, Text, Footer, FooterTab, Icon, Spinner } from 'native-base'
 import api from '../../utilities/api'
