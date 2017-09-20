@@ -23,7 +23,7 @@ class CreateCar extends Component {
          session: {},
          // vin: 'NM0LS7EX9G1276250',
          // vin: '1M1AW07Y1GM051234',
-         vin: '5XXGM4A70FG352220',
+         vin: '', // 5XXGM4A70FG352220
          // vin: props.car.vin || '',
          checkingVIN: false,
          validVin: false,

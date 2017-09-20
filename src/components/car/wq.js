@@ -19,11 +19,12 @@ class FormCar extends Component{
 
          vin: this.props.vinInfo.vin.vin,
          newCar: this.props.vinInfo.newCar,
-         mileage_type: (this.props.vinInfo.newCar)?mileageType[0].value:this.props.vinInfo.vin.mileage_type,
-         color: (this.props.vinInfo.newCar)?color[0].value:this.props.vinInfo.vin.color,
-         transmission:  (this.props.vinInfo.newCar)?transmission[0].value:this.props.vinInfo.vin.transmission,
-         status: (this.props.vinInfo.newCar)?status[0].value:this.props.vinInfo.vin.status,
+         mileage_type: (this.props.vinInfo.newCar)?mileageType[0].value:this.props.vinInfo.vin.mileage_type.toLowerCase(),
+         color: (this.props.vinInfo.newCar)?color[0].value:this.props.vinInfo.vin.color.toLowerCase(),
+         transmission:  (this.props.vinInfo.newCar)?transmission[0].value:this.props.vinInfo.vin.transmission.toLowerCase(),
+         status: (this.props.vinInfo.newCar)?status[0].value:this.props.vinInfo.vin.status.toLowerCase(),
          images: props.vinInfo.images,
+         imagesDeleted: props.vinInfo.deleted,
 
          mileage: (this.props.vinInfo.newCar)?'':this.props.vinInfo.vin.mileage,
          webprice: (this.props.vinInfo.newCar)?'':this.props.vinInfo.vin.webprice,
@@ -36,9 +37,31 @@ class FormCar extends Component{
    }
 
    componentDidMount() {
-
       this.checkSession().done()
       Actions.refresh({ rightTitle: 'Save', onRight:()=>this.saveCar() })
+
+      // si esta editando carro
+      if (!this.props.vinInfo.newCar){
+         this.checkImages()
+         // console.log("=== imagenes excluidas ===");
+         // console.log(this.props.vinInfo.deleted)
+      }
+   }
+
+// metodo para incluir en el formData solo las imagenes nuevas que agrego el usuario
+// esto solo aplica cuando esta editando carro.
+   checkImages = async() => {
+      let images = []
+      await this.props.vinInfo.images.map( (image, index) => {
+         let arrInfo = image.split('/')
+         if ( arrInfo[0] !== "http:" ) {
+            images.push(image)
+         }
+         return null
+      } )
+      this.setState({images: images})
+      // console.log("=== imagenes nuevas ===");
+      // console.log(this.state.images);
    }
 
    async checkSession() {
@@ -90,12 +113,17 @@ class FormCar extends Component{
             expense_date: arrDate[2]+'-'+arrDate[0]+'-'+arrDate[1],
             web_price: this.state.webprice,
             sale_price: this.state.sale_price,
-            wholesale_price: this.state.wholesale_price
+            wholesale_price: this.state.wholesale_price,
+            imagesDeleted: this.state.imagesDeleted.join()
          }
 
          if ( this.state.newCar === false ) {
             delete jsonCarInfo.expense_date
             delete jsonCarInfo.wholesale_price
+         }
+
+         if (this.state.imagesDeleted.length === 0){
+            delete jsonCarInfo.imagesDeleted
          }
 
          // AGREGA AL CADA VALOR DEL JSON AL FORMDATA
@@ -106,16 +134,18 @@ class FormCar extends Component{
 
          let photo = {};
 
+         // console.log(this.state.images);
+
          // agregar todas las imagenes al formData
+         console.log(this.state.images);
          this.state.images.map( (image, index) => {
             photo = {
-               uri: image,
-               type: 'image/jpeg',
-               name: `${jsonCarInfo.vin}_${index}.jpg`,
-            }
+                  uri: image,
+                  type: 'image/jpeg',
+                  name: `${jsonCarInfo.vin}_${index}.jpg`,
+               }
             fd.append(`image_${index}`, photo)
-         }
-      )
+         } )
       // console.log(fd)
 
       try{
@@ -128,12 +158,15 @@ class FormCar extends Component{
             body: fd
          })
 
+         // console.log(req)
+
          // status 200 para determinar si la peticion tuvo exito!.
          if (response.status === 200 ) {
             console.log("Car Saved, statusCode: "+response.status)
-            Actions.home2()
+            Actions.home2({refreshData: true})
          }
          console.log(`status code: ${response.status}`)
+
       }catch(err) {
          console.log(err)
          alert(err)
@@ -142,8 +175,6 @@ class FormCar extends Component{
       }
 
    }
-
-
 
 }
 
@@ -181,7 +212,7 @@ class FormCar extends Component{
                           style={{marginTop:-15}}
                           iosHeader="Mileage Type"
                           mode="dialog"
-                          selectedValue={this.state.mileage_type}
+                          selectedValue={this.state.mileage_type.toLowerCase()}
                           onValueChange={(value)=>this.setState({mileage_type: value})}
                        >
                           {mileageType.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
@@ -194,7 +225,7 @@ class FormCar extends Component{
                           style={{marginTop:-15}}
                           iosHeader="Select Color"
                           mode="dialog"
-                          selectedValue={this.state.color}
+                          selectedValue={this.state.color.toLowerCase()}
                           onValueChange={(value)=>this.setState({color: value})}
                        >
                           {color.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
@@ -207,7 +238,7 @@ class FormCar extends Component{
                           style={{marginTop:-15}}
                           iosHeader="Select Transmission"
                           mode="dialog"
-                          selectedValue={this.state.transmission}
+                          selectedValue={this.state.transmission.toLowerCase()}
                           onValueChange={(value)=>this.setState({transmission: value})}
                        >
                           {transmission.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
@@ -221,7 +252,7 @@ class FormCar extends Component{
                           style={{marginTop:-15}}
                           iosHeader="Select Status"
                           mode="dialog"
-                          selectedValue={this.state.status}
+                          selectedValue={this.state.status.toLowerCase()}
                           onValueChange={(value)=>this.setState({status: value})}
                        >
                           {status.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}

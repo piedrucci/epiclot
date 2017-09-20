@@ -48,7 +48,7 @@ export default class CarDetail extends Component {
         const {
             vin, subdomain, make, model, year, photo, condition, style,
             transmission, engine_size, cylinder, fuel_type,
-            color, mileage, status, webprice
+            color, mileage, mileage_type, status, webprice
         } = car;
 
         return(
@@ -114,6 +114,9 @@ export default class CarDetail extends Component {
                             </ListItem>
                             <ListItem>
                                 <Text style={styles.label}>Mileage:   </Text><FormattedNumber value={parseFloat(mileage)} />
+                            </ListItem>
+                            <ListItem>
+                                <Text style={styles.label}>Mileage Type:   </Text><Text>{mileage_type}</Text>
                             </ListItem>
                         </List>
 
