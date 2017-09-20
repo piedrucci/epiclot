@@ -46,6 +46,7 @@ class Prospect extends Component {
 // GET REQUEST PARA OBTENER LA LISTA COMPLETA DE PROSPECTOS DEL DEALER ACTUAL
   async fetchData(dealership_id) {
       try{
+         console.log("ssssssss")
          const response = await api.getProspects(dealership_id)
          // if ( response.status === 500 )
          const json = await response.json()
@@ -80,7 +81,7 @@ class Prospect extends Component {
      }
   }
 
-  handleRefresh() {
+  handleRefresh = () => {
    //   alert('refreshing...')
      this.setState({refreshing: true})
      this.fetchData(this.state.dealership_id).done()

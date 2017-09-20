@@ -22,36 +22,49 @@ class Cars extends Component {
           error: false,
           cars: [],
           loading: true,
-          refreshing: false,
           dealership_id: null,
+          refreshing: props.refreshing
       }
       this.handleRefresh = this.handleRefresh.bind(this)
   }
 
   componentDidMount() {
-      let _info = '';
-
-      _info = AsyncStorage.getItem(api.getSessionName())
-      .then( (value) => { return JSON.parse(value) || null; } )
-      .then( (JSON_Value) => {
-          // console.log(JSON_Value);
-          if ( null !== JSON_Value ) {
-             this.setState({dealership_id:JSON_Value.dealership_id})
-              this.fetchData(JSON_Value.dealership_id).done()
-          } else if ( null === JSON_Value ) {
-              this.setState({loading:false});
-              alert('Empty data');
-          }
-      } )
+     this.refreshData()
   }
 
   componentWillReceiveProps(nextProps) {
-     this.findWord(nextProps.carFilter)
+   //   para filtrar una busqueda
+   //   this.findWord(nextProps.carFilter)
+
+     this.refreshData()
   }
+
+  refreshData = () => {
+     try{
+       let _info = '';
+
+       _info = AsyncStorage.getItem(api.getSessionName())
+       .then( (value) => { return JSON.parse(value) || null; } )
+       .then( (JSON_Value) => {
+          // console.log(JSON_Value);
+          if ( null !== JSON_Value ) {
+             this.setState({dealership_id:JSON_Value.dealership_id})
+             this.fetchData(JSON_Value.dealership_id).done()
+          } else if ( null === JSON_Value ) {
+             this.setState({loading:false});
+             alert('Empty data');
+          }
+      } )
+     }catch(err){
+       alert(err)
+       console.log(err)
+     }
+ }
 
 // GET REQUEST PARA OBTENER LA LISTA COMPLETA DE CARROS DEL DEALER ACTUAL
   async fetchData(dealership_id) {
       try{
+         // console.log('actualizando lista de carros');
          const response = await api.getCars(dealership_id);
          const json = await response.json()
          this.setState({
@@ -85,9 +98,9 @@ class Cars extends Component {
      }
   }
 
-  handleRefresh() {
-     this.setState({refreshing: true})
-     this.fetchData(this.state.dealership_id).done()
+  handleRefresh = async() => {
+   //   this.setState({refreshing: true})
+     await this.fetchData(this.state.dealership_id)
  }
 
  render() {
@@ -102,8 +115,6 @@ class Cars extends Component {
             <FlatList
                data={this.state.cars}
                keyExtractor={item => item.vin}
-               refreshing={this.state.refreshing}
-               onRefresh={this.handleRefresh}
                renderItem={({item}) =>
                <ListItem button onPress={()=>Actions.carDetail({car:item})} >
                   <FitImage style={styles.thumbnailCarImage} source={{uri: 'http://epiclot.com/dealer/accounts/'+item.subdomain+'/photos/'+item.photo}} />

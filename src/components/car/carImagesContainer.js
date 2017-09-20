@@ -17,6 +17,7 @@ class CarImagesContainer extends Component {
          newCar: props.newCar,
          dealership_id: null,
          nameImages: [],
+         imagesDeleted: []
       }
       this.imagePicker = this.imagePicker.bind(this)
       this.selectFromCamera = this.selectFromCamera.bind(this)
@@ -92,6 +93,7 @@ class CarImagesContainer extends Component {
          newCar: this.state.newCar,
          vin: this.state.vinInfo,
          images: this.state.arrayImages,
+         deleted: this.state.imagesDeleted,
       }
       // console.log(carInfo)
       Actions.formCar({vinInfo: carInfo})
@@ -106,7 +108,14 @@ class CarImagesContainer extends Component {
    }
 
    deleteImage(val) {
-      console.log(val)
+      // console.log(`borrando ${val}`)
+
+      // agregar al array la imagen que esta borrando para informarle al backend
+      let arrInfo = val.split('/')
+      if (arrInfo[0] === "http:"){
+         this.setState({imagesDeleted:[...this.state.imagesDeleted, arrInfo[arrInfo.length-1] ]})
+      }
+
       this.setState({
          arrayImages: this.state.arrayImages.filter(function(img){
             return img !== val

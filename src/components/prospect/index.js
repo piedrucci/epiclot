@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, FlatList, Dimensions, StyleSheet } from 'react-native';
+import { Text, FlatList, Dimensions, StyleSheet, AsyncStorage } from 'react-native';
 import { Container, Header, Content, Item, Icon, Input, Button, Spinner,
    List, ListItem, Thumbnail, Body, Footer, FooterTab, Tab, Tabs, TabHeading } from 'native-base';
 
@@ -7,6 +7,9 @@ import { Container, Header, Content, Item, Icon, Input, Button, Spinner,
 import { Actions, ActionConst, Router, Scene } from 'react-native-router-flux';
 import Cars from './listCars' // your first screen
 import Prospect from './listProspects' // your second screen
+import api from '../../utilities/api';
+import FitImage from 'react-native-fit-image';
+import { FormattedCurrency } from 'react-native-globalize';
 
 // ===========================================
 import { connect } from 'react-redux';
@@ -22,10 +25,37 @@ class Dashboard2 extends Component {
       super(props)
       this.state = {
          index: 0,      // default screen index
-         listFilter: ''
+         listFilter: '',
+         refreshData: props.refreshData,
+         loading: false,
       }
       this.findElement = this.findElement.bind(this)
   }
+
+  componentDidMount() {
+
+   try{
+     let _info = '';
+
+     _info = AsyncStorage.getItem(api.getSessionName())
+     .then( (value) => { return JSON.parse(value) || null; } )
+     .then( (JSON_Value) => {
+         // console.log(JSON_Value);
+         if ( null !== JSON_Value ) {
+          this.setState({dealership_id:JSON_Value.dealership_id})
+          this.fetchData(JSON_Value.dealership_id)
+        } else if ( null === JSON_Value ) {
+          this.setState({loading:false});
+          alert('Empty data');
+        }
+     } )
+   }catch(err){
+     alert(err)
+     console.log(err)
+   }
+
+ }
+
 
 // ACTUALIZA EL STORE PARA SABER QUE COMPONENTE CARGAR
 // AL MOMENTO DE PRESIONAR AGREGAR (+)
@@ -51,21 +81,53 @@ class Dashboard2 extends Component {
       // console.log(`actualizo estado carFilter: ${this.state.carFilter}`)
    }
 
-  render() {
-     try{
-        let AppComponent = Cars;
-        let iconSearch = <Icon name="ios-car" />
 
-        if (this.state.index == 0) {
-           AppComponent = Cars
-        } else {
-           AppComponent = Prospect
-           iconSearch = <Icon name="ios-person" />
-        }
-     }catch(err){
-        console.log(err)
-        alert(err)
-     }
+   // GET REQUEST PARA OBTENER LA LISTA COMPLETA DE PROSPECTOS DEL DEALER ACTUAL
+   async fetchData(dealership_id) {
+      try{
+         //  console.log('actualizando lista de carros');
+          const response = await api.getCars(dealership_id);
+          const json = await response.json()
+         // console.log(json)
+         this.setState({
+            loading: false,
+            cars: json,
+            refreshData: false,
+         })
+         listOfCars = json;
+
+      }catch(err){
+          this.setState({
+             loading: false,
+             error: true,
+             refreshData: false,
+          });
+          alert(err);
+      }
+   }
+
+   componentWillReceiveProps(nextProps) {
+      if (typeof nextProps.refreshData !== 'undefined') {
+         this.setState({refreshData: nextProps.refreshData})
+         console.log(`en HOME receiveProps refreshData cambio a ${nextProps.refreshData}`)
+      }
+   }
+
+  render() {
+   //   try{
+   //      let AppComponent = Cars;
+   //      let iconSearch = <Icon name="ios-car" />
+     //
+   //      if (this.state.index == 0) {
+   //         AppComponent = Cars
+   //      } else {
+   //         AppComponent = Prospect
+   //         iconSearch = <Icon name="ios-person" />
+   //      }
+   //   }catch(err){
+   //      console.log(err)
+   //      alert(err)
+   //   }
 
 
       return(
@@ -82,7 +144,7 @@ class Dashboard2 extends Component {
             </Header> */}
 
             <Content style={{marginTop:56}}>
-
+{/* refreshData={this.state.refreshData}  */}
                {
                   this.state.index == 0
                   ? <Cars carFilter={this.state.listFilter} />
@@ -101,10 +163,7 @@ class Dashboard2 extends Component {
                      <Icon name="ios-person" />
                      {/* <Text>Prospects</Text> */}
                   </Button>
-                  {/* <Button onPress={() => this.switchScreen(2) } >
-                     <Icon name="navigate" />
-                     <Text>Settings</Text>
-                  </Button> */}
+                  
                </FooterTab>
             </Footer>
 
