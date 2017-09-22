@@ -27,6 +27,7 @@ class Prospect extends Component {
       this.checkSession().done()
   }
 
+
   async checkSession() {
      const response = await AsyncStorage.getItem(api.getSessionName())
      const json = JSON.parse(response)
@@ -40,13 +41,13 @@ class Prospect extends Component {
  }
 
   componentWillReceiveProps(nextProps) {
-     this.findWord(nextProps.prospectFilter)
+   //   this.findWord(nextProps.prospectFilter)
+      this.checkSession()
   }
 
 // GET REQUEST PARA OBTENER LA LISTA COMPLETA DE PROSPECTOS DEL DEALER ACTUAL
   async fetchData(dealership_id) {
       try{
-         console.log("ssssssss")
          const response = await api.getProspects(dealership_id)
          // if ( response.status === 500 )
          const json = await response.json()
