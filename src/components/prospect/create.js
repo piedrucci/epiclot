@@ -8,6 +8,7 @@ import { Actions } from 'react-native-router-flux';
 import styles from './carStyles';
 import api from '../../utilities/api';
 import DatePicker from 'react-native-datepicker'
+import moment from 'moment'
 
 
 const {height, width} = Dimensions.get('window')
@@ -33,7 +34,7 @@ class CreateProspect extends Component {
          cellphone: (props.prospect===null)?'':(props.prospect.cellphone),
          emailaddress: (props.prospect===null)?'':(props.prospect.emailaddress),
          looking_for: (props.prospect===null)?'':(props.prospect.looking_for),
-         dob:(props.prospect===null)?'':(props.prospect.dob),
+         dob:(props.prospect===null)?'':(props.prospect.birthday),
          license_state:(props.prospect===null)?'':(props.prospect.licensestate),
          license_issued:(props.prospect===null)?'':(props.prospect.license_issued),
          license_expiration:(props.prospect===null)?'':(props.prospect.license_expiration),
@@ -62,8 +63,16 @@ class CreateProspect extends Component {
    }
 
 // OBTENER LOS DATOS DE LA SESSION ACTUAL
-    componentDidMount() {
+    async componentDidMount() {
+
       try{
+
+         // formatear la fecha de nacimiento solo cuando este editando
+         if (this.props.prospect !== null){
+            const arrDate = this.props.prospect.birthday.split("-")
+            await this.setState({dob: arrDate[1]+'-'+arrDate[2]+'-'+arrDate[0]})
+         }
+
          this.checkSession()
 
          if ( this.props.vinScanned ){
@@ -72,7 +81,7 @@ class CreateProspect extends Component {
 
          Actions.refresh({
             title: 'Add Prospect',
-            rightTitle: 'Save',
+            rightTitle: 'Done',
             onRight:()=>this.saveInfo()
          })
       }catch(err){
@@ -226,7 +235,7 @@ class CreateProspect extends Component {
                cellphone: this.state.cellphone,
                emailaddress: this.state.emailaddress,
                looking_for: this.state.looking_for,
-               dob: (this.state.dob)?this.state.dob.substr(6, 4)+'-'+this.state.dob.substr(0, 2)+'-'+this.state.dob.substr(0, 2):'',
+               dob: (this.state.dob)?this.state.dob.substr(6, 4)+'-'+this.state.dob.substr(0, 2)+'-'+this.state.dob.substr(3, 2):'',
                driver_license: this.state.driver_license,
                license_state: this.state.license_state,
                license_issued: lic_iss,
@@ -254,14 +263,14 @@ class CreateProspect extends Component {
             // status 200 para determinar si la peticion tuvo exito!.
             if (response.status === 200 ) {
                console.log("Prospect Saved, statusCode: "+response.status)
-               Actions.home2()
+               // Actions.home2()
             }
             this.setState({savingInfo:false})
          }catch(err){
             console.log(err)
             alert(err)
          }finally{
-            Actions.home2()
+            Actions.home2({refreshData: true})
          }
 
       }
@@ -270,7 +279,10 @@ class CreateProspect extends Component {
    }
 
     render() {
-      // console.log(this.state.prospect)
+
+      moment.locale('en');
+      const currentDate = moment().format("MM-DD-YYYY").toString()
+
         return(
          //   , flex:1, alignItems:'center', justifyContent:'center'
             <Content style={{marginTop:60}}>
@@ -477,8 +489,8 @@ class CreateProspect extends Component {
                     mode="date"
                     placeholder="Date of Birth"
                     format="MM-DD-YYYY"
-                    minDate ="01-01-1950"
-                  //   maxDate ={currentDate}
+                    minDate ="1950-01-01"
+                    maxDate ={currentDate}
                   //   maxDate ={Moment.format('YYYY-MM-DD')}
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"

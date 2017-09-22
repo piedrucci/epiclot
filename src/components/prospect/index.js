@@ -109,7 +109,7 @@ class Dashboard2 extends Component {
    componentWillReceiveProps(nextProps) {
       if (typeof nextProps.refreshData !== 'undefined') {
          this.setState({refreshData: nextProps.refreshData})
-         console.log(`en HOME receiveProps refreshData cambio a ${nextProps.refreshData}`)
+         // console.log(`en HOME receiveProps refreshData cambio a ${nextProps.refreshData}`)
       }
    }
 
@@ -163,7 +163,7 @@ class Dashboard2 extends Component {
                      <Icon name="ios-person" />
                      {/* <Text>Prospects</Text> */}
                   </Button>
-                  
+
                </FooterTab>
             </Footer>
 

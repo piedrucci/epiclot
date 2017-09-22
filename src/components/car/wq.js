@@ -330,7 +330,7 @@ class FormCar extends Component{
                        mode="date"
                        placeholder="Expense Date"
                        format="MM-DD-YYYY"
-                       minDate ="2016-05-01"
+                       minDate ="1950-01-01"
                        maxDate ={currentDate}
                      //   maxDate ={Moment.format('YYYY-MM-DD')}
                        confirmBtnText="Confirm"
