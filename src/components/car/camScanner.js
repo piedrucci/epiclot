@@ -13,6 +13,8 @@ class CameraComp extends Component {
          title: props.title || 'Scan',
          target: props.target || 'car',
          license: [],
+         isNew: props.isNew,
+         sales_id: props.sales_id
       }
       this.barCodeRead = this.barCodeRead.bind(this)
    }
@@ -48,7 +50,7 @@ class CameraComp extends Component {
 
          if (this.state.target === 'car'){
             info = { vin: e.data }
-            Actions.createCar({car:info})
+            Actions.createCar({car:info, isNew: this.state.isNew})
          }else if (this.state.target === 'prospect'){
             const splitLicense = e.data.split('\n')
             // console.log(splitLicense)
@@ -106,11 +108,15 @@ class CameraComp extends Component {
                      city: arrProfile.city,
                      zipcode: arrProfile.zipCode,
                      license_class: arrProfile.license_class,
-                     dob: arrProfile.dob,
+                     birthday: arrProfile.dob,
                      license_expiration: arrProfile.license_expiration,
                      license_issued: arrProfile.license_issued,
                   }
-                  Actions.createProspect({prospect:info})
+                  Actions.createProspect({
+                     prospect:info,
+                     isNew: this.state.isNew,
+                     sales_id: this.state.sales_id
+                  })
                }
             }
          }

@@ -8,7 +8,7 @@ export default StyleSheet.flatten({
       flexDirection:'row',
       justifyContent: 'center',
       alignItems: 'center',
-      // backgroundColor:'#efefef',
+      // backgroundColor:'#001a45',
    },
 
     footerContainer: {

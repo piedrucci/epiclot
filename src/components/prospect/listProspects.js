@@ -111,7 +111,7 @@ class Prospect extends Component {
                      <Body>
                         <Text style={styles.itemTitle}>{item.firstname} {item.lastname}</Text>
                         {/* <Text note style={styles.itemDetail}>{item.address}</Text> */}
-                        <Text note style={styles.itemDetail}>{item.city} {item.state}</Text>
+                        {item.city==='' ? null : <Text note style={styles.itemDetail}>{item.city} {item.state}</Text>}
                         {item.cellphone==='' ? null : <Text note style={{marginLeft: 10, }}>phone: {item.cellphone} </Text>}
                      </Body>
                   </ListItem>}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, AsyncStorage, BackHandler, BackAndroid, Platform, Dimensions } from 'react-native';
+import { Image, AsyncStorage, BackHandler, Platform, Dimensions } from 'react-native';
 import { Container, Content, Header, Form, Item, Input,
    Button, Text, Footer, FooterTab, Icon, Spinner } from 'native-base'
 import api from '../../utilities/api'
@@ -7,7 +7,7 @@ import { Actions } from 'react-native-router-flux'
 import Splash from '../splash'
 import styles from './loginStyles'
 
-// Keep a reference to ensure there is only one event listener subscribed with BackAndroid
+// Keep a reference to ensure there is only one event listener subscribed with BackHandler
 let listener = null
 
 
@@ -32,10 +32,12 @@ class Login extends Component {
 
    componentDidMount() {
      this.setState({loading:true});
+
      // BackHandler.addEventListener('backPress');
      if (Platform.OS == "android" && listener == null) {
-        listener = BackAndroid.addEventListener("hardwareBackPress", () => {
-           return backButtonPressFunction()
+        listener = BackHandler.addEventListener("hardwareBackPress", () => {
+          //  return backButtonPressFunction()
+           return false
         })
      }
 
@@ -129,6 +131,10 @@ class Login extends Component {
       }
 
    }
+
+   componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress')
+  }
 
    render() {
       return (

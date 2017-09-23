@@ -88,7 +88,7 @@ const App = () => {
 
                     {/* NEW HOME WITCH TAB BAR AND FLOAT BUTTON */}
                     <Scene key='home2' component={Dashboard2} hideNavBar={false} title='Home'
-                    type={ActionConst.RESET} renderRightButton ={buttonCreateCar}  renderLeftButton ={buttonLogOut}  />
+                    type={ActionConst.RESET} renderRightButton ={buttonCreateCar} renderLeftButton ={buttonLogOut}  />
 
                     {/* CREAR PROSPECT */}
                     <Scene key='createProspect'  component={CreateProspect} hideNavBar={false} title='New Prospect'  />
