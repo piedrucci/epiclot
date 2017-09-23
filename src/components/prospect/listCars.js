@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-native';
+import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList, Platform, Alert, AlertIOS } from 'react-native';
 import { Container, Content, Spinner, ListItem, Body, CheckBox } from 'native-base';
 import FitImage from 'react-native-fit-image';
 import { Actions } from 'react-native-router-flux';
@@ -79,7 +79,9 @@ class Cars extends Component {
             error: true,
             refreshing:false,
          });
-         alert(err);
+
+         // Actions.refresh({ rightTitle: '+', onRight:()=> false })
+
       }
   }
 

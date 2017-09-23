@@ -21,7 +21,8 @@ class CreateProspect extends Component {
          session: {},
          prospect: props.prospect || null,
 
-         newProspect: (props.prospect===null),
+         // newProspect: (props.prospect===null),
+         newProspect: (props.isNew),
          driver_license: (props.prospect===null)?'':(props.prospect.license),
          sales_id: (props.prospect===null)?0:(props.prospect.sales_id),
          dealership_id: (props.prospect===null)?'':(props.prospect.dealership_id),
@@ -39,7 +40,7 @@ class CreateProspect extends Component {
          license_issued:(props.prospect===null)?'':(props.prospect.license_issued),
          license_expiration:(props.prospect===null)?'':(props.prospect.license_expiration),
          license_height:(props.prospect===null)?'':(props.prospect.license_height),
-         sex:(props.prospect===null)?'':(props.prospect.sex),
+         // sex:(props.prospect===null)?'':(props.prospect.sex),
          user_id:(props.prospect===null)?'':(props.prospect.user),
 
 
@@ -53,7 +54,6 @@ class CreateProspect extends Component {
 
       }
 
-      this.handleChange = this.handleChange.bind(this)
       this.saveInfo = this.saveInfo.bind(this)
 
       this.checkVINCode = this.checkVINCode.bind(this)
@@ -66,12 +66,20 @@ class CreateProspect extends Component {
     async componentDidMount() {
 
       try{
-
+         // console.log(`ISSUED: ${this.props.prospect.license_issued}`)
          // formatear la fecha de nacimiento solo cuando este editando
          if (this.props.prospect !== null){
+            // console.log(`la fecha de nacimiento es ${this.props.prospect.birthday}`)
             const arrDate = this.props.prospect.birthday.split("-")
-            await this.setState({dob: arrDate[1]+'-'+arrDate[2]+'-'+arrDate[0]})
+            if (arrDate[0].length>2){
+               await this.setState({dob: arrDate[1]+'-'+arrDate[2]+'-'+arrDate[0]})
+            }else{
+               await this.setState({dob: this.props.prospect.birthday})
+            }
          }
+
+         // para mantener el mismo SALES_ID en caso que este editando y vuelva a escanear la licencia
+         await this.setState({sales_id: (typeof this.props.sales_id !== 'undefined')?this.props.sales_id:this.state.sales_id})
 
          this.checkSession()
 
@@ -85,7 +93,7 @@ class CreateProspect extends Component {
             onRight:()=>this.saveInfo()
          })
       }catch(err){
-         console.log(err)
+         console.log(`AN EXCEPTION WAS DETECTED LOADING COMPONENT!!! \n${err}`)
       }
    }
 
@@ -100,10 +108,6 @@ class CreateProspect extends Component {
            alert('Empty data');
        }
   }
-
-   componentWillUnmount () {
-      this._listeners && this._listeners.forEach(listener => listener.remove());
-   }
 
 // ACTIVA - DESACTIVA EL BOTON DE CHECK VIN
     switchButtonStatus(text) {
@@ -145,38 +149,6 @@ class CreateProspect extends Component {
       // Actions.tabCar()
       // console.log(this.props)
    }
-
-   handleChange(e, data){
-      console.log(data);
-      // alert(e.target.value)
-   }
-
-   // takePicture() {
-   //    const options = {};
-   //    //options.location = ...
-   //    this.camera.capture({metadata: options})
-   //    .then((data) => console.log(data))
-   //    .catch(err => console.error(err));
-   // }
-
-   // _onBarCodeRead(e) {
-   //    // this.setState({showCamera: false});
-   //    Alert.alert(
-   //       "Barcode Found!",
-   //       "Type: " + e.type + "\nData: " + e.data
-   //    );
-   // }
-
-
-   // ===================== scanner
-   // _onBarCodeRead = (e) => {
-   //      console.log(`e.nativeEvent.data.type = ${e.nativeEvent.data.type}, e.nativeEvent.data.code = ${e.nativeEvent.data.code}`)
-   //      this._stopScan()
-   //      Alert.alert(e.nativeEvent.data.type, e.nativeEvent.data.code, [
-   //          {text: 'OK', onPress: () => this._startScan()},
-   //      ])
-   //  }
-
     _startScan = (e) => {
         this._barCode.startScan()
     }
@@ -188,20 +160,20 @@ class CreateProspect extends Component {
     async saveInfo() {
 
       // if ( this.state.prospect )
-      if ( this.state.driver_license === '' ){
-         alert('Enter the driver\'s license')
-      }else if ( this.state.firstname === '' ){
+      if ( this.state.firstname === '' ){
          alert('Enter the firstname')
       }else if ( this.state.lastname === '' ){
          alert('Enter the lastname')
-      }else if ( this.state.cellphone === '' ){
+      }else if ( this.state.address === '' ){
+         alert('Enter the address')
+      }else if ( (this.state.cellphone === '') || (typeof this.state.cellphone === 'undefined') ){
          alert('Enter the cellphone')
-      }else if ( this.state.emailaddress === '' ){
-         alert('Enter the email address')
-      }else if ( this.state.looking_for === '' ){
-         alert('Enter what looking for')
-      }else if ( this.state.dob === '' ){
-         alert('Enter the day of birth')
+      // }else if ( this.state.emailaddress === '' || (typeof this.state.emailaddress === 'undefined') ){
+      //    alert('Enter the email address')
+      // }else if ( this.state.looking_for === '' || (typeof this.state.looking_for === 'undefined') ){
+      //    alert('Enter what looking for')
+      // }else if ( this.state.dob === '' ){
+      //    alert('Enter the day of birth')
       }else{
          try{
             this.setState({savingInfo:true})
@@ -209,18 +181,24 @@ class CreateProspect extends Component {
             if (typeof this.state.dob==='undefined'){this.setState({dob: ''})}
 
             const arrLic=[]
-            const lic_iss = ""
-            const lic_exp = ""
+            const lic_iss = this.state.license_issued
+            const lic_exp = this.state.license_expiration
 
             // preparar las fechas ......
             if (this.state.license_issued!=='' && this.state.license_issued !==null){
                arrLic = this.state.license_issued.split('-')
-               lic_iss = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
+               if (!arrLic[0].length>2){
+                  lic_iss = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
+               }
             }
             if (this.state.license_expiration!=='' && this.state.license_expiration !==null){
                arrLic = this.state.license_expiration.split('-')
-               lic_exp = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
+               if (!arrLic[0].length>2){
+                  lic_exp = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
+               }
             }
+            // lic_iss = "2015-01-01"
+            // lic_exp = "2015-02-01"
 
             const prospect = {
                newProspect: this.state.newProspect,
@@ -240,14 +218,15 @@ class CreateProspect extends Component {
                license_state: this.state.license_state,
                license_issued: lic_iss,
                license_expiration: lic_exp,
-               license_height: this.state.license_height,
-               sex: this.state.sex,
+               // license_height: this.state.license_height,
+               // sex: this.state.sex,
                user_id: this.state.session.user_id
             }
+            // console.log(prospect)
 
             if ( typeof this.state.dob === 'undefined' ){delete prospect.dob}
 
-            // console.log(prospect)
+            console.log(prospect)
             // const response = await api.sendPOST(api.getApi_Url()+'prospect}', prospect)
             // console.log(response)
 
@@ -267,14 +246,13 @@ class CreateProspect extends Component {
             }
             this.setState({savingInfo:false})
          }catch(err){
-            console.log(err)
+            console.log(`AN EXCEPTION WAS DETECTED SAVING!!! \n${err}`)
             alert(err)
          }finally{
             Actions.home2({refreshData: true})
          }
 
       }
-
 
    }
 
@@ -300,16 +278,20 @@ class CreateProspect extends Component {
                      onPress={() => Actions.cameraScanner(
                         {
                            title:'Scan License',
-                           target: 'prospect'
+                           target: 'prospect',
+                           isNew: this.state.newProspect,
+                           sales_id: this.state.sales_id
                         }) } >
                      <Text style={{color:'white'}}>{this.state.captionCheckButton}</Text>
                      <Icon name='ios-barcode-outline' />
                   </Button>
 
+                  {
+                     this.state.driver_license !== '' ?
                   <Item >
                      <Icon name='ios-barcode-outline' />
                      <Input
-                        // maxLength = {20}
+                        maxLength = {15}
                         keyboardType='default'
                         //   style={{width:250}}
                         returnKeyType='next'
@@ -321,6 +303,7 @@ class CreateProspect extends Component {
                      />
 
                   </Item>
+                  : false }
 
                   <Item >
                      <Icon name='ios-barcode-outline' />
@@ -426,8 +409,8 @@ class CreateProspect extends Component {
                   <Item >
                      <Icon name='ios-more-outline' />
                      <Input
-                        maxLength = {20}
-                        keyboardType='default'
+                        maxLength = {5}
+                        keyboardType='numeric'
                         //   style={{width:250}}
                         returnKeyType='next'
                         placeholder='Zip Code'
@@ -441,8 +424,8 @@ class CreateProspect extends Component {
                   <Item >
                      <Icon name='ios-phone-portrait-outline' />
                      <Input
-                        maxLength = {20}
-                        keyboardType='default'
+                        maxLength = {10}
+                        keyboardType='numeric'
                         //   style={{width:250}}
                         returnKeyType='next'
                         placeholder='Cellphone'
@@ -456,8 +439,8 @@ class CreateProspect extends Component {
                   <Item >
                      <Icon name='ios-at-outline' />
                      <Input
-                        maxLength = {20}
-                        keyboardType='default'
+                        maxLength = {45}
+                        keyboardType='email-address'
                         //   style={{width:250}}
                         returnKeyType='next'
                         placeholder='email'
@@ -471,7 +454,7 @@ class CreateProspect extends Component {
                   <Item >
                      <Icon name='ios-search-outline' />
                      <Input
-                        maxLength = {20}
+                        maxLength = {45}
                         keyboardType='default'
                         //   style={{width:250}}
                         returnKeyType='next'
@@ -483,6 +466,8 @@ class CreateProspect extends Component {
                      />
                   </Item>
 
+                  {
+                     this.state.dob !== '' ?
                  <DatePicker
                     style={styles.dPicker}
                     date={this.state.dob}
@@ -508,6 +493,7 @@ class CreateProspect extends Component {
                     }}
                     onDateChange={(date) => {this.setState({dob: date})}}
                  />
+                 : false }
 
                  {/* <DatePicker
                     style={styles.dPicker}
@@ -533,10 +519,14 @@ class CreateProspect extends Component {
                     }}
                     onDateChange={(date) => {this.setState({license_issued: date})}}
                  /> */}
+
+                 {
+                    this.state.license_issued !== '' ?
                  <Item floatingLabel disabled >
                     <Label>License Issued</Label>
                     <Input value={this.state.license_issued} />
                   </Item>
+                  : false }
 
                  {/* <DatePicker
                     style={styles.dPicker}
@@ -562,12 +552,16 @@ class CreateProspect extends Component {
                     }}
                     onDateChange={(date) => {this.setState({license_expiration: date})}}
                  /> */}
+
+                 {
+                    this.state.license_expiration !== '' ?
                  <Item disabled floatingLabel>
                     <Label>License Expiration</Label>
                     <Input value={this.state.license_expiration} />
                   </Item>
+                  : false }
 
-                 <Item >
+                 {/* <Item >
                     <Icon name='ios-more-outline' />
                     <Input
                        maxLength = {20}
@@ -580,7 +574,7 @@ class CreateProspect extends Component {
                        // onSubmitEditing = { () => this.emailInput.focus() }
                        value={this.state.license_height}
                     />
-                 </Item>
+                 </Item> */}
 
                  {/* <View style={[styles.viewMargins, styles.viewContainer]}>
                     <Text>Sex</Text>

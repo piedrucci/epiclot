@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, FlatList, Dimensions, StyleSheet, AsyncStorage } from 'react-native';
+import { Text, FlatList, Dimensions, StyleSheet, AsyncStorage, Alert, AlertIOS, Platform } from 'react-native';
 import { Container, Header, Content, Item, Icon, Input, Button, Spinner,
    List, ListItem, Thumbnail, Body, Footer, FooterTab, Tab, Tabs, TabHeading } from 'native-base';
 
@@ -18,6 +18,8 @@ import * as appActions from '../../actions/appActions';
 
 const {height, width} = Dimensions.get('window')
 const footerHeight = parseInt((6 * height) / 100)
+
+console.disableYellowBox = true
 
 class Dashboard2 extends Component {
 
@@ -88,7 +90,7 @@ class Dashboard2 extends Component {
          //  console.log('actualizando lista de carros');
           const response = await api.getCars(dealership_id);
           const json = await response.json()
-         // console.log(json)
+
          this.setState({
             loading: false,
             cars: json,
@@ -97,12 +99,20 @@ class Dashboard2 extends Component {
          listOfCars = json;
 
       }catch(err){
+
           this.setState({
              loading: false,
              error: true,
              refreshData: false,
           });
-          alert(err);
+
+          Actions.refresh({ rightTitle: 'rrr', onRight:()=>false })
+          const msg = 'Network request failed... \nCheck your network configuration'
+          if (Platform.OS === 'ios') {
+             // AlertIOS.alert('Error', msg)
+          }else{
+            Alert.alert('Error', msg)
+          }
       }
    }
 

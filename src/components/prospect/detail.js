@@ -45,7 +45,7 @@ export default class ProspectDetail extends Component {
     }
 
     editInfo = () => {
-      Actions.createObject({prospect: this.state.prospect})
+      Actions.createObject({prospect: this.state.prospect, isNew: false})
    }
 
     render({ prospect } = this.props) {
@@ -88,9 +88,9 @@ export default class ProspectDetail extends Component {
                             <ListItem>
                                 <Text style={styles.label}>Email:   </Text><Text>{emailaddress}</Text>
                             </ListItem>
-                            <ListItem>
+                            {/* <ListItem>
                                 <Text style={styles.label}>Sex:   </Text><Text>{sex}</Text>
-                            </ListItem>
+                            </ListItem> */}
 
                             <ListItem itemDivider>
                                 <Text>license</Text>
@@ -110,9 +110,9 @@ export default class ProspectDetail extends Component {
                             <ListItem>
                                 <Text style={styles.label}>Expiration:   </Text><Text>{license_expiration}</Text>
                             </ListItem>
-                            <ListItem>
+                            {/* <ListItem>
                                 <Text style={styles.label}>Height:   </Text><Text>{license_height}</Text>
-                            </ListItem>
+                            </ListItem> */}
                         </List>
 
                     </ScrollView>
