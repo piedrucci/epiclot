@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View, TouchableOpacity, AsyncStorage, BackAndroid, Alert } from 'react-native';
+import { View, TouchableOpacity, AsyncStorage, Alert } from 'react-native';
 import { Container, Icon, Button, Text } from 'native-base';
 
 // RUTAS
@@ -19,6 +19,7 @@ import CarDetail from './components/car/detail';
 import CreateCar from './components/car/create';
 import CreateCar2 from './components/car/create2';
 import CameraComp from './components/car/camScanner';
+import CameraApp from './components/car/cameraComp';
 import Dashboard2 from './components/prospect/index';
 import CreateProspect from './components/prospect/create';
 import ProspectDetail from './components/prospect/detail';
@@ -83,7 +84,10 @@ const App = () => {
                      />
                     <Scene key='createCar2' component={CreateCar2} hideNavBar={false} title='New Car' />
                     <Scene key='cameraScanner' component={CameraComp} hideNavBar={false} title='Scan Vin' />
+                    <Scene key='cameraApp' component={CameraApp} hideNavBar={false} title='Photo'  />
+                    
                     <Scene key='formCar' component={FormCar} hideNavBar={false} title='Car Info' />
+                    
                     <Scene key='carImages' component={CarImagesContainer} hideNavBar={false} title='Add Images' />
 
                     {/* NEW HOME WITCH TAB BAR AND FLOAT BUTTON */}
@@ -97,6 +101,7 @@ const App = () => {
                     <Scene key='prospectDetail' component={ProspectDetail} hideNavBar={false} title='Prospect Detail' />
 
                     <Scene key='createObject'  component={CreateObject} hideNavBar={false} title='Add New'  />
+                    
 
                 </Router>
 

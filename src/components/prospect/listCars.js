@@ -67,12 +67,23 @@ class Cars extends Component {
          // console.log('actualizando lista de carros');
          const response = await api.getCars(dealership_id);
          const json = await response.json()
-         this.setState({
-            loading: false,
-            cars: json,
-            refreshing:false,
-         })
-         listOfCars = json;
+         let showResults = (typeof json.success === 'undefined')
+
+         if (showResults){
+            this.setState({
+               loading: false,
+               cars: json,
+               refreshing:false,
+            })
+            listOfCars = json;
+         }else{
+            this.setState({
+               loading: false,
+               refreshing:false,
+            })
+            // alert(json.message)
+            console.log(json.message)
+         }
       }catch(err){
          this.setState({
             loading: false,
@@ -114,6 +125,8 @@ class Cars extends Component {
             this.state.loading
             ? <Spinner style={{marginTop:75}} />
             :
+
+            this.state.cars.length>0?
             <FlatList
                data={this.state.cars}
                keyExtractor={item => item.vin}
@@ -129,6 +142,8 @@ class Cars extends Component {
                   </Body>
                </ListItem>}
             />
+            :
+            <Text>empty list</Text>
          }
 
       </Content>

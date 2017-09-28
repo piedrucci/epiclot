@@ -6,6 +6,10 @@ import { Actions } from 'react-native-router-flux';
 import ImageElement from './carImages'
 import api from '../../utilities/api'
 import styles from './carStyles'
+import Camera from 'react-native-camera';
+
+
+// import ImageResizer from 'react-native-image-resizer'
 
 
 class CarImagesContainer extends Component {
@@ -22,13 +26,26 @@ class CarImagesContainer extends Component {
       this.imagePicker = this.imagePicker.bind(this)
       this.selectFromCamera = this.selectFromCamera.bind(this)
       this.deleteImage = this.deleteImage.bind(this)
+      this.showCamera = this.showCamera.bind(this)
    }
 
-   componentDidMount() {
-      if (this.state.newCar===false) {
-         this.checkSession().done()
-         this.getPhotos(this.state.vinInfo.vin)
-      }
+   async componentDidMount() {
+        
+
+        if (this.state.newCar===false) {
+            this.checkSession().done()
+            await this.getPhotos(this.state.vinInfo.vin)
+        }
+        
+        if (typeof this.props.photo !== 'undefined') {
+            // console.log(this.props.vinInfo)
+            await this.setState({arrayImages:[...this.state.arrayImages, this.props.photo ]})
+            this.renderSceneRightButton()
+        }
+   }
+
+   componentWillReceiveProps(nextProps) {
+    //    console.log(`recibeProps ${nextProps.photo}`)
    }
 
    async checkSession() {
@@ -68,6 +85,8 @@ class CarImagesContainer extends Component {
          // console.log(images)
          images.map( (image, index)=>this.setState({arrayImages:[...this.state.arrayImages, image.path ]}) )
          this.renderSceneRightButton()
+
+
       }catch(err) {
          this.errorHandle(err)
       }
@@ -84,8 +103,13 @@ class CarImagesContainer extends Component {
       }
    }
 
+   showCamera () {
+       Actions.cameraApp({vinInfo: this.state.vinInfo, newCar: this.state.newCar})
+   }
+
    errorHandle(err) {
-      console.log('There has been a problem with your fetch operation: ' + err.message);
+      // console.log('There has been a problem with your fetch operation: ' + err.message);
+      console.log(`EXCEPTION ON IMAGE PICKER ${err}`);
    }
 
    nextStep() {
@@ -144,7 +168,8 @@ class CarImagesContainer extends Component {
                      <Icon name='ios-images' />
                   </Button>
                   <Button
-                     onPress = {this.selectFromCamera}
+                    //  onPress = {this.selectFromCamera}
+                     onPress = {this.showCamera}
                      >
                      <Icon name='ios-camera' />
                   </Button>

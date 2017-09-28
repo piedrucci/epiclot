@@ -142,13 +142,14 @@ class Login extends Component {
 
             <Content>
                <Text style={styles.title}>Sign in to Epiclot</Text>
-               <Image style={{width:120, height:120, alignSelf:'center'}} source={require('./../../assets/img/logofinal.png')} />
+               {/* <Image style={{width:80, height:80, alignSelf:'center'}} source={require('./../../assets/img/logofinal.png')} /> */}
+               <Image style={{width:100, height:100, alignSelf:'center'}} source={require('./../../assets/epiclot-09.png')} />
             {/* </Content>
             <Content> */}
-               {
+               {/* {
                  this.state.loading ? null :
                  <Text style={styles.subtitle}>Enter your subdomain, email and password to access your Epiclot account</Text>
-              }
+              } */}
 
               {
                  this.state.showSplash ?

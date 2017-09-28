@@ -63,16 +63,10 @@ uses-sdk
 ADDED from /home/roberth/code/reactnative/epiclot/android/app/src/main/AndroidManifest.xml:20:5-22:41
 MERGED from [epiclot:react-native-camera:unspecified] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/epiclot/react-native-camera/unspecified/AndroidManifest.xml:7:5-9:41
 MERGED from [epiclot:react-native-image-crop-picker:unspecified] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/epiclot/react-native-image-crop-picker/unspecified/AndroidManifest.xml:6:5-8:41
-MERGED from [com.facebook.react:react-native:0.46.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.46.0/AndroidManifest.xml:7:5-9:41
-MERGED from [com.facebook.fbui.textlayoutbuilder:textlayoutbuilder:1.0.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fbui.textlayoutbuilder/textlayoutbuilder/1.0.0/AndroidManifest.xml:14:5-16:41
-MERGED from [com.facebook.fresco:fresco:1.0.1] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/1.0.1/AndroidManifest.xml:5:5-7:41
-MERGED from [com.facebook.fresco:drawee:1.0.1] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/1.0.1/AndroidManifest.xml:5:5-7:41
-MERGED from [com.facebook.fresco:imagepipeline-okhttp3:1.0.1] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp3/1.0.1/AndroidManifest.xml:5:5-7:41
-MERGED from [com.facebook.fresco:imagepipeline:1.0.1] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/1.0.1/AndroidManifest.xml:5:5-7:41
-MERGED from [com.facebook.fresco:imagepipeline-base:1.0.1] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/1.0.1/AndroidManifest.xml:5:5-7:41
-MERGED from [com.facebook.fresco:fbcore:1.0.1] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/1.0.1/AndroidManifest.xml:5:5-7:41
-MERGED from [com.facebook.soloader:soloader:0.1.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.soloader/soloader/0.1.0/AndroidManifest.xml:2:3-70
 MERGED from [com.yalantis:ucrop:2.2.0-native] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.yalantis/ucrop/2.2.0-native/AndroidManifest.xml:8:5-10:41
+MERGED from [id.zelory:compressor:2.0.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/id.zelory/compressor/2.0.0/AndroidManifest.xml:8:5-10:41
+MERGED from [epiclot:react-native-orientation:unspecified] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/epiclot/react-native-orientation/unspecified/AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.react:react-native:0.46.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.46.0/AndroidManifest.xml:7:5-9:41
 MERGED from [com.android.support:appcompat-v7:24.2.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.2.0/AndroidManifest.xml:21:5-23:78
 MERGED from [com.android.support:animated-vector-drawable:24.2.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/24.2.0/AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-vector-drawable:24.2.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.2.0/AndroidManifest.xml:21:5-43
@@ -82,7 +76,14 @@ MERGED from [com.android.support:support-core-utils:24.2.0] /home/roberth/code/r
 MERGED from [com.android.support:support-media-compat:24.2.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/24.2.0/AndroidManifest.xml:21:5-23:63
 MERGED from [com.android.support:support-core-ui:24.2.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/24.2.0/AndroidManifest.xml:21:5-23:58
 MERGED from [com.android.support:support-compat:24.2.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.0/AndroidManifest.xml:21:5-23:58
-MERGED from [id.zelory:compressor:2.0.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/id.zelory/compressor/2.0.0/AndroidManifest.xml:8:5-10:41
+MERGED from [com.facebook.fbui.textlayoutbuilder:textlayoutbuilder:1.0.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fbui.textlayoutbuilder/textlayoutbuilder/1.0.0/AndroidManifest.xml:14:5-16:41
+MERGED from [com.facebook.fresco:fresco:1.0.1] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/1.0.1/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:1.0.1] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/1.0.1/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:1.0.1] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp3/1.0.1/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:1.0.1] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/1.0.1/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:1.0.1] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/1.0.1/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:1.0.1] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/1.0.1/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.1.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.soloader/soloader/0.1.0/AndroidManifest.xml:2:3-70
 	tools:overrideLibrary
 		ADDED from [com.android.support:appcompat-v7:24.2.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.2.0/AndroidManifest.xml:23:9-75
 	android:targetSdkVersion
@@ -97,8 +98,6 @@ application
 ADDED from /home/roberth/code/reactnative/epiclot/android/app/src/main/AndroidManifest.xml:24:5-41:19
 MERGED from [epiclot:react-native-image-crop-picker:unspecified] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/epiclot/react-native-image-crop-picker/unspecified/AndroidManifest.xml:12:5-27:19
 MERGED from [com.facebook.react:react-native:0.46.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.46.0/AndroidManifest.xml:13:5-20
-MERGED from [com.facebook.soloader:soloader:0.1.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.soloader/soloader/0.1.0/AndroidManifest.xml:3:3-17
-MERGED from [org.webkit:android-jsc:r174650] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/org.webkit/android-jsc/r174650/AndroidManifest.xml:2:3-17
 MERGED from [com.android.support:appcompat-v7:24.2.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.2.0/AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:animated-vector-drawable:24.2.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/24.2.0/AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:support-vector-drawable:24.2.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.2.0/AndroidManifest.xml:23:5-20
@@ -108,6 +107,8 @@ MERGED from [com.android.support:support-core-utils:24.2.0] /home/roberth/code/r
 MERGED from [com.android.support:support-media-compat:24.2.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/24.2.0/AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-core-ui:24.2.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/24.2.0/AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-compat:24.2.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.0/AndroidManifest.xml:25:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/com.facebook.soloader/soloader/0.1.0/AndroidManifest.xml:3:3-17
+MERGED from [org.webkit:android-jsc:r174650] /home/roberth/code/reactnative/epiclot/android/app/build/intermediates/exploded-aar/org.webkit/android-jsc/r174650/AndroidManifest.xml:2:3-17
 	android:label
 		ADDED from /home/roberth/code/reactnative/epiclot/android/app/src/main/AndroidManifest.xml:27:7-39
 	android:allowBackup

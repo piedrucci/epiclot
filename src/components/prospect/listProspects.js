@@ -51,19 +51,32 @@ class Prospect extends Component {
          const response = await api.getProspects(dealership_id)
          // if ( response.status === 500 )
          const json = await response.json()
-         this.setState({
-            loading: false,
-            prospects: json,
-            refreshing:false,
-         })
-         listOfProspects = json;
+
+         let showResults = (typeof json.success === 'undefined')
+
+         if (showResults){
+            this.setState({
+               loading: false,
+               prospects: json,
+               refreshing:false,
+            })
+            listOfProspects = json;
+         }else{
+            this.setState({
+               loading: false,
+               refreshing:false,
+            })
+            // alert(json.message)
+            console.log(json.message)
+         }
+
       }catch(err){
          this.setState({
             loading: false,
             error: true,
             refreshing:false,
          });
-         alert(err);
+         alert(`error cargando prospects ${err}`);
       }
   }
 
@@ -98,6 +111,8 @@ class Prospect extends Component {
                    this.state.loading
                    ? <Spinner style={{marginTop:75}} />
                    :
+
+                   this.state.prospects.length>0?
                  <FlatList
                    data={this.state.prospects}
                    keyExtractor={item => item.sales_id}
@@ -116,6 +131,9 @@ class Prospect extends Component {
                      </Body>
                   </ListItem>}
                 />
+                :
+               <Text>empty list</Text>
+
                }
 
               </Content>

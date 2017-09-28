@@ -19,10 +19,14 @@ class FormCar extends Component{
 
          vin: this.props.vinInfo.vin.vin,
          newCar: this.props.vinInfo.newCar,
-         mileage_type: (this.props.vinInfo.newCar)?mileageType[0].value:this.props.vinInfo.vin.mileage_type.toLowerCase(),
-         color: (this.props.vinInfo.newCar)?color[0].value:this.props.vinInfo.vin.color.toLowerCase(),
-         transmission:  (this.props.vinInfo.newCar)?transmission[0].value:this.props.vinInfo.vin.transmission.toLowerCase(),
-         status: (this.props.vinInfo.newCar)?status[0].value:this.props.vinInfo.vin.status.toLowerCase(),
+         mileage_type: mileageType[0].value,
+         color: color[0].value,
+         transmission:  transmission[0].value,
+         status: status[0].value,
+        //  mileage_type: (this.props.vinInfo.newCar)?mileageType[0].value:this.props.vinInfo.vin.mileage_type.toLowerCase(),
+        //  color: (this.props.vinInfo.newCar)?color[0].value:this.props.vinInfo.vin.color.toLowerCase(),
+        //  transmission:  (this.props.vinInfo.newCar)?transmission[0].value:this.props.vinInfo.vin.transmission.toLowerCase(),
+        //  status: (this.props.vinInfo.newCar)?status[0].value:this.props.vinInfo.vin.status.toLowerCase(),
          images: props.vinInfo.images,
          imagesDeleted: props.vinInfo.deleted,
 
@@ -37,12 +41,17 @@ class FormCar extends Component{
    }
 
    componentDidMount() {
+    //  console.log(this.props.vinInfo)
       this.checkSession().done()
       Actions.refresh({ rightTitle: 'Save', onRight:()=>this.saveCar() })
 
       // si esta editando carro
       if (!this.props.vinInfo.newCar){
          this.checkImages()
+         this.setState({mileage_type: this.props.vinInfo.vin.mileage_type.toLowerCase()})
+         this.setState({color: this.props.vinInfo.vin.color})
+         this.setState({transmission: this.props.vinInfo.vin.transmission.toLowerCase()})
+         this.setState({status: this.props.vinInfo.vin.status.toLowerCase()})
          // console.log("=== imagenes excluidas ===");
          // console.log(this.props.vinInfo.deleted)
       }
