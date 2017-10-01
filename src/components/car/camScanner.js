@@ -175,7 +175,7 @@ class CameraComp extends Component {
                      license_issued: arrProfile.license_issued,
                   }
 
-                  // DISPARA LA ACCION AL REDUCER 
+                  // DISPARA LA ACCION AL REDUCER
                   this.props.setLicense({setLicense:info.license})
 
                   Actions.pop({
@@ -284,4 +284,3 @@ const mapDispatchToProps = (dispatch) => {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(CameraComp)
-// export default CameraComp

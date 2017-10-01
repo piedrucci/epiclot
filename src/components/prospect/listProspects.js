@@ -15,16 +15,15 @@ class Prospect extends Component {
       super(props);
       this.state = {
           error: false,
-          prospects: [],
+          prospects: props.data || [],
           loading: true,
-          refreshing: false,
-          dealership_id: null,
+          refreshData: props.refreshData
       }
       this.handleRefresh = this.handleRefresh.bind(this)
   }
 
   componentDidMount() {
-      this.checkSession().done()
+
   }
 
 

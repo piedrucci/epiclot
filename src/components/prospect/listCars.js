@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList, Platform, Alert, AlertIOS } from 'react-native';
+import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList,
+   Image, Platform, Alert, AlertIOS, Dimensions, View } from 'react-native';
 import { Container, Content, Spinner, ListItem, Body, CheckBox } from 'native-base';
 import FitImage from 'react-native-fit-image';
 import { Actions } from 'react-native-router-flux';
@@ -9,9 +10,13 @@ import { FormattedCurrency } from 'react-native-globalize';
 
 const listOfCars = []
 
+const window = Dimensions.get('window')
+const imageWidth = window.width
+const imageMarginTop = (window.height / 2) / 2
+
 // ===========================================
-// import { connect } from 'react-redux';
-// import * as appActions from '../../actions/appActions';
+import { connect } from 'react-redux';
+import * as CarActions from '../../actions/carActions';
 // ================================================
 
 class Cars extends Component {
@@ -20,23 +25,27 @@ class Cars extends Component {
       super(props);
       this.state = {
           error: false,
-          cars: [],
-          loading: true,
+          cars: props.data || [],
+          loading: false,
           dealership_id: null,
-          refreshing: props.refreshing
+          refreshData: props.refreshData
       }
       this.handleRefresh = this.handleRefresh.bind(this)
+      this.showDetail = this.showDetail.bind(this)
   }
 
   componentDidMount() {
-     this.refreshData()
+   //   this.refreshData()
   }
 
   componentWillReceiveProps(nextProps) {
+   this.setState({loading:false})
+   if (typeof nextProps.data !== 'undefined'){
+      this.setState({cars: nextProps.data})
+   }
    //   para filtrar una busqueda
    //   this.findWord(nextProps.carFilter)
-
-     this.refreshData()
+   // this.refreshData()
   }
 
   refreshData = () => {
@@ -116,11 +125,18 @@ class Cars extends Component {
      await this.fetchData(this.state.dealership_id)
  }
 
+ showDetail = (item) => {
+   //  let carData = item
+   //  carData.
+    this.props.initializeCar({newCar:false, car:{vin:'', details:''}})
+    this.props.loadCar(item)
+    Actions.carDetail()
+ }
+
  render() {
     return (
 
       <Content>
-
          {
             this.state.loading
             ? <Spinner style={{marginTop:75}} />
@@ -131,7 +147,7 @@ class Cars extends Component {
                data={this.state.cars}
                keyExtractor={item => item.vin}
                renderItem={({item}) =>
-               <ListItem button onPress={()=>Actions.carDetail({car:item})} >
+               <ListItem button onPress={()=> this.showDetail(item) } >
                   <FitImage style={styles.thumbnailCarImage} source={{uri: 'http://epiclot.com/dealer/accounts/'+item.subdomain+'/photos/'+item.photo}} />
                   <Body>
                      <Text style={styles.itemTitle}>{item.make} {item.model}</Text>
@@ -142,9 +158,15 @@ class Cars extends Component {
                   </Body>
                </ListItem>}
             />
-            :
-            <Text>empty list</Text>
+             :
+            <View style={styles.emptyImageContainer}>
+               <Image
+                  style={{width: imageWidth-20, height: imageWidth-20, marginTop: imageMarginTop/2}}
+                  source={require('../../assets/img/epiclot_waterMark.png')}
+               />
+            </View>
          }
+
 
       </Content>
    );
@@ -164,20 +186,31 @@ const styles = StyleSheet.create({
   itemDetail: {
      marginLeft: 10,
   },
+  emptyImageContainer: {
+     flex:1,
+     // flexDirection: 'column',
+     alignItems: 'center',
+   //   marginTop:containerMarginTop,
+  },
+  imageStyle: {
+     width: imageWidth-10,
+     height: imageWidth-10,
+     margin: 5
+  },
 });
 
 
-// const mapStateToProps = (state) => {
-//     return {
-//         appGlobalParams: state.appParams,
-//     }
-// }
-//
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         addTypeAction: (t) => dispatch(appActions.addType(t)),
-//     };
-// };
+const mapStateToProps = (state) => {
+    return {
+        GlobalParams: state.appParams,
+    }
+}
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Cars)
-export default (Cars)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loadCar: (t) => dispatch( CarActions.loadCar(t) ),
+        initializeCar: (vin) => dispatch(CarActions.initializeCar(vin)),
+    };
+};
+
+export default connect(null, mapDispatchToProps)(Cars)

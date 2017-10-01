@@ -19,13 +19,18 @@ const styles = {
     }
 }
 
+// ===========================================
+import { connect } from 'react-redux';
+import * as CarActions from '../../actions/carActions';
+// ================================================
 
-export default class CarDetail extends Component {
+class CarDetail extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            car: this.props.car,
+            // car: this.props.car,
+            // car: this.props.CarInfo,
             photos: [],
             carAttributes: [],
             loading: false
@@ -44,12 +49,12 @@ export default class CarDetail extends Component {
       Actions.carImages({vinInfo: this.props.car, newCar: false})
    }
 
-    render({ car } = this.props) {
+    render({ CarInfo } = this.props) {
         const {
             vin, subdomain, make, model, year, photo, condition, style,
             transmission, engine_size, cylinder, fuel_type,
             color, mileage, mileage_type, status, webprice
-        } = car;
+        } = CarInfo.car;
 
         return(
 
@@ -129,3 +134,17 @@ export default class CarDetail extends Component {
     }
 
 }
+
+const mapStateToProps = (state) => {
+    return {
+        CarInfo: state.carInfo,
+    }
+}
+
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         loadCar: (t) => dispatch( CarActions.loadCar(t) ),
+//     };
+// };
+
+export default connect(mapStateToProps, null)(CarDetail)

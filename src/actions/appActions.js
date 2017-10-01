@@ -4,11 +4,19 @@ export const SET_VINCODE = 'set_vincode';
 export const GET_VINCODE = 'get_vincode';
 export const SET_LICENSECODE = 'set_licensecode';
 export const GET_LICENSECODE = 'get_licensecode';
+export const SET_SESSION = 'set_session'
 
 export const addType = (t) => {
     return {
         type: ADD_TYPE,
         t
+    }
+}
+
+export const setSession = (s) => {
+    return {
+        type: SET_SESSION,
+        s
     }
 }
 

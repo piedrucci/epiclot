@@ -11,144 +11,115 @@ import Camera from 'react-native-camera';
 
 // import ImageResizer from 'react-native-image-resizer'
 
+// ===========================================
+import { connect } from 'react-redux';
+import * as CarActions from '../../actions/carActions';
+// ================================================
+
 
 class CarImagesContainer extends Component {
    constructor(props) {
       super(props)
       this.state = {
-         arrayImages: [],
-         vinInfo: props.vinInfo,
-         newCar: props.newCar,
-         dealership_id: null,
-         nameImages: [],
-         imagesDeleted: []
+         arrayImages: props.CarInfo.images || [],
+         deletedImages: [],
       }
+      //   this.selectFromCamera = this.selectFromCamera.bind(this)
       this.imagePicker = this.imagePicker.bind(this)
-      this.selectFromCamera = this.selectFromCamera.bind(this)
       this.deleteImage = this.deleteImage.bind(this)
       this.showCamera = this.showCamera.bind(this)
    }
 
    async componentDidMount() {
-        
-
-        if (this.state.newCar===false) {
-            this.checkSession().done()
-            await this.getPhotos(this.state.vinInfo.vin)
-        }
-        
-        if (typeof this.props.photo !== 'undefined') {
-            // console.log(this.props.vinInfo)
-            await this.setState({arrayImages:[...this.state.arrayImages, this.props.photo ]})
-            this.renderSceneRightButton()
-        }
+      // console.log(this.props.CarInfo.car)
+      this.renderSceneRightButton()
    }
 
-   componentWillReceiveProps(nextProps) {
-    //    console.log(`recibeProps ${nextProps.photo}`)
-   }
-
-   async checkSession() {
-      const response = await AsyncStorage.getItem(api.getSessionName())
-      const json = JSON.parse(response)
-      if ( null !== json ) {
-         this.setState({dealership_id:json.dealership_id})
-      } else if ( null === json ) {
-         alert('Empty data');
-      }
-   }
-
-
-   // carga las rutas de las fotos asociadas al vin...
-    async getPhotos(vin) {
-        try{
-            const response = await fetch(api.getApiUrlPhotosByVIN(vin)+'/'+this.state.dealership_id)
-            const json = await response.json()
-            if (json.length>0){
-               json.map(
-                  (image, index)=>
-                  this.setState({
-                     arrayImages:[...this.state.arrayImages, api.getUrlPhotoHost(image.subdomain, image.photo) ],
-                     nameImages:[...this.state.nameImages, image.photo],
-                  })
-               )
-               this.renderSceneRightButton()
-            }
-        }catch(err){
-            alert(err);
-        }
-    }
 
    async imagePicker() {
       try{
-         const images = await ImagePicker.openPicker({multiple:true})
+         const images = await ImagePicker.openPicker({multiple:false})
          // console.log(images)
-         images.map( (image, index)=>this.setState({arrayImages:[...this.state.arrayImages, image.path ]}) )
-         this.renderSceneRightButton()
-
-
+        //  images.map( (image, index)=>this.setState({arrayImages:[...this.state.arrayImages, image.path ]}) )
+        this.props.addImage(images.path)
+        await this.setState({ arrayImages: this.props.CarInfo.images })
+        this.renderSceneRightButton()
       }catch(err) {
          this.errorHandle(err)
       }
    }
 
-   async selectFromCamera() {
-      try{
-         const image = await ImagePicker.openCamera({})
-         // console.log(image)
-         this.setState({arrayImages:[...this.state.arrayImages, image.path ]})
-         this.renderSceneRightButton()
-      }catch(err) {
-         this.errorHandle(err)
-      }
-   }
+//    async selectFromCamera() {
+//       try{
+//          const image = await ImagePicker.openCamera({})
+//          this.setState({arrayImages:[...this.state.arrayImages, image.path ]})
+//          this.renderSceneRightButton()
+//       }catch(err) {
+//          this.errorHandle(err)
+//       }
+//    }
 
-   showCamera () {
-       Actions.cameraApp({vinInfo: this.state.vinInfo, newCar: this.state.newCar})
-   }
 
    errorHandle(err) {
       // console.log('There has been a problem with your fetch operation: ' + err.message);
       console.log(`EXCEPTION ON IMAGE PICKER ${err}`);
    }
 
+
+   showCamera () {
+      //  Actions.cameraApp({vinInfo: this.state.vinInfo, newCar: this.state.newCar})
+       Actions.cameraApp()
+   }
+
+
    nextStep() {
-      const carInfo = {
-         newCar: this.state.newCar,
-         vin: this.state.vinInfo,
-         images: this.state.arrayImages,
-         deleted: this.state.imagesDeleted,
-      }
+      // const carInfo = {
+      //    newCar: this.state.newCar,
+      //    vin: this.state.vinInfo,
+      //    images: this.state.arrayImages,
+      //    deleted: this.state.deletedImages,
+      // }
       // console.log(carInfo)
-      Actions.formCar({vinInfo: carInfo})
+      // Actions.formCar({vinInfo: carInfo})
+      Actions.formCar()
    }
 
    renderSceneRightButton() {
-      if (this.state.arrayImages.length>0){
+      // console.log(`HAY ${this.props.CarInfo.images.length} IMAGENES`)
+      let buttonTitle = ''
+      if (this.props.CarInfo.images.length>0){
+         buttonTitle = 'Next'
+      }
+
+      // if (this.state.arrayImages.length>0){
+      if (buttonTitle.length>0){
          // const buttonNextCarImages = ()=><Icon name='ios-arrow-dropright' onPress={ () => this.nextStep() } />
          // Actions.refresh({renderRightButton: buttonNextCarImages})
-         Actions.refresh({ rightTitle: 'Next', onRight:()=>this.nextStep() })
+         Actions.refresh({ rightTitle: buttonTitle, onRight:()=>this.nextStep() })
       }
+      // console.log("=====IMAGENES ACTUALES====")
+      // console.log(this.props.CarInfo.images)
+      // console.log("=====IMAGENES BORRADAS====")
+      // console.log(this.props.CarInfo.deletedImages)
    }
 
-   deleteImage(val) {
-      // console.log(`borrando ${val}`)
-
-      // agregar al array la imagen que esta borrando para informarle al backend
+   async deleteImage(val) {
+      // agregar al array de ImagenesBorradas la imagen que esta borrando para informarle al backend
       let arrInfo = val.split('/')
       if (arrInfo[0] === "http:"){
-         this.setState({imagesDeleted:[...this.state.imagesDeleted, arrInfo[arrInfo.length-1] ]})
+         // lo agrega al array de imagenes borradas en el store
+         await this.props.removeUpldImage(val)
+         await this.setState({ deletedImages: this.props.CarInfo.deletedImages })
       }
 
-      this.setState({
-         arrayImages: this.state.arrayImages.filter(function(img){
-            return img !== val
-         })
-      });
-      // console.log(this.state.arrayImages.length)
-      const buttonTitle = (this.state.arrayImages.length>1) ? 'Next' : ''
+      await this.props.removeImage(val)
+      await this.setState({ arrayImages: this.props.CarInfo.images })
 
-      Actions.refresh({ rightTitle: buttonTitle, onRight:()=>this.nextStep() })
+      // const buttonTitle = (this.state.arrayImages.length>0) ? 'Next' : ''
+      // Actions.refresh({ rightTitle: buttonTitle, onRight:()=>this.nextStep() })
+
+      this.renderSceneRightButton()
+
    }
 
 
@@ -181,4 +152,19 @@ class CarImagesContainer extends Component {
    }
 }
 
-export default CarImagesContainer
+
+const mapStateToProps = (state) => {
+    return {
+        CarInfo: state.carInfo,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addImage: (pathImage) => dispatch(CarActions.addCarImage(pathImage)),
+        removeImage: (imageName) => dispatch(CarActions.removeCarImage(imageName)),
+        removeUpldImage: (imageName) => dispatch(CarActions.removeUploadedCarImage(imageName)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CarImagesContainer)

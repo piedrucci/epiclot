@@ -10,6 +10,10 @@ import styles from './loginStyles'
 // Keep a reference to ensure there is only one event listener subscribed with BackHandler
 let listener = null
 
+// ===========================================
+import { connect } from 'react-redux';
+import * as appActions from '../../actions/appActions';
+// ================================================
 
 class Login extends Component {
    constructor(){
@@ -31,6 +35,7 @@ class Login extends Component {
    }
 
    componentDidMount() {
+      // AsyncStorage.removeItem(api.getSessionName())
      this.setState({loading:true});
 
      // BackHandler.addEventListener('backPress');
@@ -42,24 +47,26 @@ class Login extends Component {
      }
 
      this.checkSession()
-
   }
 
 
   // // A U T O    L O G I N
   async checkSession() {
-     const sessionData = await AsyncStorage.getItem( api.getSessionName() )
-     if ( sessionData !== null ) {
-      //   await api.removeToken()
-      //   console.log('actions home');
-        setTimeout(() => {Actions.home2()}, 2000)
-     }else {
-        this.setState({
-           loading:false,
-           showSplash:false
-        });
-
-     }
+     try{
+        const sessionData = await AsyncStorage.getItem( api.getSessionName() )
+        if ( sessionData !== null ) {
+           //   await api.removeToken()
+           await this.props.StoreSession(JSON.parse(sessionData))
+           setTimeout(() => {Actions.home2()}, 1500)
+        }else {
+           this.setState({
+             loading:false,
+             showSplash:false
+          });
+       }
+    }catch(err){
+          console.log(err)
+       }
   }
 
 
@@ -98,20 +105,22 @@ class Login extends Component {
             if ( response.status >= 200 && response.status < 300 ) {
                this.setState({showSplash:true})
                const info = {
-                  "api_key": json.api_key,
-                  "user_id": json.user_id,
-                  "dealership_id": json.dealership_id,
-                  "user": json.user,
-                  "user_domain": json.user_domain,
-                  "name": json.name
+                  api_key: json.api_key,
+                  user_id: json.user_id,
+                  dealership_id: json.dealership_id,
+                  user: json.user,
+                  user_domain: json.user_domain,
+                  name: json.name
                };
 
                if ( !this.state.invalidUser ) {
                   await api.saveSession(info)
+                  await this.props.StoreSession(info)
+                  // await console.log(this.props.GlobalParams)
                   setTimeout(() => {
                      this.setState({loading:false})
                      Actions.home2()
-                  }, 2000)
+                  }, 1500)
                }
 
             }else {
@@ -219,4 +228,16 @@ class Login extends Component {
    }
 }
 
-export default Login
+const mapStateToProps = (state) => {
+    return {
+        GlobalParams: state.appParams,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        StoreSession: (s) => dispatch(appActions.setSession(s)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

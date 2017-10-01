@@ -15,6 +15,7 @@ const arr = [];
 
 const mTop = (Platform.OS === 'ios') ? 66 : 56;
 
+
 const styles = {
     label: {
         fontWeight: 'bold'
@@ -25,7 +26,7 @@ const styles = {
 }
 
 
-export default class ProspectDetail extends Component {
+class ProspectDetail extends Component {
 
     constructor(props) {
         super(props);
@@ -124,3 +125,18 @@ export default class ProspectDetail extends Component {
     }
 
 }
+
+// const mapStateToProps = (state) => {
+//     return {
+//         appGlobalParams: state.appParams,
+//     }
+// }
+
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         loadCar: (t) => dispatch( CarActions.loadCar(t) ),
+//     };
+// };
+
+// export default connect(null, mapDispatchToProps)(Cars)
+export default ProspectDetail

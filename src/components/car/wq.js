@@ -7,6 +7,11 @@ import { Actions } from 'react-native-router-flux';
 import api from '../../utilities/api';
 import moment from 'moment'
 
+// ===========================================
+import { connect } from 'react-redux';
+import * as CarActions from '../../actions/carActions';
+import * as appActions from '../../actions/appActions';
+// ================================================
 
 // ELEMENTOS PARA LLENAR LOS PICKERS
 import { mileageType, color, transmission, status } from './pickerOptions'
@@ -15,68 +20,67 @@ class FormCar extends Component{
    constructor(props) {
       super(props)
       this.state = {
-         isLoading: false,
+        isLoading: false,
+        session: {},
+        car: props.CarInfo,
 
-         vin: this.props.vinInfo.vin.vin,
-         newCar: this.props.vinInfo.newCar,
-         mileage_type: mileageType[0].value,
-         color: color[0].value,
-         transmission:  transmission[0].value,
-         status: status[0].value,
-        //  mileage_type: (this.props.vinInfo.newCar)?mileageType[0].value:this.props.vinInfo.vin.mileage_type.toLowerCase(),
-        //  color: (this.props.vinInfo.newCar)?color[0].value:this.props.vinInfo.vin.color.toLowerCase(),
-        //  transmission:  (this.props.vinInfo.newCar)?transmission[0].value:this.props.vinInfo.vin.transmission.toLowerCase(),
-        //  status: (this.props.vinInfo.newCar)?status[0].value:this.props.vinInfo.vin.status.toLowerCase(),
-         images: props.vinInfo.images,
-         imagesDeleted: props.vinInfo.deleted,
+        vin: this.props.CarInfo.car.vin,
+        newCar: (this.props.CarInfo.newCar) || false,
 
-         mileage: (this.props.vinInfo.newCar)?'':this.props.vinInfo.vin.mileage,
-         webprice: (this.props.vinInfo.newCar)?'':this.props.vinInfo.vin.webprice,
-         purchase_price: '',
-         sale_price: (this.props.vinInfo.newCar)?'':this.props.vinInfo.vin.sale_price,
-         wholesale_price: (this.props.vinInfo.newCar)?'':this.props.vinInfo.vin.whosale_price,
-         expense_date: ''
+        mileage: (props.CarInfo.car.mileage)?props.CarInfo.car.mileage:'',
+        mileage_type: (props.CarInfo.car.mileage_type)?props.CarInfo.car.mileage_type:mileageType[0].value,
+        color: (props.CarInfo.car.color)?props.CarInfo.car.color.toLowerCase():color[0].value,
+        transmission: (props.CarInfo.car.transmission)?props.CarInfo.car.transmission.toLowerCase():transmission[0].value,
+        status: (props.CarInfo.car.status)?props.CarInfo.car.status.toLowerCase():status[0].value,
+        webprice: (props.CarInfo.car.webprice)?props.CarInfo.car.webprice:'',
+        purchase_price: (props.CarInfo.car.purchase_price)?props.CarInfo.car.purchase_price:'',
+        sale_price: (props.CarInfo.car.sale_price)?props.CarInfo.car.sale_price:'',
+        wholesale_price: (props.CarInfo.car.wholesale_price)?props.CarInfo.car.wholesale_price:'',
+        expense_date: (props.CarInfo.car.expense_date)?props.CarInfo.car.expense_date:'',
+        images: props.CarInfo.images,
+        imagesDeleted: props.CarInfo.deletedImages,
       }
+
       this.saveCar = this.saveCar.bind(this)
+
    }
 
-   componentDidMount() {
-    //  console.log(this.props.vinInfo)
-      this.checkSession().done()
-      Actions.refresh({ rightTitle: 'Save', onRight:()=>this.saveCar() })
+   async componentDidMount() {
+      this.prepareDeletedImageNames()
+      if (typeof this.props.GlobalParams.session !== 'undefined'){
+         // this.setState({ session: JSON.parse(this.props.GlobalParams.session) })
+         this.setState({ session: this.props.GlobalParams.session })
+         // console.log(this.props.GlobalParams.session)
+      }else if (typeof this.props.GlobalParams.session === 'undefined'){
 
-      // si esta editando carro
-      if (!this.props.vinInfo.newCar){
-         this.checkImages()
-         this.setState({mileage_type: this.props.vinInfo.vin.mileage_type.toLowerCase()})
-         this.setState({color: this.props.vinInfo.vin.color})
-         this.setState({transmission: this.props.vinInfo.vin.transmission.toLowerCase()})
-         this.setState({status: this.props.vinInfo.vin.status.toLowerCase()})
-         // console.log("=== imagenes excluidas ===");
-         // console.log(this.props.vinInfo.deleted)
+         console.log('WARNING --- SESSION INFO EMPTY ')
+         const session = await AsyncStorage.getItem(api.getSessionName())
+         await this.setState({session:JSON.parse(session)})
+         // this.props.StoreSession(session)
+         // console.log(this.props)
+
       }
+      Actions.refresh({ rightTitle: 'Done', onRight:()=>this.saveCar() })
    }
 
-// metodo para incluir en el formData solo las imagenes nuevas que agrego el usuario
-// esto solo aplica cuando esta editando carro.
-   checkImages = async() => {
+
+
+// metodo para incluir en el formData solo las imagenes nuevas que agrego el usuario (esto solo aplica cuando esta editando carro).
+   prepareDeletedImageNames = async() => {
       let images = []
-      await this.props.vinInfo.images.map( (image, index) => {
+      this.props.CarInfo.deletedImages.map( (image, index) => {
          let arrInfo = image.split('/')
-         if ( arrInfo[0] !== "http:" ) {
-            images.push(image)
-         }
+         images.push(arrInfo[arrInfo.length-1])
          return null
       } )
-      this.setState({images: images})
-      // console.log("=== imagenes nuevas ===");
-      // console.log(this.state.images);
+      await this.setState({imagesDeleted: images})
+      // console.log(this.state.imagesDeleted);
+      // this.props.SetListImgDeleted(images)
    }
 
-   async checkSession() {
-      const session = await AsyncStorage.getItem(api.getSessionName())
-      this.setState({session: JSON.parse(session)})
-   }
+
+
+
 
    async saveCar() {
 
@@ -101,7 +105,6 @@ class FormCar extends Component{
          this.setState({isLoading:true})
 
          const fd = new FormData()
-
          const arrDate = this.state.expense_date.split("-")
          const jsonCarInfo = {
             newCar: this.state.newCar,
@@ -118,22 +121,25 @@ class FormCar extends Component{
             transmission: this.state.transmission,
             status: this.state.status,
             purchase_price: this.state.purchase_price,
-            // expense_date: "2017-01-01",
             expense_date: arrDate[2]+'-'+arrDate[0]+'-'+arrDate[1],
             web_price: this.state.webprice,
             sale_price: this.state.sale_price,
+            details: this.props.CarInfo.car.details,
             wholesale_price: this.state.wholesale_price,
-            imagesDeleted: this.state.imagesDeleted.join()
+            imagesDeleted: this.state.imagesDeleted
+         }
+
+         if (typeof this.state.imagesDeleted !== 'undefined' && this.state.imagesDeleted.length>0 ){
+            jsonCarInfo.imagesDeleted = this.state.imagesDeleted.join()
+         }else if (typeof this.state.imagesDeleted === 'undefined' || this.state.imagesDeleted.length < 1){
+            delete jsonCarInfo.imagesDeleted
          }
 
          if ( this.state.newCar === false ) {
             delete jsonCarInfo.expense_date
-            delete jsonCarInfo.wholesale_price
+            // delete jsonCarInfo.wholesale_price
          }
 
-         if (this.state.imagesDeleted.length === 0){
-            delete jsonCarInfo.imagesDeleted
-         }
 
          // AGREGA AL CADA VALOR DEL JSON AL FORMDATA
          for ( var key in jsonCarInfo ){
@@ -143,49 +149,67 @@ class FormCar extends Component{
 
          let photo = {};
 
-         // console.log(this.state.images);
-
          // agregar todas las imagenes al formData
-         console.log(this.state.images);
+         let arrPath = []
          this.state.images.map( (image, index) => {
-            photo = {
+
+            // asegurarse de que no envar las que ya estan subidas...(omitirlas)
+            arrPath = image.split(':')
+            if (arrPath[0] !== 'http') {
+               photo = {
                   uri: image,
                   type: 'image/jpeg',
                   name: `${jsonCarInfo.vin}_${index}.jpg`,
                }
-            fd.append(`image_${index}`, photo)
+               fd.append(`image_${index}`, photo)
+            }
          } )
-      // console.log(fd)
 
-      try{
+         // console.log(fd)
+
          // enviar el POST con toda la info(incluyendo imagenes) ....
-         const response = await fetch(api.getApi_Url() + 'cars',{
-            method: 'post',
-            headers: {
-               'Content-Type': 'multipart/form-data',
-            },
-            body: fd
-         })
+         try{
+            // const response = await fetch(api.getApi_Url() + 'cars',{
+            //    method: 'post',
+            //    headers: {
+            //       'Content-Type': 'multipart/form-data',
+            //    },
+            //    body: fd
+            // })
+            // console.log(response);
 
-         // console.log(req)
+            const response = fetch(api.getApi_Url() + 'cars',{
+               method: 'post',
+               headers: {
+                  'Content-Type': 'multipart/form-data',
+               },
+               body: fd
+            }).then(response => {
+                return (response)
+             }).then( json => {
+               //  console.log(json)
+                Actions.home2({refreshData: true})
+              }).catch(err => {
+                console.log(err)
+                Actions.home2()
+              })
 
-         // status 200 para determinar si la peticion tuvo exito!.
-         if (response.status === 200 ) {
-            console.log("Car Saved, statusCode: "+response.status)
-            Actions.home2({refreshData: true})
+            // status 200 para determinar si la peticion tuvo exito!.
+            // if (response.status === 200 ) {
+            //    console.log("Car Saved, statusCode: "+response.status)
+            //    Actions.home2({refreshData: true})
+            // }
+            // console.log(`status code: ${response.status}`)
+
+         }catch(err) {
+            console.log(err)
+            // alert(err)
+            Actions.home2()
          }
-         console.log(`status code: ${response.status}`)
 
-      }catch(err) {
-         console.log(err)
-         alert(err)
-      }finally{
-         Actions.home2()
       }
 
    }
-
-}
 
    render() {
       moment.locale('en');
@@ -221,7 +245,7 @@ class FormCar extends Component{
                           style={{marginTop:-15}}
                           iosHeader="Mileage Type"
                           mode="dialog"
-                          selectedValue={this.state.mileage_type.toLowerCase()}
+                          selectedValue={this.state.mileage_type}
                           onValueChange={(value)=>this.setState({mileage_type: value})}
                        >
                           {mileageType.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
@@ -234,7 +258,7 @@ class FormCar extends Component{
                           style={{marginTop:-15}}
                           iosHeader="Select Color"
                           mode="dialog"
-                          selectedValue={this.state.color.toLowerCase()}
+                          selectedValue={this.state.color}
                           onValueChange={(value)=>this.setState({color: value})}
                        >
                           {color.map( (item, i) => <Picker.Item key={i} label={item.label} value={item.value} /> )}
@@ -273,7 +297,7 @@ class FormCar extends Component{
                     <Item >
                        <Icon name='ios-cash-outline' />
                        <Input
-                          maxLength = {12}
+                          maxLength = {6}
                           keyboardType='numeric'
                           //   style={{width:300}}
                           returnKeyType='next'
@@ -288,7 +312,7 @@ class FormCar extends Component{
                     <Item >
                        <Icon name='ios-cash-outline' />
                        <Input
-                          maxLength = {12}
+                          maxLength = {6}
                           keyboardType='numeric'
                           //   style={{width:300}}
                           returnKeyType='next'
@@ -303,7 +327,7 @@ class FormCar extends Component{
                     <Item >
                        <Icon name='ios-cash-outline' />
                        <Input
-                          maxLength = {12}
+                          maxLength = {6}
                           keyboardType='numeric'
                           //   style={{width:300}}
                           returnKeyType='next'
@@ -320,7 +344,7 @@ class FormCar extends Component{
                     <Item >
                        <Icon name='ios-cash-outline' />
                        <Input
-                          maxLength = {12}
+                          maxLength = {6}
                           keyboardType='numeric'
                           //   style={{width:300}}
                           returnKeyType='next'
@@ -383,4 +407,19 @@ class FormCar extends Component{
    }
 }
 
-export default FormCar
+
+const mapStateToProps = (state) => {
+    return {
+        CarInfo: state.carInfo,
+        GlobalParams: state.appParams,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        StoreSession: (s) => dispatch(appActions.setSession(s)),
+        SetListImgDeleted: (s) => dispatch(CarActions.setListImagesDeleted(s)),
+    };
+};
+
+export default connect(mapStateToProps, null)(FormCar)

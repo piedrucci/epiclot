@@ -11,8 +11,9 @@ import VinDetail from './vinDetails';
 import Camera from 'react-native-camera';
 
 // ===========================================
-import { connect } from 'react-redux';
-import * as appActions from '../../actions/appActions';
+import { connect } from 'react-redux'
+import * as appActions from '../../actions/appActions'
+import * as CarActions from '../../actions/carActions';
 // ================================================
 
 class CreateCar extends Component {
@@ -87,7 +88,7 @@ class CreateCar extends Component {
              .then((responseJson) => {
 
                 if (responseJson.valid_vin){
-                   delete responseJson.details;
+                  //  delete responseJson.details;
                    delete responseJson.msg;
                 }
 
@@ -101,6 +102,13 @@ class CreateCar extends Component {
                 })
                 if (responseJson.valid_vin){
                    // const buttonNextCarImages = ()=><Icon name='ios-arrow-dropright' onPress={ () => this.nextStep() } />
+                   this.props.initializeCar({
+                      newCar: true,
+                      car: {
+                        vin:responseJson.vin,
+                        details: responseJson.details
+                     }
+                  })
                    Actions.refresh({ rightTitle: 'Next', onRight:()=>this.nextStep() })
                 } else {
                    //alert(responseJson.msg)
@@ -139,7 +147,7 @@ class CreateCar extends Component {
 
 
     render() {
-        
+
         return(
            <Content style={{marginTop:60}}>
              <Form >
@@ -206,7 +214,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getCarInfo: () => dispatch(appActions.getVIN())
+        getCarInfo: () => dispatch(appActions.getVIN()),
+        initializeCar: (vin) => dispatch(CarActions.initializeCar(vin)),
+        // setCarVin: (v) => dispatch(CarActions.setVIN(v))
     };
 };
 
