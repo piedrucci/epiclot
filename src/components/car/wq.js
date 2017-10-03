@@ -55,8 +55,9 @@ class FormCar extends Component{
 
          console.log('WARNING --- SESSION INFO EMPTY ')
          const session = await AsyncStorage.getItem(api.getSessionName())
+         // console.log(JSON.parse(session));
          await this.setState({session:JSON.parse(session)})
-         // this.props.StoreSession(session)
+         this.props.StoreSession(session)
          // console.log(this.props)
 
       }
@@ -188,6 +189,8 @@ class FormCar extends Component{
                 return (response)
              }).then( json => {
                //  console.log(json)
+               this.props.initializeCar({ newCar: true, car: { vin:'', details: '' } })
+
                 Actions.home2({refreshData: true})
               }).catch(err => {
                 console.log(err)
@@ -419,7 +422,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         StoreSession: (s) => dispatch(appActions.setSession(s)),
         SetListImgDeleted: (s) => dispatch(CarActions.setListImagesDeleted(s)),
+        initializeCar: (vin) => dispatch(CarActions.initializeCar(vin)),
     };
 };
 
-export default connect(mapStateToProps, null)(FormCar)
+export default connect(mapStateToProps, mapDispatchToProps)(FormCar)

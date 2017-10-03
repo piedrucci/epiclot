@@ -209,13 +209,11 @@ class CameraComp extends Component {
     return (
       <View style={styles.container}>
         <Camera
-          ref={(cam) => {
-            this.camera = cam;
-          }}
+          ref={(cam) => { this.camera = cam; }}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}
           orientation={Camera.constants.Orientation.portrait}
-         //  onBarCodeRead={this._onBarCodeRead}
+          torchMode={Camera.constants.TorchMode.auto}
           onBarCodeRead={this.barCodeRead}
           type={Camera.constants.Type.back}
           flashMode={Camera.constants.FlashMode.on}

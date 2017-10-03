@@ -3,7 +3,7 @@ import {
 } from '../actions/appActions';
 
 const initialState = {
-   addType: 'car',
+   activeModule: 'car',
    vin: '',
    license: '',
    session: {}
@@ -13,19 +13,19 @@ export const appReducer = ( state = initialState, action ) => {
    switch (action.type) {
       case ADD_TYPE:
          // return Object.assign( {}, action.t )
-         console.log(action.t)
-         return {...state, addType: action.t}
+         console.log(action.payload)
+         return {...state, activeModule: action.payload}
 
       case SET_SESSION:
          // console.log(action.s)
          // return Object.assign( {}, action.s )
-         return {...state, session: action.s}
+         return {...state, session: action.payload}
 
       case SET_VINCODE:
-         return Object.assign( {}, action.t )
+         return Object.assign( {}, action.payload )
 
       case SET_LICENSECODE:
-         return Object.assign( {}, action.t )
+         return Object.assign( {}, action.payload )
 
       case GET_VINCODE:
          return state;

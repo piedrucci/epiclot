@@ -4,6 +4,8 @@ import api from '../../utilities/api';
 import Carousel from 'react-native-snap-carousel';
 import FitImage from 'react-native-fit-image';
 const { width, height } = Dimensions.get('window');
+const heightSwiper = Math.ceil( (35 * height) / 100 )
+
 const entryBorderRadius = 8;
 
 const styles = {
@@ -38,7 +40,6 @@ class PhotoSwiper extends Component {
 
 
     componentDidMount() {
-        console.log("=================")
       api.checkSession().then(
          (res)=>{
             if ( null !== res ) {
@@ -59,7 +60,7 @@ class PhotoSwiper extends Component {
             this.setState({loading:true})
             const response = await fetch(api.getApiUrlPhotosByVIN(vin)+'/'+this.state.session.dealership_id)
             const json = await response.json()
-            
+
             let arrayImages = await json.map((entry) => {
                 let pathImg = api.getUrlPhotoHost(entry.subdomain, entry.photo)
                 return(pathImg)
@@ -90,15 +91,15 @@ class PhotoSwiper extends Component {
                 itemWidth={width}
                 autoplay={true}
             >
-            {    
-                
+            {
+
             this.state.photos.map((entry, index) => {
                 // let pathImage = api.getUrlPhotoHost(entry.subdomain, entry.photo)
                 // this.props.addImage(pathImage)
                 // console.log(pathImage)
                 return (
                     <View key={`photo-${index}`} style={styles.container}>
-                        <FitImage style={{width:width,height:180}} source={{uri:entry}} />
+                        <FitImage style={{width:width,height:heightSwiper}} source={{uri:entry}} />
                     </View>
                 );
             })}

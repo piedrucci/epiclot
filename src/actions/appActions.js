@@ -6,31 +6,31 @@ export const SET_LICENSECODE = 'set_licensecode';
 export const GET_LICENSECODE = 'get_licensecode';
 export const SET_SESSION = 'set_session'
 
-export const addType = (t) => {
+export const activateModule = (payload) => {
     return {
         type: ADD_TYPE,
-        t
+        payload
     }
 }
 
-export const setSession = (s) => {
+export const setSession = (payload) => {
     return {
         type: SET_SESSION,
-        s
+        payload
     }
 }
 
-export const setVIN = (t) => {
+export const setVIN = (payload) => {
     return {
         type: SET_VINCODE,
-        t
+        payload
     }
 }
 
-export const setLicense = (t) => {
+export const setLicense = (payload) => {
     return {
         type: SET_LICENSECODE,
-        t
+        payload
     }
 }
 

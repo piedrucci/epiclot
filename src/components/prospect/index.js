@@ -14,6 +14,7 @@ import { FormattedCurrency } from 'react-native-globalize';
 // ===========================================
 import { connect } from 'react-redux'
 import * as appActions from '../../actions/appActions'
+import * as ProspectActions from '../../actions/prospectActions'
 // ================================================
 
 const {height, width} = Dimensions.get('window')
@@ -37,10 +38,19 @@ class Dashboard2 extends Component {
 
   async componentDidMount() {
      try{
+        Actions.refresh({title:'Epiclot'})
         await this.setState({session:this.props.GlobalParams.session})
       //   console.log( this.props.GlobalParams.session)
         this.fetchData()
+
+        this.props.initializeProspect({
+           newProspect: true,
+           prospect: {
+             license:''
+          }
+       })
      }catch(err){
+        alert(`Coñoooo\n${err}\ndidmount index`)
         console.log(err)
      }
 
@@ -62,14 +72,12 @@ class Dashboard2 extends Component {
       }
 
       // DISPARA LA ACCION AL REDUCER
-      this.props.addTypeAction({addType:_type})
+      this.props.activateModule(_type)
    }
 
 
    findElement(str) {
-      // console.log(`escribio: ${str}`)
       this.setState({listFilter:str})
-      // console.log(`actualizo estado carFilter: ${this.state.carFilter}`)
    }
 
 
@@ -77,30 +85,32 @@ class Dashboard2 extends Component {
    async fetchData() {
       try{
          if (typeof this.state.session.dealership_id === 'undefined'){
-            console.log('SESSION ES  NULO');
+            // alert.log('SESSION ES  NULO');
             const sess = await AsyncStorage.getItem(api.getSessionName())
-            const jsonSess = JSON.parse(response)
-            if ( null !== json ) {
+            const jsonSess = JSON.parse(sess)
+            if ( null !== jsonSess ) {
                await this.setState({session: jsonSess})
-            } else if ( null === json ) {
+               this.props.StoreSession(jsonSess)
+            } else if ( null === jsonSess ) {
                this.setState({loading:false});
                alert('Empty data');
             }
-            console.log(this.state.session);
+            // console.log(this.state.session);
          }
-         console.log(`index=${this.state.index}`)
-         console.log('actualizando lista para dealership: '+this.state.session.dealership_id);
+
+         // console.log(`index=${this.state.index}`)
+         // console.log('actualizando lista para dealership: '+this.state.session.dealership_id);
 
          let response = (this.state.index===0) ? await api.getCars(this.state.session.dealership_id) : await api.getProspects(this.state.session.dealership_id)
          const json = await response.json()
 
-         this.setState({
-            loading: false,
-            cars: json,
-            refreshData: false,
-         })
-
-         if (this.state.index===1){
+         if (this.state.index===0){
+            this.setState({
+               loading: false,
+               cars: json,
+               refreshData: false,
+            })
+         }else if (this.state.index===1){
             this.setState({
                loading: false,
                prospects: json,
@@ -119,8 +129,9 @@ class Dashboard2 extends Component {
              refreshData: false,
           });
 
-          Actions.refresh({ rightTitle: '', onRight:()=>false })
+         //  Actions.refresh({ rightTitle: '', onRight:()=>false })
           const msg = 'Network request failed... \nCheck your network configuration'
+          alert(`${err}\nfetchData index`)
           console.log(msg)
 
       }
@@ -134,7 +145,7 @@ class Dashboard2 extends Component {
       this.fetchData()
       if (typeof nextProps.refreshData !== 'undefined') {
          this.setState({refreshData: nextProps.refreshData})
-         console.log(nextProps.refreshData);
+         // console.log(nextProps.refreshData);
          // this.fetchData()
       }
    }
@@ -185,10 +196,10 @@ class Dashboard2 extends Component {
                      <Icon name="ios-car" />
                      {/* <Text>Cars</Text> */}
                   </Button>
-                  {/* <Button onPress={() => this.switchScreen(1) }> */}
-                     {/* <Icon name="ios-person" /> */}
+                  <Button onPress={() => this.switchScreen(1) }>
+                     <Icon name="ios-person" />
                      {/* <Text>Prospects</Text> */}
-                  {/* </Button> */}
+                  </Button>
 
                </FooterTab>
             </Footer>
@@ -214,8 +225,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
    return {
-      addTypeAction: (t) => dispatch(appActions.addType(t)),
+      activateModule: (p) => dispatch(appActions.activateModule(p)),
       StoreSession: (s) => dispatch(appActions.setSession(s)),
+      initializeProspect: (info) => dispatch(ProspectActions.initializeProspect(info)),
    };
 };
 

@@ -7,9 +7,9 @@ import ImageElement from './carImages'
 import api from '../../utilities/api'
 import styles from './carStyles'
 import Camera from 'react-native-camera';
+import ImageResizer from 'react-native-image-resizer'
 
 
-// import ImageResizer from 'react-native-image-resizer'
 
 // ===========================================
 import { connect } from 'react-redux';
@@ -41,9 +41,24 @@ class CarImagesContainer extends Component {
          const images = await ImagePicker.openPicker({multiple:false})
          // console.log(images)
         //  images.map( (image, index)=>this.setState({arrayImages:[...this.state.arrayImages, image.path ]}) )
-        this.props.addImage(images.path)
-        await this.setState({ arrayImages: this.props.CarInfo.images })
-        this.renderSceneRightButton()
+
+        ImageResizer.createResizedImage(images.path, 600, 400, 'JPEG', 70).then(async(image) => {
+          // response.uri is the URI of the new image that can now be displayed, uploaded...
+          // response.path is the path of the new image
+          // response.name is the name of the new image with the extension
+          // response.size is the size of the new image
+         //  console.log(image.size)
+           this.props.addImage(images.path)
+           await this.setState({ arrayImages: this.props.CarInfo.images })
+           this.renderSceneRightButton()
+        }).catch((err) => {
+           console.log(err)
+           this.renderSceneRightButton()
+          // Oops, something went wrong. Check that the filename is correct and
+          // inspect err to get more details.
+        });
+
+
       }catch(err) {
          this.errorHandle(err)
       }

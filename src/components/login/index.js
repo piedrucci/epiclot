@@ -152,7 +152,8 @@ class Login extends Component {
             <Content>
                <Text style={styles.title}>Sign in to Epiclot</Text>
                {/* <Image style={{width:80, height:80, alignSelf:'center'}} source={require('./../../assets/img/logofinal.png')} /> */}
-               <Image style={{width:100, height:100, alignSelf:'center'}} source={require('./../../assets/epiclot-09.png')} />
+               {/* <Image style={{width:100, height:100, alignSelf:'center'}} source={require('./../../assets/epiclot-09.png')} /> */}
+               <Image style={{width:100, height:100, alignSelf:'center'}} source={{uri: 'https://epiclot.com/img/app_logo.png'}} />
             {/* </Content>
             <Content> */}
                {/* {

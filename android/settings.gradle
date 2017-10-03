@@ -9,4 +9,7 @@ project(':react-native-image-crop-picker').projectDir = new File(settingsDir, '.
 include ':react-native-orientation', ':app'
 project(':react-native-orientation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-orientation/android')
 
+include ':react-native-image-resizer'
+project(':react-native-image-resizer').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-resizer/android')
+
 include ':app'

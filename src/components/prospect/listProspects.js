@@ -9,6 +9,11 @@ import { FormattedCurrency } from 'react-native-globalize';
 
 const listOfProspects = []
 
+// ===========================================
+import { connect } from 'react-redux';
+import * as ProspectActions from '../../actions/prospectActions';
+// ================================================
+
 class Prospect extends Component {
 
   constructor(props) {
@@ -20,10 +25,12 @@ class Prospect extends Component {
           refreshData: props.refreshData
       }
       this.handleRefresh = this.handleRefresh.bind(this)
+      this.showDetail = this.showDetail.bind(this)
   }
 
   componentDidMount() {
-
+     console.log('INICIALIZAR PROSPECTO');
+     this.props.initializeProspect({newProspect:true, prospect:{license:''}})
   }
 
 
@@ -100,6 +107,15 @@ class Prospect extends Component {
      this.fetchData(this.state.dealership_id).done()
  }
 
+
+  showDetail = (item) => {
+    //  let carData = item
+    //  carData.
+     this.props.initializeProspect({newProspect:false, prospect:{license:''}})
+     this.props.loadProspect(item)
+     Actions.prospectDetail()
+  }
+
   render() {
       return (
          //  <Container>
@@ -118,7 +134,7 @@ class Prospect extends Component {
                    refreshing={this.state.refreshing}
                    onRefresh={this.handleRefresh}
                    renderItem={({item}) =>
-                   <ListItem avatar onPress={()=>Actions.prospectDetail({prospect:item})} >
+                   <ListItem avatar onPress={()=> this.showDetail(item) } >
                       <Left>
                         <Thumbnail source={require('./../../assets/img/noun_49517_cc.png')} />
                      </Left>
@@ -158,17 +174,18 @@ const styles = StyleSheet.create({
 });
 
 
+
 // const mapStateToProps = (state) => {
 //     return {
-//         appGlobalParams: state.appParams,
+//         GlobalParams: state.appParams,
 //     }
 // }
-//
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         addTypeAction: (t) => dispatch(appActions.addType(t)),
-//     };
-// };
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Cars)
-export default (Prospect)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loadProspect: (t) => dispatch( ProspectActions.loadProspect(t) ),
+        initializeProspect: (info) => dispatch(ProspectActions.initializeProspect(info)),
+    };
+};
+
+export default connect(null, mapDispatchToProps)(Prospect)

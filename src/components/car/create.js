@@ -39,7 +39,6 @@ class CreateCar extends Component {
       this.checkVINCode = this.checkVINCode.bind(this)
       this.switchButtonStatus = this.switchButtonStatus.bind(this)
       this.nextStep = this.nextStep.bind(this)
-      this.getCarInfo = this.getCarInfo.bind(this)
    }
 
 // OBTENER LOS DATOS DE LA SESSION ACTUAL
@@ -137,12 +136,8 @@ class CreateCar extends Component {
 
    // ENVIAR DATOS Y AVANZAR
    nextStep() {
-      Actions.carImages({vinInfo: this.state.vinInfo, newCar: true})
-   }
-
-   getCarInfo() {
-      // alert(this.props.getCarInfo());
-      console.log(this.props.getCarInfo())
+      // Actions.carImages({vinInfo: this.state.vinInfo, newCar: true})
+      Actions.carImages()
    }
 
 
@@ -214,9 +209,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getCarInfo: () => dispatch(appActions.getVIN()),
         initializeCar: (vin) => dispatch(CarActions.initializeCar(vin)),
-        // setCarVin: (v) => dispatch(CarActions.setVIN(v))
     };
 };
 

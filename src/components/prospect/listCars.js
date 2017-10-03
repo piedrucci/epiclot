@@ -65,6 +65,7 @@ class Cars extends Component {
           }
       } )
      }catch(err){
+        alert(`Coñoooo\n${err}\nrefreshData listCar`)
        alert(err)
        console.log(err)
      }
@@ -94,6 +95,7 @@ class Cars extends Component {
             console.log(json.message)
          }
       }catch(err){
+         alert(`${err}\nfetchData listCar`)
          this.setState({
             loading: false,
             error: true,
@@ -162,8 +164,12 @@ class Cars extends Component {
             <View style={styles.emptyImageContainer}>
                <Image
                   style={{width: imageWidth-20, height: imageWidth-20, marginTop: imageMarginTop/2}}
-                  source={require('../../assets/img/epiclot_waterMark.png')}
+                  source={{uri: 'http://epiclot.com/img/app_logo2.jpg'}}
                />
+               {/* <Image
+                  style={{width: imageWidth-20, height: imageWidth-20, marginTop: imageMarginTop/2}}
+                  source={require('../../assets/img/epiclot_waterMark.png')}
+               /> */}
             </View>
          }
 
@@ -175,9 +181,13 @@ class Cars extends Component {
 
 const styles = StyleSheet.create({
   thumbnailCarImage: {
-     borderRadius:10,
      width:90,
-     height: 60
+     height: 60,
+   // flex: 1,
+   //  width: null,
+   //  height: null,
+   //  resizeMode: 'contain',
+    borderRadius:10,
   },
   itemTitle:{
      fontWeight: 'bold',

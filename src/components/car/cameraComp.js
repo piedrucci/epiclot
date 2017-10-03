@@ -1,15 +1,9 @@
 import React, {Component} from 'react';
 import {
-  AppRegistry,
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-  Alert,
-  AlertIOS,
-  Platform
+  AppRegistry, Dimensions, StyleSheet, Text, TouchableHighlight,
+  View, Alert, AlertIOS, Platform
 } from 'react-native'
+
 import {Icon} from 'native-base'
 import {Actions} from 'react-native-router-flux'
 import Camera from 'react-native-camera'
@@ -18,7 +12,7 @@ var {height, width} = Dimensions.get('window')
 
 import {connect} from 'react-redux';
 import * as CarActions from '../../actions/carActions'
-
+import ImageResizer from 'react-native-image-resizer'
 class CameraApp extends Component {
 
   constructor(props) {
@@ -35,15 +29,23 @@ class CameraApp extends Component {
     this
       .camera
       .capture({metadata: options})
-      .then((data) => {
-        //   console.log(data.path)
-        this.props.addImage(data.path)
-        // console.log(this.props.carInfo)
+      .then((baseImage) => {
 
-        // let auxVinInfo = this.state.vinInfo
-        // Actions.carImages({     photo: data.path,     vinInfo: auxVinInfo,
-        // newCar: this.state.newCar   })
-        Actions.carImages()
+         ImageResizer.createResizedImage(baseImage.path, 600, 400, 'JPEG', 70).then((image) => {
+           // response.uri is the URI of the new image that can now be displayed, uploaded...
+           // response.path is the path of the new image
+           // response.name is the name of the new image with the extension
+           // response.size is the size of the new image
+         //   console.log(image.size)
+           this.props.addImage(image.uri)
+           Actions.carImages()
+         }).catch((err) => {
+            console.log(err)
+            Actions.carImages()
+           // Oops, something went wrong. Check that the filename is correct and
+           // inspect err to get more details.
+         });
+
       })
       .catch(err => console.error(err));
   }
@@ -52,18 +54,15 @@ class CameraApp extends Component {
     return (
       <View style={styles.container}>
         <Camera
-          ref={(cam) => {
-          this.camera = cam;
-        }}
+          ref={(cam) => { this.camera = cam; }}
           flashMode={Camera.constants.FlashMode.auto}
+          //orientation= {Camera.constants.Orientation.portrait}
+          torchMode={Camera.constants.TorchMode.auto}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}>
           <Text
             style={styles.capture}
-            onPress={this
-            .takePicture
-            .bind(this)}>
-
+            onPress={this.takePicture.bind(this)}>
             <Icon name='ios-camera-outline'/>
           </Text>
         </Camera>
@@ -93,10 +92,10 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = (state) => {     
+const mapStateToProps = (state) => {
   return {
-    carInfo: state.carInfo,     
-  } 
+    carInfo: state.carInfo,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
