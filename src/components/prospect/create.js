@@ -10,8 +10,13 @@ import api from '../../utilities/api';
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
 
-
 const {height, width} = Dimensions.get('window')
+
+// ===========================================
+import { connect } from 'react-redux'
+import * as ProspectActions from '../../actions/prospectActions'
+import * as appActions from '../../actions/appActions'
+// ================================================
 
 class CreateProspect extends Component {
 
@@ -19,29 +24,47 @@ class CreateProspect extends Component {
       super(props)
       this.state = {
          session: {},
-         prospect: props.prospect || null,
+         prospect: props.ProspectInfo.prospect || null,
 
          // newProspect: (props.prospect===null),
-         newProspect: (props.isNew),
-         driver_license: (props.prospect===null)?'':(props.prospect.license),
-         sales_id: (props.prospect===null)?0:(props.prospect.sales_id),
-         dealership_id: (props.prospect===null)?'':(props.prospect.dealership_id),
-         firstname: (props.prospect===null)?'':(props.prospect.firstname),
-         lastname: (props.prospect===null)?'':(props.prospect.lastname),
-         address: (props.prospect===null)?'':(props.prospect.address),
-         zipcode: (props.prospect===null)?'':(props.prospect.zipcode),
-         state:(props.prospect===null)?'':(props.prospect.state),
-         city:(props.prospect===null)?'':(props.prospect.city),
-         cellphone: (props.prospect===null)?'':(props.prospect.cellphone),
-         emailaddress: (props.prospect===null)?'':(props.prospect.emailaddress),
-         looking_for: (props.prospect===null)?'':(props.prospect.looking_for),
-         dob:(props.prospect===null)?'':(props.prospect.birthday),
-         license_state:(props.prospect===null)?'':(props.prospect.licensestate),
-         license_issued:(props.prospect===null)?'':(props.prospect.license_issued),
-         license_expiration:(props.prospect===null)?'':(props.prospect.license_expiration),
-         license_height:(props.prospect===null)?'':(props.prospect.license_height),
+         newProspect: (props.ProspectInfo.newProspect),
+         driver_license: props.ProspectInfo.prospect.license,
+         sales_id: props.ProspectInfo.prospect.sales_id,
+         dealership_id: props.ProspectInfo.prospect.dealership_id,
+         firstname: props.ProspectInfo.prospect.firstname,
+         lastname: props.ProspectInfo.prospect.lastname,
+         address: props.ProspectInfo.prospect.address,
+         zipcode: props.ProspectInfo.prospect.zipcode,
+         state:props.ProspectInfo.prospect.state,
+         city:props.ProspectInfo.prospect.city,
+         cellphone: props.ProspectInfo.prospect.cellphone,
+         emailaddress: props.ProspectInfo.prospect.emailaddress,
+         looking_for: props.ProspectInfo.prospect.looking_for,
+         dob:props.ProspectInfo.prospect.birthday,
+         license_state:props.ProspectInfo.prospect.licensestate,
+         license_issued: props.ProspectInfo.prospect.license_issued,
+         license_expiration: props.ProspectInfo.prospect.license_expiration,
+         license_height: props.ProspectInfo.prospect.license_height,
+         user_id: props.ProspectInfo.prospect.user,
+         // driver_license: (props.prospect===null)?'':(props.prospect.license),
+         // sales_id: (props.prospect===null)?0:(props.prospect.sales_id),
+         // dealership_id: (props.prospect===null)?'':(props.prospect.dealership_id),
+         // firstname: (props.prospect===null)?'':(props.prospect.firstname),
+         // lastname: (props.prospect===null)?'':(props.prospect.lastname),
+         // address: (props.prospect===null)?'':(props.prospect.address),
+         // zipcode: (props.prospect===null)?'':(props.prospect.zipcode),
+         // state:(props.prospect===null)?'':(props.prospect.state),
+         // city:(props.prospect===null)?'':(props.prospect.city),
+         // cellphone: (props.prospect===null)?'':(props.prospect.cellphone),
+         // emailaddress: (props.prospect===null)?'':(props.prospect.emailaddress),
+         // looking_for: (props.prospect===null)?'':(props.prospect.looking_for),
+         // dob:(props.prospect===null)?'':(props.prospect.birthday),
+         // license_state:(props.prospect===null)?'':(props.prospect.licensestate),
+         // license_issued:(props.prospect===null)?'':(props.prospect.license_issued),
+         // license_expiration:(props.prospect===null)?'':(props.prospect.license_expiration),
+         // license_height:(props.prospect===null)?'':(props.prospect.license_height),
          // sex:(props.prospect===null)?'':(props.prospect.sex),
-         user_id:(props.prospect===null)?'':(props.prospect.user),
+         // user_id:(props.prospect===null)?'':(props.prospect.user),
 
 
          checkingLicense: false,
@@ -66,15 +89,24 @@ class CreateProspect extends Component {
     async componentDidMount() {
 
       try{
-         // console.log(`ISSUED: ${this.props.prospect.license_issued}`)
+
+         if (this.props.ProspectInfo.prospect.license === '') {
+            this.props.initializeProspect({
+               newProspect: true,
+               prospect: {
+                 license:''
+              }
+           })
+         }
+
          // formatear la fecha de nacimiento solo cuando este editando
-         if (this.props.prospect !== null){
+         if (this.props.ProspectInfo.prospect.license !== ''){
             // console.log(`la fecha de nacimiento es ${this.props.prospect.birthday}`)
-            const arrDate = this.props.prospect.birthday.split("-")
+            const arrDate = this.props.ProspectInfo.prospect.birthday.split("-")
             if (arrDate[0].length>2){
                await this.setState({dob: arrDate[1]+'-'+arrDate[2]+'-'+arrDate[0]})
             }else{
-               await this.setState({dob: this.props.prospect.birthday})
+               await this.setState({dob: this.props.ProspectInfo.prospect.birthday})
             }
          }
 
@@ -157,6 +189,9 @@ class CreateProspect extends Component {
         this._barCode.stopScan()
     }
 
+
+
+
     async saveInfo() {
 
       // if ( this.state.prospect )
@@ -186,14 +221,16 @@ class CreateProspect extends Component {
 
             // preparar las fechas ......
             if (this.state.license_issued!=='' && this.state.license_issued !==null){
+               console.log(`ISSUED: ${this.state.license_issued}`)
                arrLic = this.state.license_issued.split('-')
-               if (!arrLic[0].length>2){
+               if (arrLic[0].length===2){
                   lic_iss = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
                }
             }
             if (this.state.license_expiration!=='' && this.state.license_expiration !==null){
+               console.log(`EXPIRATION: ${this.state.license_expiration}`)
                arrLic = this.state.license_expiration.split('-')
-               if (!arrLic[0].length>2){
+               if (arrLic[0].length===2){
                   lic_exp = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
                }
             }
@@ -230,20 +267,20 @@ class CreateProspect extends Component {
             // const response = await api.sendPOST(api.getApi_Url()+'prospect}', prospect)
             // console.log(response)
 
-            const response = await fetch(api.getApi_Url() + 'prospect',{
-               method: 'post',
-               headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-               },
-               body: JSON.stringify(prospect)
-            })
+            // const response = await fetch(api.getApi_Url() + 'prospect',{
+            //    method: 'post',
+            //    headers: {
+            //       'Accept': 'application/json',
+            //       'Content-Type': 'application/json',
+            //    },
+            //    body: JSON.stringify(prospect)
+            // })
 
             // status 200 para determinar si la peticion tuvo exito!.
-            if (response.status === 200 ) {
-               console.log("Prospect Saved, statusCode: "+response.status)
-               // Actions.home2()
-            }
+            // if (response.status === 200 ) {
+            //    console.log("Prospect Saved, statusCode: "+response.status)
+            //    // Actions.home2()
+            // }
             this.setState({savingInfo:false})
          }catch(err){
             console.log(`AN EXCEPTION WAS DETECTED SAVING!!! \n${err}`)
@@ -601,4 +638,18 @@ class CreateProspect extends Component {
 
 }
 
-export default CreateProspect
+const mapStateToProps = (state) => {
+    return {
+        ProspectInfo: state.prospectInfo,
+        GlobalParams: state.appParams,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        StoreSession: (s) => dispatch(appActions.setSession(s)),
+        initializeProspect: (info) => dispatch(ProspectActions.initializeProspect(info)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateProspect)

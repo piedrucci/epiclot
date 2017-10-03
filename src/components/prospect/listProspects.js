@@ -9,22 +9,28 @@ import { FormattedCurrency } from 'react-native-globalize';
 
 const listOfProspects = []
 
+// ===========================================
+import { connect } from 'react-redux';
+import * as ProspectActions from '../../actions/prospectActions';
+// ================================================
+
 class Prospect extends Component {
 
   constructor(props) {
       super(props);
       this.state = {
           error: false,
-          prospects: [],
+          prospects: props.data || [],
           loading: true,
-          refreshing: false,
-          dealership_id: null,
+          refreshData: props.refreshData
       }
       this.handleRefresh = this.handleRefresh.bind(this)
+      this.showDetail = this.showDetail.bind(this)
   }
 
   componentDidMount() {
-      this.checkSession().done()
+     console.log('INICIALIZAR PROSPECTO');
+     this.props.initializeProspect({newProspect:true, prospect:{license:''}})
   }
 
 
@@ -51,19 +57,32 @@ class Prospect extends Component {
          const response = await api.getProspects(dealership_id)
          // if ( response.status === 500 )
          const json = await response.json()
-         this.setState({
-            loading: false,
-            prospects: json,
-            refreshing:false,
-         })
-         listOfProspects = json;
+
+         let showResults = (typeof json.success === 'undefined')
+
+         if (showResults){
+            this.setState({
+               loading: false,
+               prospects: json,
+               refreshing:false,
+            })
+            listOfProspects = json;
+         }else{
+            this.setState({
+               loading: false,
+               refreshing:false,
+            })
+            // alert(json.message)
+            console.log(json.message)
+         }
+
       }catch(err){
          this.setState({
             loading: false,
             error: true,
             refreshing:false,
          });
-         alert(err);
+         alert(`error cargando prospects ${err}`);
       }
   }
 
@@ -88,6 +107,15 @@ class Prospect extends Component {
      this.fetchData(this.state.dealership_id).done()
  }
 
+
+  showDetail = (item) => {
+    //  let carData = item
+    //  carData.
+     this.props.initializeProspect({newProspect:false, prospect:{license:''}})
+     this.props.loadProspect(item)
+     Actions.prospectDetail()
+  }
+
   render() {
       return (
          //  <Container>
@@ -98,13 +126,15 @@ class Prospect extends Component {
                    this.state.loading
                    ? <Spinner style={{marginTop:75}} />
                    :
+
+                   this.state.prospects.length>0?
                  <FlatList
                    data={this.state.prospects}
                    keyExtractor={item => item.sales_id}
                    refreshing={this.state.refreshing}
                    onRefresh={this.handleRefresh}
                    renderItem={({item}) =>
-                   <ListItem avatar onPress={()=>Actions.prospectDetail({prospect:item})} >
+                   <ListItem avatar onPress={()=> this.showDetail(item) } >
                       <Left>
                         <Thumbnail source={require('./../../assets/img/noun_49517_cc.png')} />
                      </Left>
@@ -116,6 +146,9 @@ class Prospect extends Component {
                      </Body>
                   </ListItem>}
                 />
+                :
+               <Text>empty list</Text>
+
                }
 
               </Content>
@@ -141,17 +174,18 @@ const styles = StyleSheet.create({
 });
 
 
+
 // const mapStateToProps = (state) => {
 //     return {
-//         appGlobalParams: state.appParams,
+//         GlobalParams: state.appParams,
 //     }
 // }
-//
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         addTypeAction: (t) => dispatch(appActions.addType(t)),
-//     };
-// };
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Cars)
-export default (Prospect)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loadProspect: (t) => dispatch( ProspectActions.loadProspect(t) ),
+        initializeProspect: (info) => dispatch(ProspectActions.initializeProspect(info)),
+    };
+};
+
+export default connect(null, mapDispatchToProps)(Prospect)

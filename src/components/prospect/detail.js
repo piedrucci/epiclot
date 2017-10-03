@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import { StyleSheet, Text, ScrollView, Platform } from 'react-native';
-
 import FitImage from 'react-native-fit-image';
-
 import { Container, Header, Content, Icon, Left, Right, Button,
     Body, Title, Footer, FooterTab, List, ListItem, Thumbnail,
     Item, Input, Form, Label, Spinner, InputGroup } from 'native-base';
-
 import { Actions } from 'react-native-router-flux';
 
 const arr = [];
-
 const mTop = (Platform.OS === 'ios') ? 66 : 56;
 
 const styles = {
@@ -24,13 +19,17 @@ const styles = {
     }
 }
 
+// ===========================================
+import { connect } from 'react-redux';
+import * as ProspectActions from '../../actions/prospectActions';
+// ================================================
 
-export default class ProspectDetail extends Component {
+class ProspectDetail extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            prospect: this.props.prospect,
+            // prospect: this.props.prospect,
             loading: false
         }
         this.editInfo = this.editInfo.bind(this)
@@ -45,14 +44,15 @@ export default class ProspectDetail extends Component {
     }
 
     editInfo = () => {
-      Actions.createObject({prospect: this.state.prospect, isNew: false})
+      // Actions.createObject({prospect: this.state.prospect, isNew: false})
+      Actions.createObject()
    }
 
-    render({ prospect } = this.props) {
+    render({ ProspectInfo } = this.props) {
         const {
             firstname, lastname, address, zipcode, city, state, cellphone, emailaddress,
             sex, birthday, license, licensestate,
-            license_issued, license_expiration, license_height} = prospect;
+            license_issued, license_expiration, license_height} = ProspectInfo.prospect;
 
         return(
 
@@ -124,3 +124,17 @@ export default class ProspectDetail extends Component {
     }
 
 }
+
+const mapStateToProps = (state) => {
+    return {
+        ProspectInfo: state.prospectInfo,
+    }
+}
+
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         loadCar: (t) => dispatch( CarActions.loadCar(t) ),
+//     };
+// };
+
+export default connect(mapStateToProps, null)(ProspectDetail)

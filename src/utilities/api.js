@@ -53,7 +53,7 @@ var api = {
 
    // DEVUELVE LA RUTA PARA CARGAR UNA FOTO DESDE EL SERVIDOR
    getUrlPhotoHost(subdomain, photoName) {
-      return endPoint + subdomain + '/photos/' + photoName;
+       return endPoint + subdomain + '/photos/' + photoName;
       // return 'http://epiclot.com/dealer/accounts/titohotwheels/photos/'+entry.photo};
    },
 

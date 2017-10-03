@@ -10,6 +10,8 @@ import com.facebook.soloader.SoLoader;
 
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
+import com.github.yamill.orientation.OrientationPackage;
+import fr.bamlab.rnimageresizer.ImageResizerPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +31,9 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
 
           new RCTCameraPackage(),
-          new PickerPackage()
+          new PickerPackage(),
+          new OrientationPackage(),
+              new ImageResizerPackage()
       );
     }
   };

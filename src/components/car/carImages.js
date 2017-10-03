@@ -15,7 +15,6 @@ class ImageElement extends Component {
    }
 
    componentDidMount() {
-      console.log(containerMarginTop)
    }
 
    componentWillReceiveProps(nextProps) {

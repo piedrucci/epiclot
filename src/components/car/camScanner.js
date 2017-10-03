@@ -3,8 +3,12 @@ import { AppRegistry, Dimensions, StyleSheet, Text, TouchableHighlight,
    View, Alert, AlertIOS, Platform } from 'react-native';
 import { Actions } from 'react-native-router-flux'
 import Camera from 'react-native-camera'
-
+import Orientation from 'react-native-orientation'
 var {height, width} = Dimensions.get('window')
+// ===========================================
+import { connect } from 'react-redux';
+import * as appActions from '../../actions/appActions';
+// ================================================
 
 class CameraComp extends Component {
    constructor(props) {
@@ -19,12 +23,59 @@ class CameraComp extends Component {
       this.barCodeRead = this.barCodeRead.bind(this)
    }
 
+   componentWillMount() {
+    // The getOrientation method is async. It happens sometimes that
+    // you need the orientation at the moment the JS runtime starts running on device.
+    // `getInitialOrientation` returns directly because its a constant set at the
+    // beginning of the JS runtime.
+
+    const initial = Orientation.getInitialOrientation();
+    if (initial === 'PORTRAIT') {
+      // do something
+    } else {
+      // do something else
+    }
+  }
+
    componentDidMount() {
       try{
+
+         // this locks the view to Portrait Mode
+         Orientation.lockToPortrait();
+
+         // this locks the view to Landscape Mode
+         // Orientation.lockToLandscape();
+
+         // this unlocks any previous locks to all Orientations
+         // Orientation.unlockAllOrientations();
+
+         Orientation.addOrientationListener(this._orientationDidChange);
+
+
+
+
          Actions.refresh({title: this.state.title})
       }catch(err){
          alert(err)
-         console.log(err)
+         console.log(`AN EXCEPTION WAS DETECTED AT LOADING COMPONENT ${err}` )
+      }
+   }
+
+   componentWillUnmount() {
+      Orientation.getOrientation((err, orientation) => {
+         console.log(`Current Device Orientation: ${orientation}`);
+      });
+
+
+      // Remember to remove listener
+      Orientation.removeOrientationListener(this._orientationDidChange);
+   }
+
+   _orientationDidChange = (orientation) => {
+      if (orientation === 'LANDSCAPE') {
+         // do something with landscape layout
+      } else {
+         // do something with portrait layout
       }
    }
 
@@ -49,8 +100,19 @@ class CameraComp extends Component {
          const info = null;
 
          if (this.state.target === 'car'){
-            info = { vin: e.data }
-            Actions.createCar({car:info, isNew: this.state.isNew})
+            let strVIN = e.data
+            if ( strVIN.length === 18 ){
+               strVIN = strVIN.substr(1, strVIN.length-1)
+            }
+            info = { vin: strVIN }
+            // console.log(info)
+
+            // DISPARA LA ACCION AL REDUCER setLicense
+            this.props.setVinCode({setVIN:info.vin})
+
+            Actions.createCar()
+            // Actions.pop({car:info})
+
          }else if (this.state.target === 'prospect'){
             const splitLicense = e.data.split('\n')
             // console.log(splitLicense)
@@ -112,7 +174,11 @@ class CameraComp extends Component {
                      license_expiration: arrProfile.license_expiration,
                      license_issued: arrProfile.license_issued,
                   }
-                  Actions.createProspect({
+
+                  // DISPARA LA ACCION AL REDUCER
+                  this.props.setLicense({setLicense:info.license})
+
+                  Actions.pop({
                      prospect:info,
                      isNew: this.state.isNew,
                      sales_id: this.state.sales_id
@@ -143,12 +209,11 @@ class CameraComp extends Component {
     return (
       <View style={styles.container}>
         <Camera
-          ref={(cam) => {
-            this.camera = cam;
-          }}
+          ref={(cam) => { this.camera = cam; }}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}
-         //  onBarCodeRead={this._onBarCodeRead}
+          orientation={Camera.constants.Orientation.portrait}
+          torchMode={Camera.constants.TorchMode.auto}
           onBarCodeRead={this.barCodeRead}
           type={Camera.constants.Type.back}
           flashMode={Camera.constants.FlashMode.on}
@@ -202,4 +267,18 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CameraComp
+const mapStateToProps = (state) => {
+    return {
+        appGlobalParams: state.appParams,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setVinCode: (t) => dispatch(appActions.setVIN(t)),
+        setLicense: (t) => dispatch(appActions.setLicense(t)),
+    };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(CameraComp)

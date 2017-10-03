@@ -11,8 +11,9 @@ import VinDetail from './vinDetails';
 import Camera from 'react-native-camera';
 
 // ===========================================
-import { connect } from 'react-redux';
-import * as carActions from '../../actions/carActions';
+import { connect } from 'react-redux'
+import * as appActions from '../../actions/appActions'
+import * as CarActions from '../../actions/carActions';
 // ================================================
 
 class CreateCar extends Component {
@@ -23,11 +24,12 @@ class CreateCar extends Component {
          session: {},
          // vin: 'NM0LS7EX9G1276250',
          // vin: '1M1AW07Y1GM051234',
-         vin: '', // 5XXGM4A70FG352220
-         // vin: props.car.vin || '',
+         // vin: '', // 5XXGM4A70FG352220
+        //  vin: props.car.vin || '',   WDDWJ4JB3HF384272
+         vin: '',
          checkingVIN: false,
          validVin: false,
-         disableCheckButton: true,
+         disableCheckButton: false,
          captionCheckButton: 'Check VIN ',
          msgResponse: '',
          vinInfo: {},
@@ -37,23 +39,19 @@ class CreateCar extends Component {
       this.checkVINCode = this.checkVINCode.bind(this)
       this.switchButtonStatus = this.switchButtonStatus.bind(this)
       this.nextStep = this.nextStep.bind(this)
-      this.getCarInfo = this.getCarInfo.bind(this)
    }
 
 // OBTENER LOS DATOS DE LA SESSION ACTUAL
     componentDidMount() {
-      // console.log(this.props);
+    //   console.log("DIDMOUNT====")
+
       this.setSessionData()
 
-      // if ( this.props.vinScanned ){
-      //    this.setState({vin: this.props.vinScanned})
-      // }
+        Actions.refresh({title: 'Add Car'})
 
-      Actions.refresh({title: 'Add Car'})
-   }
-
-   componentWillUnmount () {
-      this._listeners && this._listeners.forEach(listener => listener.remove());
+        if (typeof this.props.carInfo.setVIN !== 'undefined'){
+            this.setState({vin:this.props.carInfo.setVIN})
+        }
    }
 
    async setSessionData() {
@@ -71,78 +69,80 @@ class CreateCar extends Component {
 
 // CUEQUEA EL VIN INGRESADO EN EL TEXTBOX
      checkVINCode() {
-      Actions.refresh({ rightTitle: '', onRight:()=>this.nextStep() })
+        if (this.state.vin.length>0){
+           Actions.refresh({ rightTitle: '', onRight:()=>this.nextStep() })
 
-      this.setState({
-         disableCheckButton:true,
-         checkingVIN:true,
-         validVin:false,
-         captionCheckButton: 'Checking VIN ',
-         msgResponse: ''
-      })
+           this.setState({
+             disableCheckButton:true,
+             checkingVIN:true,
+             validVin:false,
+             captionCheckButton: 'Checking VIN ',
+             msgResponse: ''
+          })
 
-      try{
-         const res =  api.checkVIN(this.state.vin, this.state.session.dealership_id)
-         res
-         .then((response) => response.json())
-         .then((responseJson) => {
+          try{
+             const res =  api.checkVIN(this.state.vin, this.state.session.dealership_id)
+             res
+             .then((response) => response.json())
+             .then((responseJson) => {
 
-            if (responseJson.valid_vin){
-               delete responseJson.details;
-               delete responseJson.msg;
-            }
+                if (responseJson.valid_vin){
+                  //  delete responseJson.details;
+                   delete responseJson.msg;
+                }
 
-            this.setState({
-               disableCheckButton:false,
-               checkingVIN:false,
-               vinInfo:responseJson,
-               validVin: (responseJson.valid_vin) ? true : false,
-               captionCheckButton: 'Check VIN ',
-               msgResponse: responseJson.msg,
-            })
-            if (responseJson.valid_vin){
-               // const buttonNextCarImages = ()=><Icon name='ios-arrow-dropright' onPress={ () => this.nextStep() } />
-               Actions.refresh({ rightTitle: 'Next', onRight:()=>this.nextStep() })
-            } else {
-               //alert(responseJson.msg)
-            }
-         })
-         .catch((error) => {
-            console.error(error)
-         });
-      }catch(err) {
-         console.log(err)
-         this.setState({
-            disableCheckButton:false,
-            checkingVIN:false,
-            vinInfo:null,
-            validVin: false,
-            captionCheckButton: 'Check VIN ',
-            msgResponse: '',
-         })
-      }
+                this.setState({
+                   disableCheckButton:false,
+                   checkingVIN:false,
+                   vinInfo:responseJson,
+                   validVin: (responseJson.valid_vin) ? true : false,
+                   captionCheckButton: 'Check VIN ',
+                   msgResponse: responseJson.msg,
+                })
+                if (responseJson.valid_vin){
+                   // const buttonNextCarImages = ()=><Icon name='ios-arrow-dropright' onPress={ () => this.nextStep() } />
+                   this.props.initializeCar({
+                      newCar: true,
+                      car: {
+                        vin:responseJson.vin,
+                        details: responseJson.details
+                     }
+                  })
+                   Actions.refresh({ rightTitle: 'Next', onRight:()=>this.nextStep() })
+                } else {
+                   //alert(responseJson.msg)
+                }
+             })
+             .catch((error) => {
+                console.error(error)
+             });
+          }catch(err) {
+             console.log(err)
+             this.setState({
+                disableCheckButton:false,
+                checkingVIN:false,
+                vinInfo:null,
+                validVin: false,
+                captionCheckButton: 'Check VIN ',
+                msgResponse: '',
+             })
+          }
+
+       }else{
+          alert("Enter the VIN code")
+       }
 
    }
 
    // ENVIAR DATOS Y AVANZAR
    nextStep() {
-      Actions.carImages({vinInfo: this.state.vinInfo, newCar: true})
+      // Actions.carImages({vinInfo: this.state.vinInfo, newCar: true})
+      Actions.carImages()
    }
 
-   getCarInfo() {
-      // alert(this.props.getCarInfo());
-      console.log(this.props.getCarInfo())
-   }
-
-    _startScan = (e) => {
-        this._barCode.startScan()
-    }
-
-    _stopScan = (e) => {
-        this._barCode.stopScan()
-    }
 
     render() {
+
         return(
            <Content style={{marginTop:60}}>
              <Form >
@@ -201,18 +201,15 @@ CreateCar.defaultProps = {
   car: {vin: ''}
 };
 
-
 const mapStateToProps = (state) => {
     return {
-        carInfo: state.carInfo,
-      //   newCarInfo2: state.getNewCarInfo
+        carInfo: state.appParams,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fillCarInfo: (car) => dispatch(carActions.fillCarInfo(car)),
-        getCarInfo: () => dispatch(carActions.getCarInfo())
+        initializeCar: (vin) => dispatch(CarActions.initializeCar(vin)),
     };
 };
 

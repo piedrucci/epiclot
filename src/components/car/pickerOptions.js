@@ -3,7 +3,7 @@
 export const mileageType = [
    {label:'Select Mileage Type', value:''},
    {label:'Actual', value:'actual'},
-   {label:'No Actual', value:'no actual'},
+   {label:'Not Actual', value:'not actual'},
    {label:'Exempt', value:'exempt'}
 ]
 

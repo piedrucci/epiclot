@@ -1,13 +1,12 @@
 import { combineReducers } from 'redux';
 
 import {carInfoReducer} from './carReducer';
-import sessionReducer from './sessionReducer';
+import {prospectInfoReducer} from './prospectReducer';
 import {appReducer} from './appReducer';
 
 const rootReducer = combineReducers({
     carInfo: carInfoReducer,
-
-    session: sessionReducer,
+    prospectInfo: prospectInfoReducer,
     appParams: appReducer,
 })
 

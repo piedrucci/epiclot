@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, AsyncStorage, KeyboardAvoidingView, BackHandler, BackAndroid, Platform, ScrollView } from 'react-native';
+import { Image, AsyncStorage, KeyboardAvoidingView, BackHandler, Platform, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { View, Text } from 'react-native';
