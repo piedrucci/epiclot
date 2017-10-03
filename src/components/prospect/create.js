@@ -220,18 +220,23 @@ class CreateProspect extends Component {
             const lic_exp = this.state.license_expiration
 
             // preparar las fechas ......
-            if (this.state.license_issued!=='' && this.state.license_issued !==null){
-               console.log(`ISSUED: ${this.state.license_issued}`)
-               arrLic = this.state.license_issued.split('-')
-               if (arrLic[0].length===2){
-                  lic_iss = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
+            if (typeof this.state.license_issued !== 'undefined'){
+               if (this.state.license_issued!=='' && this.state.license_issued !==null){
+                  console.log(`ISSUED: ${this.state.license_issued}`)
+                  arrLic = this.state.license_issued.split('-')
+                  if (arrLic[0].length===2){
+                     lic_iss = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
+                  }
                }
             }
-            if (this.state.license_expiration!=='' && this.state.license_expiration !==null){
-               console.log(`EXPIRATION: ${this.state.license_expiration}`)
-               arrLic = this.state.license_expiration.split('-')
-               if (arrLic[0].length===2){
-                  lic_exp = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
+
+            if (typeof this.state.license_expiration !== 'undefined'){
+               if (this.state.license_expiration!=='' && this.state.license_expiration !==null){
+                  console.log(`EXPIRATION: ${this.state.license_expiration}`)
+                  arrLic = this.state.license_expiration.split('-')
+                  if (arrLic[0].length===2){
+                     lic_exp = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
+                  }
                }
             }
             // lic_iss = "2015-01-01"
@@ -263,18 +268,18 @@ class CreateProspect extends Component {
 
             if ( typeof this.state.dob === 'undefined' ){delete prospect.dob}
 
-            console.log(prospect)
+            // console.log(prospect)
             // const response = await api.sendPOST(api.getApi_Url()+'prospect}', prospect)
             // console.log(response)
 
-            // const response = await fetch(api.getApi_Url() + 'prospect',{
-            //    method: 'post',
-            //    headers: {
-            //       'Accept': 'application/json',
-            //       'Content-Type': 'application/json',
-            //    },
-            //    body: JSON.stringify(prospect)
-            // })
+            const response = await fetch(api.getApi_Url() + 'prospect',{
+               method: 'post',
+               headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify(prospect)
+            })
 
             // status 200 para determinar si la peticion tuvo exito!.
             // if (response.status === 200 ) {
@@ -284,7 +289,7 @@ class CreateProspect extends Component {
             this.setState({savingInfo:false})
          }catch(err){
             console.log(`AN EXCEPTION WAS DETECTED SAVING!!! \n${err}`)
-            alert(err)
+            // alert(err)
          }finally{
             Actions.home2({refreshData: true})
          }

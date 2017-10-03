@@ -29,7 +29,6 @@ class Prospect extends Component {
   }
 
   componentDidMount() {
-     console.log('INICIALIZAR PROSPECTO');
      this.props.initializeProspect({newProspect:true, prospect:{license:''}})
   }
 

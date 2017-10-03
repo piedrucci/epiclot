@@ -108,10 +108,10 @@ class CameraComp extends Component {
             // console.log(info)
 
             // DISPARA LA ACCION AL REDUCER setLicense
-            this.props.setVinCode({setVIN:info.vin})
+            // this.props.setVinCode({setVIN:info.vin})
+            this.props.setVinCode(info.vin)
 
             Actions.createCar()
-            // Actions.pop({car:info})
 
          }else if (this.state.target === 'prospect'){
             const splitLicense = e.data.split('\n')
@@ -176,13 +176,9 @@ class CameraComp extends Component {
                   }
 
                   // DISPARA LA ACCION AL REDUCER
-                  this.props.setLicense({setLicense:info.license})
+                  this.props.setLicense(info.license)
 
-                  Actions.pop({
-                     prospect:info,
-                     isNew: this.state.isNew,
-                     sales_id: this.state.sales_id
-                  })
+                  Actions.createProspect()
                }
             }
          }

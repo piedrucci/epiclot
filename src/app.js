@@ -85,14 +85,16 @@ const App = () => {
                     <Scene key='createCar2' component={CreateCar2} hideNavBar={false} title='New Car' />
                     <Scene key='cameraScanner' component={CameraComp} hideNavBar={false} title='Scan Vin' />
                     <Scene key='cameraApp' component={CameraApp} hideNavBar={false} title='Photo'  />
-                    
+
                     <Scene key='formCar' component={FormCar} hideNavBar={false} title='Car Info' />
-                    
+
                     <Scene key='carImages' component={CarImagesContainer} hideNavBar={false} title='Add Images' />
 
                     {/* NEW HOME WITCH TAB BAR AND FLOAT BUTTON */}
+                    {/* <Scene key='home2' component={Dashboard2} hideNavBar={false} title='Home'
+                    type={ActionConst.RESET} renderRightButton={buttonCreateCar} renderLeftButton={buttonLogOut}  /> */}
                     <Scene key='home2' component={Dashboard2} hideNavBar={false} title='Home'
-                    type={ActionConst.RESET} renderRightButton ={buttonCreateCar} renderLeftButton ={buttonLogOut}  />
+                    type={ActionConst.RESET} renderLeftButton={buttonLogOut}/>
 
                     {/* CREAR PROSPECT */}
                     <Scene key='createProspect'  component={CreateProspect} hideNavBar={false} title='New Prospect'  />
@@ -101,7 +103,7 @@ const App = () => {
                     <Scene key='prospectDetail' component={ProspectDetail} hideNavBar={false} title='Prospect Detail' />
 
                     <Scene key='createObject'  component={CreateObject} hideNavBar={false} title='Add New'  />
-                    
+
 
                 </Router>
 

@@ -189,7 +189,6 @@ class FormCar extends Component{
                 return (response)
              }).then( json => {
                //  console.log(json)
-               this.props.initializeCar({ newCar: true, car: { vin:'', details: '' } })
 
                 Actions.home2({refreshData: true})
               }).catch(err => {
