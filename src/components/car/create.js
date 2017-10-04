@@ -49,8 +49,8 @@ class CreateCar extends Component {
 
         Actions.refresh({title: 'Add Car'})
 
-        if (typeof this.props.carInfo.setVIN !== 'undefined'){
-            this.setState({vin:this.props.carInfo.setVIN})
+        if (typeof this.props.carInfo.car.vin !== 'undefined'){
+            this.setState({vin:this.props.carInfo.car.vin})
         }
    }
 
@@ -203,7 +203,7 @@ CreateCar.defaultProps = {
 
 const mapStateToProps = (state) => {
     return {
-        carInfo: state.appParams,
+        carInfo: state.carInfo,
     }
 }
 

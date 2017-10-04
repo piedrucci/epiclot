@@ -22,7 +22,8 @@ export const appReducer = ( state = initialState, action ) => {
          return {...state, session: action.payload}
 
       case SET_VINCODE:
-         return Object.assign( {}, action.payload )
+         // return Object.assign( {}, action.payload )
+         return {...state, vin: action.payload }
 
       case SET_LICENSECODE:
          return Object.assign( {}, action.payload )

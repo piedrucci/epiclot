@@ -198,9 +198,7 @@ const styles = StyleSheet.create({
   },
   emptyImageContainer: {
      flex:1,
-     // flexDirection: 'column',
      alignItems: 'center',
-   //   marginTop:containerMarginTop,
   },
   imageStyle: {
      width: imageWidth-10,

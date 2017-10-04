@@ -14,6 +14,7 @@ import { FormattedCurrency } from 'react-native-globalize';
 // ===========================================
 import { connect } from 'react-redux'
 import * as appActions from '../../actions/appActions'
+import * as CarActions from '../../actions/carActions'
 import * as ProspectActions from '../../actions/prospectActions'
 // ================================================
 
@@ -38,24 +39,33 @@ class Dashboard2 extends Component {
 
   async componentDidMount() {
      try{
-        Actions.refresh({title:'Epiclot'})
+
+        Actions.refresh({ rightTitle: 'New', onRight:()=>this.insertElement() })
         await this.setState({session:this.props.GlobalParams.session})
       //   console.log( this.props.GlobalParams.session)
         this.fetchData()
 
-        this.props.initializeProspect({
-           newProspect: true,
-           prospect: {
-             license:''
-          }
-       })
      }catch(err){
-        alert(`Coñoooo\n${err}\ndidmount index`)
         console.log(err)
      }
 
-
   }
+
+  insertElement = () => {
+     switch(this.props.GlobalParams.activeModule){
+        case 'car':
+         this.props.initializeCar({ newCar: true, car: { vin:'', details: '' } })
+         Actions.createObject()
+         break;
+
+         case 'prospect':
+            this.props.initializeProspect({ newProspect: true, prospect: { license:'' } })
+            this.props.loadProspect({})
+            Actions.createObject()
+            break;
+     }
+   //   alert(this.props.GlobalParams.activeModule)
+ }
 
 
 // ACTUALIZA EL STORE PARA SABER QUE COMPONENTE CARGAR
@@ -65,6 +75,7 @@ class Dashboard2 extends Component {
 
       let _type = 'car'
       if (index===1) {
+
          _type = 'prospect'
       }else if (index===2) {
          _type = 'Settings'
@@ -118,8 +129,6 @@ class Dashboard2 extends Component {
             })
          }
 
-         // listOfCars = json;
-         // console.log(json);
 
       }catch(err){
 
@@ -131,41 +140,20 @@ class Dashboard2 extends Component {
 
          //  Actions.refresh({ rightTitle: '', onRight:()=>false })
           const msg = 'Network request failed... \nCheck your network configuration'
-          alert(`${err}\nfetchData index`)
+         //  alert(`${err}\nfetchData index`)
           console.log(msg)
 
       }
    }
 
    componentWillReceiveProps(nextProps) {
-      // if (nextProps.refreshData){
-      //    alert('REFRESCAR')
-      // }
-      // console.log("sss");
       this.fetchData()
       if (typeof nextProps.refreshData !== 'undefined') {
          this.setState({refreshData: nextProps.refreshData})
-         // console.log(nextProps.refreshData);
-         // this.fetchData()
       }
    }
 
   render() {
-   //   try{
-   //      let AppComponent = Cars;
-   //      let iconSearch = <Icon name="ios-car" />
-     //
-   //      if (this.state.index == 0) {
-   //         AppComponent = Cars
-   //      } else {
-   //         AppComponent = Prospect
-   //         iconSearch = <Icon name="ios-person" />
-   //      }
-   //   }catch(err){
-   //      console.log(err)
-   //      alert(err)
-   //   }
-
 
       return(
          <Container>
@@ -227,7 +215,9 @@ const mapDispatchToProps = (dispatch) => {
    return {
       activateModule: (p) => dispatch(appActions.activateModule(p)),
       StoreSession: (s) => dispatch(appActions.setSession(s)),
+      initializeCar: (info) => dispatch(CarActions.initializeCar(info)),
       initializeProspect: (info) => dispatch(ProspectActions.initializeProspect(info)),
+      loadProspect: (p) => dispatch(ProspectActions.loadProspect(p)),
    };
 };
 
