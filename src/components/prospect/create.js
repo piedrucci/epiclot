@@ -46,26 +46,6 @@ class CreateProspect extends Component {
          license_expiration: props.ProspectInfo.prospect.license_expiration,
          license_height: props.ProspectInfo.prospect.license_height,
          user_id: props.ProspectInfo.prospect.user,
-         // driver_license: (props.prospect===null)?'':(props.prospect.license),
-         // sales_id: (props.prospect===null)?0:(props.prospect.sales_id),
-         // dealership_id: (props.prospect===null)?'':(props.prospect.dealership_id),
-         // firstname: (props.prospect===null)?'':(props.prospect.firstname),
-         // lastname: (props.prospect===null)?'':(props.prospect.lastname),
-         // address: (props.prospect===null)?'':(props.prospect.address),
-         // zipcode: (props.prospect===null)?'':(props.prospect.zipcode),
-         // state:(props.prospect===null)?'':(props.prospect.state),
-         // city:(props.prospect===null)?'':(props.prospect.city),
-         // cellphone: (props.prospect===null)?'':(props.prospect.cellphone),
-         // emailaddress: (props.prospect===null)?'':(props.prospect.emailaddress),
-         // looking_for: (props.prospect===null)?'':(props.prospect.looking_for),
-         // dob:(props.prospect===null)?'':(props.prospect.birthday),
-         // license_state:(props.prospect===null)?'':(props.prospect.licensestate),
-         // license_issued:(props.prospect===null)?'':(props.prospect.license_issued),
-         // license_expiration:(props.prospect===null)?'':(props.prospect.license_expiration),
-         // license_height:(props.prospect===null)?'':(props.prospect.license_height),
-         // sex:(props.prospect===null)?'':(props.prospect.sex),
-         // user_id:(props.prospect===null)?'':(props.prospect.user),
-
 
          checkingLicense: false,
          validLicense: false,
@@ -101,12 +81,14 @@ class CreateProspect extends Component {
 
          // formatear la fecha de nacimiento solo cuando este editando
          if (this.props.ProspectInfo.prospect.license !== ''){
-            // console.log(`la fecha de nacimiento es ${this.props.prospect.birthday}`)
-            const arrDate = this.props.ProspectInfo.prospect.birthday.split("-")
-            if (arrDate[0].length>2){
-               await this.setState({dob: arrDate[1]+'-'+arrDate[2]+'-'+arrDate[0]})
-            }else{
-               await this.setState({dob: this.props.ProspectInfo.prospect.birthday})
+            if (typeof this.props.ProspectInfo.prospect.birthday !== 'undefined'){
+               // console.log(`la fecha de nacimiento es ${this.props.prospect.birthday}`)
+               const arrDate = this.props.ProspectInfo.prospect.birthday.split("-")
+               if (arrDate[0].length>2){
+                  await this.setState({dob: arrDate[1]+'-'+arrDate[2]+'-'+arrDate[0]})
+               }else{
+                  await this.setState({dob: this.props.ProspectInfo.prospect.birthday})
+               }
             }
          }
 

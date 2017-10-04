@@ -68,7 +68,7 @@ export const carInfoReducer = ( state = initialState, action ) => {
             return {
                   ...state,
                   car: {
-                        ...state.car, vin: action.vin,
+                        ...state.car, vin: action.payload,
                   }
             }
 

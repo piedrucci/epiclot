@@ -8,6 +8,8 @@ var {height, width} = Dimensions.get('window')
 // ===========================================
 import { connect } from 'react-redux';
 import * as appActions from '../../actions/appActions';
+import * as CarActions from '../../actions/carActions';
+import * as ProspectActions from '../../actions/prospectActions';
 // ================================================
 
 class CameraComp extends Component {
@@ -104,19 +106,17 @@ class CameraComp extends Component {
             if ( strVIN.length === 18 ){
                strVIN = strVIN.substr(1, strVIN.length-1)
             }
-            info = { vin: strVIN }
             // console.log(info)
 
             // DISPARA LA ACCION AL REDUCER setLicense
-            // this.props.setVinCode({setVIN:info.vin})
-            this.props.setVinCode(info.vin)
+            this.props.setVinCode(strVIN)
 
             Actions.createCar()
 
          }else if (this.state.target === 'prospect'){
             const splitLicense = e.data.split('\n')
-            // console.log(splitLicense)
             const fullLicenseInfo = splitLicense.map( (item, index) => item.replace(/_/g, ' ') )
+            // console.log(fullLicenseInfo)
 
             if ( fullLicenseInfo.length > 0 ){
                if ( typeof fullLicenseInfo[1] === 'undefined' ){
@@ -175,15 +175,18 @@ class CameraComp extends Component {
                      license_issued: arrProfile.license_issued,
                   }
 
+                  // console.log(info)
                   // DISPARA LA ACCION AL REDUCER
-                  this.props.setLicense(info.license)
+                  this.props.loadProspect(info)
 
                   Actions.createProspect()
                }
             }
          }
       }catch(err){
-         alert(err)
+         // alert(err)
+         console.log(err)
+         Actions.createProspect()
       }
    }
 
@@ -271,8 +274,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setVinCode: (t) => dispatch(appActions.setVIN(t)),
-        setLicense: (t) => dispatch(appActions.setLicense(t)),
+        setVinCode: (p) => dispatch(CarActions.setVIN(p)),
+        loadProspect: (p) => dispatch(ProspectActions.loadProspect(p)),
     };
 };
 

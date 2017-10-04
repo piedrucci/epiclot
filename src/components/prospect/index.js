@@ -52,7 +52,6 @@ class Dashboard2 extends Component {
   }
 
   insertElement = () => {
-     console.log(this.props.GlobalParams.activeModule)
      switch(this.props.GlobalParams.activeModule){
         case 'car':
          this.props.initializeCar({ newCar: true, car: { vin:'', details: '' } })
@@ -61,6 +60,7 @@ class Dashboard2 extends Component {
 
          case 'prospect':
             this.props.initializeProspect({ newProspect: true, prospect: { license:'' } })
+            this.props.loadProspect({})
             Actions.createObject()
             break;
      }
@@ -147,34 +147,13 @@ class Dashboard2 extends Component {
    }
 
    componentWillReceiveProps(nextProps) {
-      // if (nextProps.refreshData){
-      //    alert('REFRESCAR')
-      // }
-      // console.log("sss");
       this.fetchData()
       if (typeof nextProps.refreshData !== 'undefined') {
          this.setState({refreshData: nextProps.refreshData})
-         // console.log(nextProps.refreshData);
-         // this.fetchData()
       }
    }
 
   render() {
-   //   try{
-   //      let AppComponent = Cars;
-   //      let iconSearch = <Icon name="ios-car" />
-     //
-   //      if (this.state.index == 0) {
-   //         AppComponent = Cars
-   //      } else {
-   //         AppComponent = Prospect
-   //         iconSearch = <Icon name="ios-person" />
-   //      }
-   //   }catch(err){
-   //      console.log(err)
-   //      alert(err)
-   //   }
-
 
       return(
          <Container>
@@ -238,6 +217,7 @@ const mapDispatchToProps = (dispatch) => {
       StoreSession: (s) => dispatch(appActions.setSession(s)),
       initializeCar: (info) => dispatch(CarActions.initializeCar(info)),
       initializeProspect: (info) => dispatch(ProspectActions.initializeProspect(info)),
+      loadProspect: (p) => dispatch(ProspectActions.loadProspect(p)),
    };
 };
 

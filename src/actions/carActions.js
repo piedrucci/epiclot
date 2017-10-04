@@ -59,10 +59,10 @@ export const initializeCar = (payload) => {
     }
 }
 
-export const setVIN = (vin) => {
+export const setVIN = (payload) => {
     return {
         type: SET_VIN,
-        vin
+        payload
     }
 }
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, AsyncStorage, RefreshControl, FlatList } from 'react-native';
+import { StyleSheet, Text, AsyncStorage, Dimensions,
+   RefreshControl, FlatList, View, Image } from 'react-native';
 import { Container, Content, Spinner, ListItem, Body, CheckBox, Left, Thumbnail } from 'native-base';
 import FitImage from 'react-native-fit-image';
 import { Actions } from 'react-native-router-flux';
@@ -8,6 +9,10 @@ import api from '../../utilities/api';
 import { FormattedCurrency } from 'react-native-globalize';
 
 const listOfProspects = []
+
+const window = Dimensions.get('window')
+const imageWidth = window.width
+const imageMarginTop = (window.height / 2) / 2
 
 // ===========================================
 import { connect } from 'react-redux';
@@ -81,7 +86,7 @@ class Prospect extends Component {
             error: true,
             refreshing:false,
          });
-         alert(`error cargando prospects ${err}`);
+         alert(`Oops! \n${err}`);
       }
   }
 
@@ -96,7 +101,8 @@ class Prospect extends Component {
         // console.log(newData);
         this.setState({prospects:newData});
      }catch(err) {
-        alert(err)
+      //   alert(err)
+      console.log(err)
      }
   }
 
@@ -146,8 +152,16 @@ class Prospect extends Component {
                   </ListItem>}
                 />
                 :
-               <Text>empty list</Text>
-
+                <View style={styles.emptyImageContainer}>
+                  <Image
+                     style={{width: imageWidth-20, height: imageWidth-20, marginTop: imageMarginTop/2}}
+                     source={{uri: 'https://epiclot.com/img/prospects_list.png'}}
+                  />
+                  {/* <Image
+                     style={{width: imageWidth-20, height: imageWidth-20, marginTop: imageMarginTop/2}}
+                     source={require('../../assets/img/epiclot_waterMark.png')}
+                  /> */}
+               </View>
                }
 
               </Content>
@@ -169,6 +183,10 @@ const styles = StyleSheet.create({
   },
   itemDetail: {
      marginLeft: 10,
+  },
+  emptyImageContainer: {
+     flex:1,
+     alignItems: 'center',
   },
 });
 
