@@ -38,9 +38,10 @@ class Dashboard2 extends Component {
   }
 
   async componentDidMount() {
+    Actions.refresh({ rightTitle: 'New', onRight:()=>this.insertElement() })
      try{
 
-        Actions.refresh({ rightTitle: 'New', onRight:()=>this.insertElement() })
+        console.log(this.props.GlobalParams.activeModule);
         await this.setState({session:this.props.GlobalParams.session})
       //   console.log( this.props.GlobalParams.session)
         this.fetchData()
@@ -48,6 +49,8 @@ class Dashboard2 extends Component {
      }catch(err){
         console.log(err)
      }
+     if (this.props.GlobalParams.activeModule !== undefined)
+          this.switchScreen(this.props.GlobalParams.activeModule == "prospect" ? 1 : 0)
 
   }
 
@@ -66,6 +69,7 @@ class Dashboard2 extends Component {
      }
    //   alert(this.props.GlobalParams.activeModule)
  }
+
 
 
 // ACTUALIZA EL STORE PARA SABER QUE COMPONENTE CARGAR
@@ -138,7 +142,6 @@ class Dashboard2 extends Component {
              refreshData: false,
           });
 
-         //  Actions.refresh({ rightTitle: '', onRight:()=>false })
           const msg = 'Network request failed... \nCheck your network configuration'
          //  alert(`${err}\nfetchData index`)
           console.log(msg)
@@ -147,6 +150,7 @@ class Dashboard2 extends Component {
    }
 
    componentWillReceiveProps(nextProps) {
+      
       this.fetchData()
       if (typeof nextProps.refreshData !== 'undefined') {
          this.setState({refreshData: nextProps.refreshData})

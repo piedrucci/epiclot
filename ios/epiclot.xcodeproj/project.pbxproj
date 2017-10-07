@@ -51,6 +51,11 @@
 		AB0A42C81F8583CD00A5C3AE /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AB0A42BD1F8583C200A5C3AE /* Zocial.ttf */; };
 		AB0A43831F85884A00A5C3AE /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB0A43821F85883B00A5C3AE /* libRCTOrientation.a */; };
 		AB0A43931F858B9D00A5C3AE /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB0A43921F858B8F00A5C3AE /* libRCTImageResizer.a */; };
+		ABD278C31F867F82005ECFBC /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD278C21F867F6B005ECFBC /* QBImagePicker.framework */; };
+		ABD278C41F867F82005ECFBC /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ABD278C21F867F6B005ECFBC /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ABD278C51F867F82005ECFBC /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD278C11F867F6B005ECFBC /* RSKImageCropper.framework */; };
+		ABD278C61F867F82005ECFBC /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ABD278C11F867F6B005ECFBC /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ABD278D21F869E92005ECFBC /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD278D11F869E5C005ECFBC /* libRCTCameraRoll.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -306,7 +311,29 @@
 			remoteGlobalIDString = 5D72D2E81C16249000E22EC1;
 			remoteInfo = RCTImageResizer;
 		};
+		ABD278D01F869E5C005ECFBC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ABD278CC1F869E5C005ECFBC /* RCTCameraRoll.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
+			remoteInfo = RCTCameraRoll;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		ABD278C71F867F82005ECFBC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ABD278C41F867F82005ECFBC /* QBImagePicker.framework in Embed Frameworks */,
+				ABD278C61F867F82005ECFBC /* RSKImageCropper.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -349,9 +376,10 @@
 		AB0A437D1F85883B00A5C3AE /* RCTOrientation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTOrientation.xcodeproj; path = "../node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj"; sourceTree = "<group>"; };
 		AB0A43841F858A2200A5C3AE /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
 		AB0A438D1F858B8F00A5C3AE /* RCTImageResizer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImageResizer.xcodeproj; path = "../node_modules/react-native-image-resizer/ios/RCTImageResizer.xcodeproj"; sourceTree = "<group>"; };
-		AF5164FC76D52A759BE414D7 /* Pods-epiclot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-epiclot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-epiclot/Pods-epiclot.debug.xcconfig"; sourceTree = "<group>"; };
+		ABD278C11F867F6B005ECFBC /* RSKImageCropper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RSKImageCropper.framework; path = "../node_modules/react-native-image-crop-picker/ios/ImageCropPickerSDK/RSKImageCropper.framework"; sourceTree = "<group>"; };
+		ABD278C21F867F6B005ECFBC /* QBImagePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QBImagePicker.framework; path = "../node_modules/react-native-image-crop-picker/ios/ImageCropPickerSDK/QBImagePicker.framework"; sourceTree = "<group>"; };
+		ABD278CC1F869E5C005ECFBC /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		B66F425E7061A1100FF822B3 /* libPods-epiclot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-epiclot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FEA7AD84165B466748F9CE06 /* Pods-epiclot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-epiclot.release.xcconfig"; path = "Pods/Target Support Files/Pods-epiclot/Pods-epiclot.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -367,6 +395,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABD278D21F869E92005ECFBC /* libRCTCameraRoll.a in Frameworks */,
 				AB0A43931F858B9D00A5C3AE /* libRCTImageResizer.a in Frameworks */,
 				AB0A43831F85884A00A5C3AE /* libRCTOrientation.a in Frameworks */,
 				AB0A42B11F8583A000A5C3AE /* libRNVectorIcons.a in Frameworks */,
@@ -374,6 +403,8 @@
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
+				ABD278C31F867F82005ECFBC /* QBImagePicker.framework in Frameworks */,
+				ABD278C51F867F82005ECFBC /* RSKImageCropper.framework in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
@@ -539,18 +570,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7A02439CDF4429D1F119C6AB /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				AF5164FC76D52A759BE414D7 /* Pods-epiclot.debug.xcconfig */,
-				FEA7AD84165B466748F9CE06 /* Pods-epiclot.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				ABD278CC1F869E5C005ECFBC /* RCTCameraRoll.xcodeproj */,
 				AB0A438D1F858B8F00A5C3AE /* RCTImageResizer.xcodeproj */,
 				AB0A43841F858A2200A5C3AE /* imageCropPicker.xcodeproj */,
 				AB0A437D1F85883B00A5C3AE /* RCTOrientation.xcodeproj */,
@@ -588,7 +611,6 @@
 				00E356EF1AD99517003FC87E /* epiclotTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				AB0A42AF1F85839C00A5C3AE /* Frameworks */,
-				7A02439CDF4429D1F119C6AB /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -624,6 +646,8 @@
 		AB0A42AF1F85839C00A5C3AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ABD278C21F867F6B005ECFBC /* QBImagePicker.framework */,
+				ABD278C11F867F6B005ECFBC /* RSKImageCropper.framework */,
 				B66F425E7061A1100FF822B3 /* libPods-epiclot.a */,
 			);
 			name = Frameworks;
@@ -672,6 +696,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		ABD278CD1F869E5C005ECFBC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ABD278D11F869E5C005ECFBC /* libRCTCameraRoll.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -701,6 +733,8 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				ABD278C71F867F82005ECFBC /* Embed Frameworks */,
+				ABD278D31F86C359005ECFBC /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -802,6 +836,10 @@
 				{
 					ProductGroup = AB0A42A41F85838700A5C3AE /* Products */;
 					ProjectRef = AB0A42A31F85838700A5C3AE /* RCTCamera.xcodeproj */;
+				},
+				{
+					ProductGroup = ABD278CD1F869E5C005ECFBC /* Products */;
+					ProjectRef = ABD278CC1F869E5C005ECFBC /* RCTCameraRoll.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
@@ -1101,6 +1139,13 @@
 			remoteRef = AB0A43911F858B8F00A5C3AE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		ABD278D11F869E5C005ECFBC /* libRCTCameraRoll.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTCameraRoll.a;
+			remoteRef = ABD278D01F869E5C005ECFBC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1176,6 +1221,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		ABD278D31F86C359005ECFBC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "APP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\n# This script loops through the frameworks embedded in the application and\n# removes unused architectures.\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\nFRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\nFRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\necho \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\n\nEXTRACTED_ARCHS=()\n\nfor ARCH in $ARCHS\ndo\necho \"Extracting $ARCH from $FRAMEWORK_EXECUTABLE_NAME\"\nlipo -extract \"$ARCH\" \"$FRAMEWORK_EXECUTABLE_PATH\" -o \"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\"\nEXTRACTED_ARCHS+=(\"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\")\ndone\n\necho \"Merging extracted architectures: ${ARCHS}\"\nlipo -o \"$FRAMEWORK_EXECUTABLE_PATH-merged\" -create \"${EXTRACTED_ARCHS[@]}\"\nrm \"${EXTRACTED_ARCHS[@]}\"\n\necho \"Replacing original executable with thinned version\"\nrm \"$FRAMEWORK_EXECUTABLE_PATH\"\nmv \"$FRAMEWORK_EXECUTABLE_PATH-merged\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n\ndone\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1283,7 +1341,6 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AF5164FC76D52A759BE414D7 /* Pods-epiclot.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1300,6 +1357,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.epiclot.Epiclot;
 				PRODUCT_NAME = epiclot;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1307,7 +1365,6 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FEA7AD84165B466748F9CE06 /* Pods-epiclot.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1323,6 +1380,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.epiclot.Epiclot;
 				PRODUCT_NAME = epiclot;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

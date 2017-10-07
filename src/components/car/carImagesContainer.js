@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import {AsyncStorage} from 'react-native'
+import {AsyncStorage,CameraRoll, ImagePickerIOS} from 'react-native'
 import { Container, Header, Content, Footer, FooterTab, Button, Text, Icon } from 'native-base'
-import ImagePicker from 'react-native-image-crop-picker'
+//import ImagePicker from 'react-native-image-crop-picker'
 import { Actions } from 'react-native-router-flux';
 import ImageElement from './carImages'
 import api from '../../utilities/api'
@@ -38,25 +38,56 @@ class CarImagesContainer extends Component {
 
    async imagePicker() {
       try{
-         const images = await ImagePicker.openPicker({multiple:false})
+         //const images = await ImagePicker.openPicker({multiple:false})
+         ImagePickerIOS.openSelectDialog({},image => {
+            console.log(image)
+              ImageResizer.createResizedImage(image, 600, 400, 'JPEG', 70).then(async(photo) => {
+              // response.uri is the URI of the new image that can now be displayed, uploaded...
+              // response.path is the path of the new image
+              // response.name is the name of the new image with the extension
+              // response.size is the size of the new image
+             //  console.log(image.size)
+               this.props.addImage(photo.path)
+               await this.setState({ arrayImages: this.props.CarInfo.images })
+               this.renderSceneRightButton()
+            }).catch((err) => {
+               console.log(err)
+               this.renderSceneRightButton()
+              // Oops, something went wrong. Check that the filename is correct and
+              // inspect err to get more details.
+            });
+         },error => {
+            console.log(error)
+         })
+         /*const images = CameraRoll.getPhotos({
+          first: 20,
+          assetType: 'Photos'
+         }).then(photo => {
+          const  photos = photo.edges
+          if(photos.length > 0){
+           /*   ImageResizer.createResizedImage(photos[0].image.uri, 600, 400, 'JPEG', 70).then(async(image) => {
+            // response.uri is the URI of the new image that can now be displayed, uploaded...
+            // response.path is the path of the new image
+            // response.name is the name of the new image with the extension
+            // response.size is the size of the new image
+           //  console.log(image.size)
+             this.props.addImage(images.path)
+             await this.setState({ arrayImages: this.props.CarInfo.images })
+             this.renderSceneRightButton()
+          }).catch((err) => {
+             console.log(err)
+             this.renderSceneRightButton()
+            // Oops, something went wrong. Check that the filename is correct and
+            // inspect err to get more details.
+          });
+          } 
+          
+
+         })*/
          // console.log(images)
         //  images.map( (image, index)=>this.setState({arrayImages:[...this.state.arrayImages, image.path ]}) )
 
-        ImageResizer.createResizedImage(images.path, 600, 400, 'JPEG', 70).then(async(image) => {
-          // response.uri is the URI of the new image that can now be displayed, uploaded...
-          // response.path is the path of the new image
-          // response.name is the name of the new image with the extension
-          // response.size is the size of the new image
-         //  console.log(image.size)
-           this.props.addImage(images.path)
-           await this.setState({ arrayImages: this.props.CarInfo.images })
-           this.renderSceneRightButton()
-        }).catch((err) => {
-           console.log(err)
-           this.renderSceneRightButton()
-          // Oops, something went wrong. Check that the filename is correct and
-          // inspect err to get more details.
-        });
+        
 
 
       }catch(err) {
@@ -101,7 +132,7 @@ class CarImagesContainer extends Component {
 
    renderSceneRightButton() {
       // console.log(`HAY ${this.props.CarInfo.images.length} IMAGENES`)
-      let buttonTitle = ''
+      let buttonTitle = 'PP'
       if (this.props.CarInfo.images.length>0){
          buttonTitle = 'Next'
       }

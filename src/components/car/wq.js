@@ -102,7 +102,7 @@ class FormCar extends Component{
       }else if (this.state.expense_date==='' && this.state.newCar) {
          alert('Enter the expense date')
       }else{
-
+          Actions.refresh({ rightTitle: '', onRight:()=>this.saveCar() })
          this.setState({isLoading:true})
 
          const fd = new FormData()
@@ -189,10 +189,11 @@ class FormCar extends Component{
                 return (response)
              }).then( json => {
                //  console.log(json)
-
+                Actions.refresh({ rightTitle: 'Done', onRight:()=>this.saveCar() })
                 Actions.home2({refreshData: true})
               }).catch(err => {
                 console.log(err)
+                Actions.refresh({ rightTitle: 'Done', onRight:()=>this.saveCar() })
                 Actions.home2()
               })
 

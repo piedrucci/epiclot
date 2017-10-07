@@ -63,7 +63,7 @@ class CameraApp extends Component {
           <Text
             style={styles.capture}
             onPress={this.takePicture.bind(this)}>
-            <Icon name='ios-camera-outline'/>
+            <Icon name='ios-camera-outline' />
           </Text>
         </Camera>
       </View>

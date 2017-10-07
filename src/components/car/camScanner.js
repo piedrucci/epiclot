@@ -218,7 +218,7 @@ class CameraComp extends Component {
           flashMode={Camera.constants.FlashMode.on}
           >
           {/* <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text> */}
-          <Text style={styles.capture} >+</Text>
+          <Text style={styles.capture} ></Text>
 
         </Camera>
 
@@ -262,7 +262,8 @@ const styles = StyleSheet.create({
      borderColor: '#29e525',
 
      textAlign: 'center',
-     textAlignVertical: 'center'
+     textAlignVertical: 'center',
+     backgroundColor: 'transparent'
   }
 });
 

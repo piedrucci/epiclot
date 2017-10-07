@@ -194,7 +194,7 @@ class CreateProspect extends Component {
       }else{
          try{
             this.setState({savingInfo:true})
-
+            Actions.refresh({ rightTitle: '', onRight:()=>this.saveInfo() })
             if (typeof this.state.dob==='undefined'){this.setState({dob: ''})}
 
             const arrLic=[]
@@ -268,6 +268,7 @@ class CreateProspect extends Component {
             //    console.log("Prospect Saved, statusCode: "+response.status)
             //    // Actions.home2()
             // }
+            Actions.refresh({ rightTitle: 'Done', onRight:()=>this.saveInfo() })
             this.setState({savingInfo:false})
          }catch(err){
             console.log(`AN EXCEPTION WAS DETECTED SAVING!!! \n${err}`)
@@ -399,6 +400,20 @@ class CreateProspect extends Component {
                         value={this.state.address}
                      />
                   </Item>
+                  <Item >
+                     <Icon name='ios-navigate-outline' />
+                     <Input
+                        maxLength = {20}
+                        keyboardType='default'
+                        //   style={{width:250}}
+                        returnKeyType='next'
+                        placeholder='City'
+                        autoCapitalize='characters'
+                        onChangeText={ (text) => this.setState({city:text}) }
+                        // onSubmitEditing = { () => this.emailInput.focus() }
+                        value={this.state.city}
+                     />
+                  </Item>
 
                   <Item >
                      <Icon name='ios-navigate-outline' />
@@ -415,20 +430,6 @@ class CreateProspect extends Component {
                      />
                   </Item>
 
-                  <Item >
-                     <Icon name='ios-navigate-outline' />
-                     <Input
-                        maxLength = {20}
-                        keyboardType='default'
-                        //   style={{width:250}}
-                        returnKeyType='next'
-                        placeholder='City'
-                        autoCapitalize='characters'
-                        onChangeText={ (text) => this.setState({city:text}) }
-                        // onSubmitEditing = { () => this.emailInput.focus() }
-                        value={this.state.city}
-                     />
-                  </Item>
 
                   <Item >
                      <Icon name='ios-more-outline' />
