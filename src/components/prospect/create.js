@@ -69,7 +69,6 @@ class CreateProspect extends Component {
     async componentDidMount() {
 
       try{
-
          if (this.props.ProspectInfo.prospect.license === '') {
             this.props.initializeProspect({
                newProspect: true,
@@ -204,7 +203,7 @@ class CreateProspect extends Component {
             // preparar las fechas ......
             if (typeof this.state.license_issued !== 'undefined'){
                if (this.state.license_issued!=='' && this.state.license_issued !==null){
-                  console.log(`ISSUED: ${this.state.license_issued}`)
+                  // console.log(`ISSUED: ${this.state.license_issued}`)
                   arrLic = this.state.license_issued.split('-')
                   if (arrLic[0].length===2){
                      lic_iss = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
@@ -214,7 +213,7 @@ class CreateProspect extends Component {
 
             if (typeof this.state.license_expiration !== 'undefined'){
                if (this.state.license_expiration!=='' && this.state.license_expiration !==null){
-                  console.log(`EXPIRATION: ${this.state.license_expiration}`)
+                  // console.log(`EXPIRATION: ${this.state.license_expiration}`)
                   arrLic = this.state.license_expiration.split('-')
                   if (arrLic[0].length===2){
                      lic_exp = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
@@ -399,7 +398,23 @@ class CreateProspect extends Component {
                         value={this.state.address}
                      />
                   </Item>
-
+                  
+                  
+                  <Item >
+                  <Icon name='ios-navigate-outline' />
+                  <Input
+                  maxLength = {20}
+                  keyboardType='default'
+                  //   style={{width:250}}
+                  returnKeyType='next'
+                  placeholder='City'
+                  autoCapitalize='characters'
+                  onChangeText={ (text) => this.setState({city:text}) }
+                  // onSubmitEditing = { () => this.emailInput.focus() }
+                  value={this.state.city}
+                  />
+                  </Item>
+                  
                   <Item >
                      <Icon name='ios-navigate-outline' />
                      <Input
@@ -412,21 +427,6 @@ class CreateProspect extends Component {
                         onChangeText={ (text) => this.setState({state:text}) }
                         // onSubmitEditing = { () => this.emailInput.focus() }
                         value={this.state.state}
-                     />
-                  </Item>
-
-                  <Item >
-                     <Icon name='ios-navigate-outline' />
-                     <Input
-                        maxLength = {20}
-                        keyboardType='default'
-                        //   style={{width:250}}
-                        returnKeyType='next'
-                        placeholder='City'
-                        autoCapitalize='characters'
-                        onChangeText={ (text) => this.setState({city:text}) }
-                        // onSubmitEditing = { () => this.emailInput.focus() }
-                        value={this.state.city}
                      />
                   </Item>
 

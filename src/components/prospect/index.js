@@ -38,16 +38,16 @@ class Dashboard2 extends Component {
   }
 
   async componentDidMount() {
-     try{
-
-        Actions.refresh({ rightTitle: 'New', onRight:()=>this.insertElement() })
-        await this.setState({session:this.props.GlobalParams.session})
-      //   console.log( this.props.GlobalParams.session)
-        this.fetchData()
-
-     }catch(err){
+    try{
+      // Actions.refresh({ rightTitle: 'New', onRight:()=>this.insertElement() })
+      await this.setState({session:this.props.GlobalParams.session})
+      this.fetchData()
+    }catch(err){
         console.log(err)
-     }
+    }
+
+    if (this.props.GlobalParams.activeModule !== undefined)
+      this.switchScreen(this.props.GlobalParams.activeModule == "prospect" ? 1 : 0)
 
   }
 
@@ -75,11 +75,7 @@ class Dashboard2 extends Component {
 
       let _type = 'car'
       if (index===1) {
-
          _type = 'prospect'
-      }else if (index===2) {
-         _type = 'Settings'
-         alert('Under construction')
       }
 
       // DISPARA LA ACCION AL REDUCER
@@ -154,7 +150,7 @@ class Dashboard2 extends Component {
    }
 
   render() {
-
+    // Actions.refresh({ rightTitle: 'New', onRight:()=>this.insertElement() })
       return(
          <Container>
             {/* <Header style={{marginTop:56}} searchBar rounded>

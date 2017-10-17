@@ -59,7 +59,7 @@ export const carInfoReducer = ( state = initialState, action ) => {
       case CAR_ACTIONS.INITIALIZE_CAR:
             return {
                newCar:action.payload.newCar,
-               car: {...state.car, vin: action.payload.car.vin, details: action.payload.car.details},
+               car: {vin: action.payload.car.vin, details: action.payload.car.details},
                images:[],
                deletedImages: []
             }

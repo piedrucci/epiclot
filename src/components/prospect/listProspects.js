@@ -34,7 +34,7 @@ class Prospect extends Component {
   }
 
   componentDidMount() {
-     this.props.initializeProspect({newProspect:true, prospect:{license:''}})
+    //  this.props.initializeProspect({newProspect:true, prospect:{license:''}})
   }
 
 
@@ -68,7 +68,7 @@ class Prospect extends Component {
             this.setState({
                loading: false,
                prospects: json,
-               refreshing:false,
+               refreshing:false,    
             })
             listOfProspects = json;
          }else{
@@ -114,14 +114,14 @@ class Prospect extends Component {
 
 
   showDetail = (item) => {
-    //  let carData = item
-    //  carData.
      this.props.initializeProspect({newProspect:false, prospect:{license:''}})
      this.props.loadProspect(item)
      Actions.prospectDetail()
   }
 
+
   render() {
+    this.props.initializeProspect({newProspect:true, prospect:{license:''}})
       return (
          //  <Container>
 
