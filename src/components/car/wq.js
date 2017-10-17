@@ -170,6 +170,7 @@ class FormCar extends Component{
 
          // enviar el POST con toda la info(incluyendo imagenes) ....
          try{
+            Actions.refresh({ rightTitle: '', onRight:()=>this.saveCar() })
             // const response = await fetch(api.getApi_Url() + 'cars',{
             //    method: 'post',
             //    headers: {
@@ -189,7 +190,7 @@ class FormCar extends Component{
                 return (response)
              }).then( json => {
                //  console.log(json)
-
+               Actions.refresh({ rightTitle: 'Done', onRight:()=>this.saveCar() })
                 Actions.home2({refreshData: true})
               }).catch(err => {
                 console.log(err)

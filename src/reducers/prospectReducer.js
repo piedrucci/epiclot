@@ -25,7 +25,7 @@ export const prospectInfoReducer = ( state = initialState, action ) => {
       case PROSPECT_ACTIONS.INITIALIZE_PROSPECT:
             return {
                newProspect: action.payload.newProspect,
-               prospect: {...state.prospect, license: action.payload.prospect.license}
+               prospect: {license: action.payload.prospect.license}
             }
 
       case PROSPECT_ACTIONS.SET_LICENSE:

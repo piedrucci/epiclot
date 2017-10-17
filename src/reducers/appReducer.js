@@ -13,7 +13,6 @@ export const appReducer = ( state = initialState, action ) => {
    switch (action.type) {
       case ADD_TYPE:
          // return Object.assign( {}, action.t )
-         console.log(action.payload)
          return {...state, activeModule: action.payload}
 
       case SET_SESSION:
