@@ -186,6 +186,8 @@ class FormCar extends Component{
                },
                body: fd
             }).then(response => {
+                
+                Actions.refresh({ rightTitle: 'Done', onRight:()=>this.saveCar() })
                 return (response)
              }).then( json => {
                //  console.log(json)

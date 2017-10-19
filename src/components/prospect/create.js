@@ -61,7 +61,7 @@ class CreateProspect extends Component {
 
       this.checkVINCode = this.checkVINCode.bind(this)
       this.switchButtonStatus = this.switchButtonStatus.bind(this)
-      this.nextStep = this.nextStep.bind(this)
+      //this.nextStep = this.nextStep.bind(this)
       // this.getCarInfo = this.getCarInfo.bind(this)
    }
 
@@ -157,12 +157,12 @@ class CreateProspect extends Component {
    }
 
    // ENVIAR DATOS Y AVANZAR
-   nextStep() {
+   /*nextStep() {
       this.props.fillCarInfo({vin:this.state.vin})
       Actions.createCar2({validVin: this.state.vin})
       // Actions.tabCar()
       // console.log(this.props)
-   }
+   }*/
     _startScan = (e) => {
         this._barCode.startScan()
     }
@@ -271,9 +271,11 @@ class CreateProspect extends Component {
             Actions.refresh({ rightTitle: 'Done', onRight:()=>this.saveInfo() })
             this.setState({savingInfo:false})
          }catch(err){
+            Actions.refresh({ rightTitle: 'Done', onRight:()=>this.saveInfo() })
             console.log(`AN EXCEPTION WAS DETECTED SAVING!!! \n${err}`)
             // alert(err)
          }finally{
+            Actions.refresh({ rightTitle: 'Done', onRight:()=>this.saveInfo() })
             Actions.home2({refreshData: true})
          }
 

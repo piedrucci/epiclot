@@ -37,6 +37,7 @@ class Dashboard2 extends Component {
       this.findElement = this.findElement.bind(this)
   }
 
+
   async componentDidMount() {
     Actions.refresh({ rightTitle: 'New', onRight:()=>this.insertElement() })
      try{
@@ -51,6 +52,7 @@ class Dashboard2 extends Component {
      }
      if (this.props.GlobalParams.activeModule !== undefined)
           this.switchScreen(this.props.GlobalParams.activeModule == "prospect" ? 1 : 0)
+      //console.log(`======\n${JSON.parse(this.props)}`)
 
   }
 
@@ -150,7 +152,7 @@ class Dashboard2 extends Component {
    }
 
    componentWillReceiveProps(nextProps) {
-      
+     
       this.fetchData()
       if (typeof nextProps.refreshData !== 'undefined') {
          this.setState({refreshData: nextProps.refreshData})
