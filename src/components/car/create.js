@@ -49,9 +49,9 @@ class CreateCar extends Component {
 
         Actions.refresh({title: 'Add Car'})
 
-        if (typeof this.props.carInfo.car.vin !== 'undefined'){
+        /*if (typeof this.props.carInfo.car.vin !== 'undefined'){
             this.setState({vin:this.props.carInfo.car.vin})
-        }
+        }*/
    }
 
    async setSessionData() {

@@ -34,7 +34,7 @@ class Prospect extends Component {
   }
 
   componentDidMount() {
-     this.props.initializeProspect({newProspect:true, prospect:{license:''}})
+     //this.props.initializeProspect({newProspect:true, prospect:{license:''}})
   }
 
 
@@ -122,6 +122,7 @@ class Prospect extends Component {
   }
 
   render() {
+    this.props.initializeProspect({newProspect:true, prospect:{license:''}})
       return (
          //  <Container>
 

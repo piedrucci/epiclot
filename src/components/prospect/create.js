@@ -204,7 +204,7 @@ class CreateProspect extends Component {
             // preparar las fechas ......
             if (typeof this.state.license_issued !== 'undefined'){
                if (this.state.license_issued!=='' && this.state.license_issued !==null){
-                  console.log(`ISSUED: ${this.state.license_issued}`)
+                  //console.log(`ISSUED: ${this.state.license_issued}`)
                   arrLic = this.state.license_issued.split('-')
                   if (arrLic[0].length===2){
                      lic_iss = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''
@@ -214,7 +214,7 @@ class CreateProspect extends Component {
 
             if (typeof this.state.license_expiration !== 'undefined'){
                if (this.state.license_expiration!=='' && this.state.license_expiration !==null){
-                  console.log(`EXPIRATION: ${this.state.license_expiration}`)
+                  //console.log(`EXPIRATION: ${this.state.license_expiration}`)
                   arrLic = this.state.license_expiration.split('-')
                   if (arrLic[0].length===2){
                      lic_exp = (parseInt(arrLic[0])>0)?arrLic[2]+'-'+arrLic[0]+'-'+arrLic[1]:''

@@ -39,10 +39,10 @@ class Dashboard2 extends Component {
 
 
   async componentDidMount() {
-    Actions.refresh({ rightTitle: 'New', onRight:()=>this.insertElement() })
+    //Actions.refresh({ rightTitle: 'New', onRight:()=>this.insertElement() })
      try{
 
-        console.log(this.props.GlobalParams.activeModule);
+        //console.log(this.props.GlobalParams.activeModule);
         await this.setState({session:this.props.GlobalParams.session})
       //   console.log( this.props.GlobalParams.session)
         this.fetchData()
@@ -83,9 +83,6 @@ class Dashboard2 extends Component {
       if (index===1) {
 
          _type = 'prospect'
-      }else if (index===2) {
-         _type = 'Settings'
-         alert('Under construction')
       }
 
       // DISPARA LA ACCION AL REDUCER

@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
      fontSize: 20,
 
      width: width - 20,
-     height: 80,
+     height: 100,
 
      marginTop: (height/2) - (56-40),
 

@@ -170,6 +170,7 @@ class FormCar extends Component{
 
          // enviar el POST con toda la info(incluyendo imagenes) ....
          try{
+            Actions.refresh({ rightTitle: '', onRight:()=>this.saveCar() })
             // const response = await fetch(api.getApi_Url() + 'cars',{
             //    method: 'post',
             //    headers: {
